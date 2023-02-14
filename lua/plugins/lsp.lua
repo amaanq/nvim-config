@@ -106,6 +106,10 @@ return {
 			keys[#keys + 1] = { "<leader>clh", vim.lsp.codelens.run, desc = "Run Code Lens" }
 			keys[#keys + 1] = { "<leader>cld", vim.lsp.codelens.refresh, desc = "Refresh Code Lens" }
 
+			require("which-key").register({
+				["<leader>cl"] = { name = "+lsp" },
+			})
+
 			local format = require("lazyvim.plugins.lsp.format")
 			format.on_attach = function(client, buf)
 				if client.supports_method("textDocument/formatting") then

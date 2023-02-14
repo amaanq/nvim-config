@@ -25,25 +25,6 @@ return {
 		end,
 	},
 
-	-- fuzzy finder
-	{
-		"nvim-telescope/telescope.nvim",
-		keys = {
-			{ "<leader>fp", "<cmd>Telescope project display_type=full<cr>", desc = "Find project" },
-		},
-	},
-
-	-- which-key
-	{
-		"folke/which-key.nvim",
-		config = function(_, opts)
-			local wk = require("which-key")
-			wk.register({
-				["<leader>cl"] = { name = "+lsp" },
-			})
-		end,
-	},
-
 	-- add nvim-ufo
 	{
 		"kevinhwang91/nvim-ufo",

@@ -1,4 +1,5 @@
 return {
+
 	-- better text objects
 	{
 		"echasnovski/mini.ai",
@@ -162,10 +163,24 @@ return {
 	{
 		"monaqa/dial.nvim",
 		event = "VeryLazy",
-		-- stylua: ignore
+		-- splutylua: ignore
 		keys = {
-			{ "<C-a>", function() return require("dial.map").inc_normal() end, expr = true, desc = "Increment" },
-			{ "<C-x>", function() return require("dial.map").dec_normal() end, expr = true, desc = "Decrement" },
+			{
+				"<C-a>",
+				function()
+					return require("dial.map").inc_normal()
+				end,
+				expr = true,
+				desc = "Increment",
+			},
+			{
+				"<C-x>",
+				function()
+					return require("dial.map").dec_normal()
+				end,
+				expr = true,
+				desc = "Decrement",
+			},
 		},
 		config = function()
 			local augend = require("dial.augend")
@@ -249,30 +264,32 @@ return {
 		"gorbit99/codewindow.nvim",
 		enabled = false,
 		event = "BufReadPre",
+		keys = {
+			-- stylua: ignore
+			{ "<leader>um", function() require("codewindow").toggle_minimap() end, desc = "Toggle Minimap" },
+		},
 		config = function()
 			-- require("as.highlights").plugin("codewindow", {
 			-- 	{ CodewindowBorder = { link = "WinSeparator" } },
 			-- 	{ CodewindowWarn = { bg = "NONE", fg = { from = "DiagnosticSignWarn", attr = "bg" } } },
 			-- 	{ CodewindowError = { bg = "NONE", fg = { from = "DiagnosticSignError", attr = "bg" } } },
 			-- })
-			local util = require("util")
-			local codewindow = require("codewindow")
-			util.command("CodewindowToggle", codewindow.toggle_minimap)
-			codewindow.setup({
+			require("codewindow").setup({
 				z_index = 25,
 				auto_enable = true,
 				exclude_filetypes = {
-					"qf",
-					"git",
-					"help",
 					"alpha",
+					"dap-terminal",
+					"git",
 					"gitcommit",
+					"help",
+					"NeogitCommitMessage",
 					"NeogitStatus",
+					"neotest-summary",
 					"neo-tree",
 					"neo-tree-popup",
-					"neotest-summary",
-					"NeogitCommitMessage",
-					"",
+					"Outline",
+					"qf",
 				},
 			})
 		end,
@@ -281,7 +298,7 @@ return {
 	{
 		"mbbill/undotree",
 		cmd = "UndotreeToggle",
-		keys = { { "<leader>u", "<cmd>UndotreeToggle<CR>", desc = "UndoTree Toggle" } },
+		keys = { { "<leader>u", "<cmd>UndotreeToggle<cr>", desc = "UndoTree Toggle" } },
 		config = function()
 			vim.g.undotree_TreeNodeShape = "◦" -- Alternative: '◉'
 			vim.g.undotree_SetFocusWhenToggle = 1

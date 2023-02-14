@@ -1,4 +1,5 @@
 return {
+
 	-- projects
 	{
 		"ahmedkhalf/project.nvim",
