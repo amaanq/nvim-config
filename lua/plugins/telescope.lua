@@ -16,10 +16,13 @@ return {
 		keys = {
 			{
 				"<leader>fp",
-				function()
-					require("telescope.builtin").find_files({ cwd = require("lazy.core.config").options.root })
-				end,
+				"<cmd>Telescope project display_type=full<cr>",
 				desc = "Find Plugin File",
+			},
+			{
+				"<leader>sx",
+				"<cmd>Telescope resume<cr>",
+				desc = "Resume Last Search",
 			},
 		},
 		opts = {
