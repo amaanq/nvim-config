@@ -1,4 +1,5 @@
 return {
+
 	-- copilot
 	{
 		"zbirenbaum/copilot.lua",
