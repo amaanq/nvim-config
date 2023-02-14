@@ -216,7 +216,7 @@ return {
 		},
 	},
 
-	-- Rust Deps 🚀
+	-- Rust Crates 🚀
 	{
 		"Saecki/crates.nvim",
 		event = { "BufRead Cargo.toml" },

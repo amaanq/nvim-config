@@ -303,13 +303,4 @@ return {
 			vim.g.undotree_SetFocusWhenToggle = 1
 		end,
 	},
-
-	{
-		"aarondiel/spread.nvim",
-		dependencies = "nvim-treesitter",
-		keys = {
-			{ "gS", "<cmd>lua require('spread').out()<cr>", desc = "Expand (Spread)" },
-			{ "gJ", "<cmd>lua require('spread').combine()<cr>", desc = "Combine (Spread)" },
-		},
-	},
 }

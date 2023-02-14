@@ -132,7 +132,6 @@ return {
 	-- dashboard
 	{
 		"goolord/alpha-nvim",
-		enabled = true,
 		opts = function()
 			local dashboard = require("alpha.themes.dashboard")
 			local logo = [[
@@ -380,10 +379,7 @@ return {
 		end,
 	},
 
-	{
-		"itchyny/vim-highlighturl",
-		event = "VeryLazy",
-	},
+	{ "itchyny/vim-highlighturl", event = "VeryLazy" },
 
 	{
 		"lukas-reineke/headlines.nvim",

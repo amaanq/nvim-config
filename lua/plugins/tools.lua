@@ -82,17 +82,6 @@ return {
 		},
 	},
 
-	-- Use <Tab> to escape from pairs such as ""|''|() etc.
-	{
-		"abecodes/tabout.nvim",
-		event = "VeryLazy",
-		enabled = false,
-		dependencies = { "nvim-treesitter", "nvim-cmp" },
-		config = function()
-			require("tabout").setup({ ignore_beginning = false, completion = false })
-		end,
-	},
-
 	{
 		"nacro90/numb.nvim",
 		event = "CmdlineEnter",

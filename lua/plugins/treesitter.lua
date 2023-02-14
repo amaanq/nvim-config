@@ -6,9 +6,9 @@ return {
 		keys = { { "m", mode = { "o", "x" } } },
 		config = function()
 			vim.cmd([[
-        omap     <silent> m :<C-U>lua require('tsht').nodes()<cr>
-        xnoremap <silent> m :lua require('tsht').nodes()<cr>
-      ]])
+				omap     <silent> m :<C-U>lua require('tsht').nodes()<cr>
+				xnoremap <silent> m :lua require('tsht').nodes()<cr>
+			]])
 		end,
 	},
 
@@ -20,7 +20,7 @@ return {
 
 	{
 		"nvim-treesitter/nvim-treesitter",
-		dependencies = { "p00f/nvim-ts-rainbow" },
+		dependencies = { "HiPhish/nvim-ts-rainbow2" },
 		init = function()
 			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 			parser_config.thrift = {
@@ -162,16 +162,7 @@ return {
 			},
 			rainbow = {
 				enable = true,
-				disable = vim.tbl_filter(function(p)
-					local rainbow_enabled = { "c_sharp", "c", "cpp", "dart", "go", "rust" }
-					local disable = true
-					for _, lang in pairs(rainbow_enabled) do
-						if p == lang then
-							disable = false
-						end
-					end
-					return disable
-				end, require("nvim-treesitter.parsers").available_parsers()),
+				disable = { "lua" },
 				colors = {
 					"royalblue3",
 					"darkorange3",
