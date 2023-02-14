@@ -1,6 +1,8 @@
--- Keymaps are automatically loaded on the VeryLazy event
--- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
+--  ╭─────────────────────────────────────────────────────────────────────────────╮
+--  │            Keymaps are automatically loaded on the VeryLazy event           │
+--  │                     Default keymaps that are always set:                    │
+--  │ https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua │
+--  ╰─────────────────────────────────────────────────────────────────────────────╯
 
 local util = require("util")
 
@@ -42,9 +44,16 @@ map("n", "<leader>3", "<cmd>3ToggleTerm<cr>", { desc = "ToggleTerm 3" })
 map("n", "<leader>4", "<cmd>4ToggleTerm<cr>", { desc = "ToggleTerm 4" })
 map("n", "<leader>5", "<cmd>5ToggleTerm<cr>", { desc = "ToggleTerm 5" })
 
-------------------------------------------------------------------------------
--- Credit: June Gunn <Leader>?/! | Google it / Feeling lucky
-------------------------------------------------------------------------------
+-- htop
+if vim.fn.executable("htop") == 1 then
+	vim.keymap.set("n", "<leader>xb", function()
+		require("lazyvim.util").float_term({ "htop" })
+	end, { desc = "htop" })
+end
+
+--  ╭───────────────────────────────────────────────────────────╮
+--  │ Credit: June Gunn <Leader>?/! | Google it / Feeling lucky │
+--  ╰───────────────────────────────────────────────────────────╯
 ---@param pat string
 ---@param lucky boolean
 local function google(pat, lucky)
@@ -76,9 +85,10 @@ local function open(path)
 	vim.fn.jobstart({ vim.g.open_command, path }, { detach = true })
 	vim.notify(string.format("Opening %s", path))
 end
------------------------------------------------------------------------------//
--- GX - replicate netrw functionality
------------------------------------------------------------------------------//
+
+--  ╭────────────────────────────────────╮
+--  │ GX - replicate netrw functionality │
+--  ╰────────────────────────────────────╯
 local function open_link()
 	local file = vim.fn.expand("<cfile>")
 	if not file or vim.fn.isdirectory(file) > 0 then
@@ -98,11 +108,11 @@ local function open_link()
 end
 
 vim.keymap.set("n", "gx", open_link, { desc = "Open Link" })
-vim.keymap.set("n", "gf", "<Cmd>e <cfile><CR>", { desc = "Open File" })
+vim.keymap.set("n", "gf", "<cmd>e <cfile><cr>", { desc = "Open File" })
 
------------------------------------------------------------------------------//
--- Commands
------------------------------------------------------------------------------//
+--  ╭──────────╮
+--  │ Commands │
+--  ╰──────────╯
 util.command("ToggleBackground", function()
 	vim.o.background = vim.o.background == "dark" and "light" or "dark"
 end)

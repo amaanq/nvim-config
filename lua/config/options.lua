@@ -1,6 +1,9 @@
--- Options are automatically loaded before lazy.nvim startup
--- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
--- Add any additional options here
+--  ╭─────────────────────────────────────────────────────────────────────────────╮
+--  │          Options are automatically loaded before lazy.nvim startup          │
+--  │                     Default options that are always set:                    │
+--  │ https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua │
+--  ╰─────────────────────────────────────────────────────────────────────────────╯
+
 vim.g.mapleader = " "
 
 vim.opt.fillchars = {
@@ -33,9 +36,9 @@ vim.g.open_command = vim.g.os == "Darwin" and "open" or "xdg-open"
 vim.g.dotfiles = vim.env.DOTFILES or vim.fn.expand("~/.dotfiles")
 vim.g.vim_dir = vim.g.dotfiles .. "/.config/nvim"
 
-----------------------------------------------------------------------------------------------------
--- Default plugins
-----------------------------------------------------------------------------------------------------
+--  ╭─────────────────╮
+--  │ Default plugins │
+--  ╰─────────────────╯
 -- Stop loading built in plugins
 vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrwPlugin = 1
@@ -43,6 +46,12 @@ vim.g.loaded_tutor_mode_plugin = 1
 vim.g.loaded_2html_plugin = 1
 vim.g.loaded_tarPlugin = 1
 vim.g.logipat = 1
+
+-- Disable some extension providers
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
 
 -- Ensure all autocommands are cleared
 vim.api.nvim_create_augroup("vimrc", {})
@@ -57,10 +66,5 @@ if vim.g.neovide then
 	vim.opt.guifont = { "Menlo", "h10" }
 	vim.g.neovide_scale_factor = 0.3
 end
-
-vim.g.loaded_python3_provider = 0
-vim.g.loaded_perl_provider = 0
-vim.g.loaded_ruby_provider = 0
-vim.g.loaded_node_provider = 0
 
 require("util.status")
