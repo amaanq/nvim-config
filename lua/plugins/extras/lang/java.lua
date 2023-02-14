@@ -40,6 +40,7 @@ return {
 					local mason_registry = require("mason-registry")
 					local jdtls_pkg = mason_registry.get_package("jdtls")
 					local jdtls_path = jdtls_pkg:get_install_path()
+					local jdtls_bin = jdtls_path .. "/bin/jdtls"
 
 					local java_test_pkg = mason_registry.get_package("java-test")
 					local java_test_path = java_test_pkg:get_install_path()
@@ -61,6 +62,20 @@ return {
 						end
 					end
 
+					local extendedClientCapabilities =
+						vim.tbl_deep_extend("force", require("jdtls").extendedClientCapabilities, {
+							resolveAdditionalTextEditsSupport = true,
+							progressReportProvider = false,
+						})
+
+					local function print_test_results(items)
+						if #items > 0 then
+							vim.cmd([[Trouble quickfix]])
+						else
+							vim.cmd([[TroubleClose quickfix]])
+						end
+					end
+
 					vim.api.nvim_create_autocmd("FileType", {
 						pattern = "java",
 						callback = function()
@@ -77,56 +92,33 @@ return {
 								on_attach = function(client, buffer)
 									require("lazyvim.plugins.lsp.format").on_attach(client, buffer)
 									require("lazyvim.plugins.lsp.keymaps").on_attach(client, buffer)
+
 									-- custom keymaps
-									vim.keymap.set(
-										"n",
-										"<leader>co",
-										'<cmd>lua require("jdtls").organize_imports()<cr>',
-										{ buffer = buffer, desc = "Organize Imports" }
-									)
-									vim.keymap.set(
-										"n",
-										"<leader>ctc",
-										'<cmd>lua require("jdtls").test_class()<cr>',
-										{ buffer = buffer, desc = "Nearest Class" }
-									)
-									vim.keymap.set(
-										"n",
-										"<leader>ctm",
-										'<cmd>lua require("jdtls").test_nearest_method()<cr>',
-										{ buffer = buffer, desc = "Nearest Method" }
-									)
+									vim.keymap.set("n", "<leader>co", function()
+										require("jdtls").organize_imports()
+									end, { buffer = buffer, desc = "Organize Imports" })
+									vim.keymap.set("n", "<leader>ctc", function()
+										require("jdtls").test_class({ bufnr = buffer, after_test = print_test_results })
+									end, { buffer = buffer, desc = "Test Nearest Class" })
+									vim.keymap.set("n", "<leader>ctm", function()
+										require("jdtls").test_nearest_method({
+											bufnr = buffer,
+											after_test = print_test_results,
+										})
+									end, { buffer = buffer, desc = "Test Nearest Method" })
+									vim.keymap.set("n", "<leader>ctr", function()
+										require("jdtls").pick_test({ bufnr = buffer, after_test = print_test_results })
+									end, { buffer = buffer, desc = "Run Test" })
+
 									require("jdtls").setup_dap({ hotcodereplace = "auto" })
-									require("jdtls").setup.add_commands()
-									require("jdtls").dap.setup_dap_main_class_configs()
+									require("jdtls.dap").setup_dap_main_class_configs()
+									require("jdtls.setup").add_commands()
 								end,
 								cmd = {
-									"java",
-									"--add-modules=ALL-SYSTEM",
-									"--add-opens",
-									"java.base/java.util=ALL-UNNAMED",
-									"--add-opens",
-									"java.base/java.lang=ALL-UNNAMED",
-									"--add-opens",
-									"java.base/sun.nio.fs=ALL-UNNAMED",
-									"-Declipse.application=org.eclipse.jdt.ls.core.id1",
-									"-Dosgi.bundles.defaultStartLevel=4",
-									"-Declipse.product=org.eclipse.jdt.ls.core.product",
-									"-Dfile.encoding=UTF-8",
-									"-DwatchParentProcess=${watch_parent_process}",
-									"-noverify",
-									"-XX:+UseParallelGC",
-									"-XX:GCTimeRatio=4",
-									"-XX:AdaptiveSizePolicyWeight=90",
-									"-Dsun.zip.disableMemoryMapping=true",
-									"-Xmx2G",
-									"-Xms100m",
-									"-jar",
-									vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar"),
-									"-configuration",
-									jdtls_path .. "/config_" .. CONFIG,
+									jdtls_bin,
 									"-data",
 									workspace_folder,
+									"--jvm-arg=-Xms2G",
 								},
 								settings = {
 									java = {
@@ -159,6 +151,7 @@ return {
 												"com",
 											},
 										},
+										contentProvider = { preferred = "fernflower" },
 										eclipse = {
 											downloadSources = true,
 										},
@@ -192,13 +185,10 @@ return {
 											},
 										},
 									},
-									initializationOptions = {
-										extendedClientCapabilities = {
-											resolveAdditionalTextEditsSupport = true,
-											progressReportProvider = false,
-										},
-										bundles = bundles,
-									},
+								},
+								init_options = {
+									extendedClientCapabilities = extendedClientCapabilities,
+									bundles = bundles,
 								},
 							})
 							jdtls.start_or_attach(jdtls_config)
