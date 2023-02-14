@@ -256,7 +256,6 @@ return {
 				{ name = "path", priority = 500 },
 				{ name = "buffer", priority = 250 },
 			}))
-			dd(opts.sources)
 		end,
 	},
 
