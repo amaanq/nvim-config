@@ -15,11 +15,19 @@ return {
 		vim.fn.sign_define("DapLogPoint", { text = "", texthl = "", linehl = "", numhl = "" })
 		vim.fn.sign_define("DapStopped", { text = "", texthl = "", linehl = "", numhl = "" })
 
+		require("dap").defaults.fallback.terminal_win_cmd = "enew | set filetype=dap-terminal"
+
 		vim.api.nvim_create_autocmd("FileType", {
 			pattern = "dap-repl",
 			callback = function()
 				require("dap.ext.autocompl").attach()
 			end,
+		})
+
+		require("which-key").register({
+			["<leader>db"] = { name = "+breakpoints" },
+			["<leader>ds"] = { name = "+steps" },
+			["<leader>dv"] = { name = "+views" },
 		})
 
 		local dap = require("dap")
@@ -49,67 +57,63 @@ return {
 	keys = {
 		{
 			"<leader>dbc",
-			'<CMD>lua require("dap").set_breakpoint(vim.ui.input("Breakpoint condition: "))<CR>',
+			'<cmd>lua require("dap").set_breakpoint(vim.ui.input("Breakpoint condition: "))<cr>',
 			desc = "Conditional Breakpoint",
 		},
 		{
 			"<leader>dbl",
-			'<CMD>lua require("dap").set_breakpoint(nil, nil, vim.ui.input("Log point message: "))<CR>',
+			'<cmd>lua require("dap").set_breakpoint(nil, nil, vim.ui.input("Log point message: "))<cr>',
 			desc = "Logpoint",
 		},
-		{ "<leader>dbr", '<CMD>lua require("dap.breakpoints").clear()<CR>', desc = "Remove All Breakpoints" },
-		{ "<leader>dbs", "<CMD>Telescope dap list_breakpoints<CR>", desc = "Show All Breakpoints" },
-		{ "<leader>dbt", '<CMD>lua require("dap").toggle_breakpoint()<CR>', desc = "Toggle Breakpoint" },
-		{ "<leader>dc", '<CMD>lua require("dap").continue()<CR>', desc = "Continue" },
+		{ "<leader>dbr", '<cmd>lua require("dap.breakpoints").clear()<cr>', desc = "Remove All Breakpoints" },
+		{ "<leader>dbs", "<cmd>Telescope dap list_breakpoints<cr>", desc = "Show All Breakpoints" },
+		{ "<leader>dbt", '<cmd>lua require("dap").toggle_breakpoint()<cr>', desc = "Toggle Breakpoint" },
+		{ "<leader>dc", '<cmd>lua require("dap").continue()<cr>', desc = "Continue" },
 		{
 			"<leader>dw",
-			'<CMD>lua require("dap.ui.widgets").hover(nil, { border = "none" })<CR>',
+			'<cmd>lua require("dap.ui.widgets").hover(nil, { border = "none" })<cr>',
 			desc = "Widgets",
 			mode = { "n", "v" },
 		},
-		{ "<leader>dp", '<CMD>lua require("dap").pause()<CR>', desc = "Pause" },
-		{ "<leader>dr", "<CMD>Telescope dap configurations<CR>", desc = "Run" },
-		{ "<leader>dsb", '<CMD>lua require("dap").step_back()<CR>', desc = "Step Back" },
-		{ "<leader>dsc", '<CMD>lua require("dap").run_to_cursor()<CR>', desc = "Step to Cursor" },
-		{ "<leader>dsi", '<CMD>lua require("dap").step_into()<CR>', desc = "step Into" },
-		{ "<leader>dso", '<CMD>lua require("dap").step_over()<CR>', desc = "Step Over" },
-		{ "<leader>dsx", '<CMD>lua require("dap").step_out()<CR>', desc = "Step Out" },
-		{ "<leader>dx", '<CMD>lua require("dap").terminate()<CR>', desc = "Terminate" },
+		{ "<leader>dp", '<cmd>lua require("dap").pause()<cr>', desc = "Pause" },
+		{ "<leader>dr", "<cmd>Telescope dap configurations<cr>", desc = "Run" },
+		{ "<leader>dsb", '<cmd>lua require("dap").step_back()<cr>', desc = "Step Back" },
+		{ "<leader>dsc", '<cmd>lua require("dap").run_to_cursor()<cr>', desc = "Step to Cursor" },
+		{ "<leader>dsi", '<cmd>lua require("dap").step_into()<cr>', desc = "step Into" },
+		{ "<leader>dso", '<cmd>lua require("dap").step_over()<cr>', desc = "Step Over" },
+		{ "<leader>dsx", '<cmd>lua require("dap").step_out()<cr>', desc = "Step Out" },
+		{ "<leader>dx", '<cmd>lua require("dap").terminate()<cr>', desc = "Terminate" },
 		{
 			"<leader>dvf",
-			'<CMD>lua require("dap.ui.widgets").centered_float(require("dap.ui.widgets").frames, { border = "none" })<CR>',
-			desc = "Show Frames",
+			function()
+				require("dap.ui.widgets").centered_float(require("dap.ui.widgets").frames, { border = "none" })
+			end,
+			desc = "show frames",
+		},
+		{
+			"<leader>dvr",
+			function()
+				require("dap").repl.open(nil, "20split")
+			end,
+			desc = "show repl",
 		},
 		{
 			"<leader>dvs",
-			'<CMD>lua require("dap.ui.widgets").centered_float(require("dap.ui.widgets").scopes, { border = "none" })<CR>',
-			desc = "Show Scopes",
+			function()
+				require("dap.ui.widgets").centered_float(require("dap.ui.widgets").scopes, { border = "none" })
+			end,
+			desc = "show scopes",
 		},
 		{
 			"<leader>dvt",
-			'<CMD>lua require("dap.ui.widgets").centered_float(require("dap.ui.widgets").threads, { border = "none" })<CR>',
-			desc = "Show Threads",
+			function()
+				require("dap.ui.widgets").centered_float(require("dap.ui.widgets").threads, { border = "none" })
+			end,
+			desc = "show threads",
 		},
-
-		{ "<leader>dr", '<CMD>lua require("dap").repl.open()<CR>', desc = "Repl" },
-		{ "<leader>du", '<CMD>lua require("dapui").toggle()<CR>', desc = "Dap UI" },
-		{ "<leader>dd", '<CMD>lua require("osv").run_this()<CR>', desc = "Launch Lua Debugger" },
-		{ "<leader>dl", '<CMD>lua require("osv").launch({ port = 8086 })<CR>', desc = "Launch Lua Debugger Server" },
+		{ "<leader>dr", '<cmd>lua require("dap").repl.open()<cr>', desc = "Repl" },
+		{ "<leader>du", '<cmd>lua require("dapui").toggle()<cr>', desc = "Dap UI" },
+		{ "<leader>dd", '<cmd>lua require("osv").run_this()<cr>', desc = "Launch Lua Debugger" },
+		{ "<leader>dl", '<cmd>lua require("osv").launch({ port = 8086 })<cr>', desc = "Launch Lua Debugger Server" },
 	},
 }
-
--- - `DapBreakpoint` for breakpoints (default: `B`)
--- - `DapBreakpointCondition` for conditional breakpoints (default: `C`)
--- - `DapLogPoint` for log points (default: `L`)
--- - `DapStopped` to indicate where the debugee is stopped (default: `→`)
--- - `DapBreakpointRejected` to indicate breakpoints rejected by the debug
---   adapter (default: `R`)
---
--- You can customize the signs by setting them with the |sign_define()| function.
--- For example:
---
--- >
---     lua << EOF
---     vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
---     EOF
--- <
