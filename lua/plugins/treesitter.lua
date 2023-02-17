@@ -162,7 +162,7 @@ return {
 			},
 			rainbow = {
 				enable = true,
-				disable = { "lua" },
+				disable = { "lua", "rust" },
 				colors = {
 					"royalblue3",
 					"darkorange3",

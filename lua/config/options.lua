@@ -19,8 +19,8 @@ vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 vim.o.foldcolumn = "1"
 
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- vim.opt.foldmethod = "expr"
+-- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 vim.opt.expandtab = false -- Use tabs instead of spaces
 vim.opt.grepprg = "rg --vimgrep --smart-case --"

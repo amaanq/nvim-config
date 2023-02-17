@@ -143,7 +143,7 @@ return {
 				bashls = {},
 				cmake = {},
 				cssls = {},
-				denols = false,
+				denols = {},
 				dockerls = {},
 				eslint = {},
 				golangci_lint_ls = {},
