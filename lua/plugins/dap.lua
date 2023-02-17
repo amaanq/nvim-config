@@ -72,13 +72,13 @@ return {
 		{
 			"<leader>dw",
 			'<cmd>lua require("dap.ui.widgets").hover(nil, { border = "none" })<cr>',
-			desc = "Widgets",
+			desc = "Evaluate Expression",
 			mode = { "n", "v" },
 		},
 		{ "<leader>dp", '<cmd>lua require("dap").pause()<cr>', desc = "Pause" },
 		{ "<leader>dr", "<cmd>Telescope dap configurations<cr>", desc = "Run" },
 		{ "<leader>dsb", '<cmd>lua require("dap").step_back()<cr>', desc = "Step Back" },
-		{ "<leader>dsc", '<cmd>lua require("dap").run_to_cursor()<cr>', desc = "Step to Cursor" },
+		{ "<leader>dsc", '<cmd>lua require("dap").run_to_cursor()<cr>', desc = "Run to Cursor" },
 		{ "<leader>dsi", '<cmd>lua require("dap").step_into()<cr>', desc = "step Into" },
 		{ "<leader>dso", '<cmd>lua require("dap").step_over()<cr>', desc = "Step Over" },
 		{ "<leader>dsx", '<cmd>lua require("dap").step_out()<cr>', desc = "Step Out" },
@@ -88,28 +88,28 @@ return {
 			function()
 				require("dap.ui.widgets").centered_float(require("dap.ui.widgets").frames, { border = "none" })
 			end,
-			desc = "show frames",
+			desc = "Show Frames",
 		},
 		{
 			"<leader>dvr",
 			function()
 				require("dap").repl.open(nil, "20split")
 			end,
-			desc = "show repl",
+			desc = "Show Repl",
 		},
 		{
 			"<leader>dvs",
 			function()
 				require("dap.ui.widgets").centered_float(require("dap.ui.widgets").scopes, { border = "none" })
 			end,
-			desc = "show scopes",
+			desc = "Show Scopes",
 		},
 		{
 			"<leader>dvt",
 			function()
 				require("dap.ui.widgets").centered_float(require("dap.ui.widgets").threads, { border = "none" })
 			end,
-			desc = "show threads",
+			desc = "Show Threads",
 		},
 		{ "<leader>dr", '<cmd>lua require("dap").repl.open()<cr>', desc = "Repl" },
 		{ "<leader>du", '<cmd>lua require("dapui").toggle()<cr>', desc = "Dap UI" },
