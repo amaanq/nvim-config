@@ -261,34 +261,37 @@ return {
 
 	{
 		"gorbit99/codewindow.nvim",
-		enabled = false,
+		enabled = true,
 		event = "BufReadPre",
 		keys = {
 			-- stylua: ignore
 			{ "<leader>um", function() require("codewindow").toggle_minimap() end, desc = "Toggle Minimap" },
 		},
 		config = function()
-			-- require("as.highlights").plugin("codewindow", {
-			-- 	{ CodewindowBorder = { link = "WinSeparator" } },
-			-- 	{ CodewindowWarn = { bg = "NONE", fg = { from = "DiagnosticSignWarn", attr = "bg" } } },
-			-- 	{ CodewindowError = { bg = "NONE", fg = { from = "DiagnosticSignError", attr = "bg" } } },
-			-- })
 			require("codewindow").setup({
 				z_index = 25,
 				auto_enable = true,
 				exclude_filetypes = {
 					"alpha",
 					"dap-terminal",
+					"DiffviewFiles",
 					"git",
 					"gitcommit",
 					"help",
+					"lazy",
+					"lspinfo",
+					"mason",
 					"NeogitCommitMessage",
 					"NeogitStatus",
 					"neotest-summary",
 					"neo-tree",
 					"neo-tree-popup",
+					"noice",
 					"Outline",
 					"qf",
+					"spectre_panel",
+					"toggleterm",
+					"Trouble",
 				},
 			})
 		end,
