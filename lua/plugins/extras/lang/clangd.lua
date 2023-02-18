@@ -1,6 +1,6 @@
 return {
 
-	-- add c/c++ to treesitter
+	-- add C/C++ to treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = function(_, opts)
@@ -10,7 +10,7 @@ return {
 		end,
 	},
 
-	-- correctly setup lspconfig
+	-- correctly setup lspconfig for clangd
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {

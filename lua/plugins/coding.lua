@@ -237,10 +237,13 @@ return {
 	{
 		"nvim-cmp",
 		dependencies = {
+			"f3fora/cmp-spell",
 			"hrsh7th/cmp-calc",
 			"hrsh7th/cmp-emoji",
 			"jc-doyle/cmp-pandoc-references",
-			-- "kdheepak/cmp-latex-symbols",
+			"lukas-reineke/cmp-rg",
+			"petertriho/cmp-git",
+			"rcarriga/cmp-dap",
 			"zbirenbaum/copilot-cmp",
 		},
 		---@param opts cmp.ConfigSchema
@@ -248,14 +251,21 @@ return {
 			local cmp = require("cmp")
 			opts.sources = cmp.config.sources(vim.tbl_deep_extend("force", opts.sources, {
 				{ name = "nvim_lsp", priority = 1000 },
+				{ name = "git", priority = 800, options = { filetypes = { "gitcommit", "NeogitCommitMessage" } } },
 				{ name = "luasnip", priority = 750 },
 				{ name = "pandoc_references", priority = 725 },
 				{ name = "emoji", priority = 700 },
-				-- { name = "latex_symbols", priority = 700 },
+				-- stylua: ignore
+				{ name = "rg", priority = 700, keyword_length = 4, max_item_count = 10, option = { additional_arguments = "--max-depth 8" } },
 				{ name = "calc", priority = 650 },
 				{ name = "path", priority = 500 },
+				{ name = "spell", priority = 400 },
 				{ name = "buffer", priority = 250 },
 			}))
+
+			cmp.setup.filetype({ "dap-repl", "dapui_watches" }, {
+				sources = { { name = "dap" } },
+			})
 		end,
 	},
 

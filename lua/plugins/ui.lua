@@ -355,7 +355,7 @@ return {
 	-- git conflict
 	{
 		"akinsho/git-conflict.nvim",
-		event = "BufReadPre",
+		event = "VeryLazy",
 		config = true,
 	},
 	{ "rhysd/git-messenger.vim", event = "BufRead" },

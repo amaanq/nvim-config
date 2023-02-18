@@ -77,6 +77,7 @@ return {
 			ensure_installed = {
 				"bash",
 				"c",
+				"capnp",
 				"cmake",
 				-- "comment", -- comments are slowing down TS bigtime, so disable for now
 				"cpp",
@@ -136,7 +137,7 @@ return {
 			},
 			autopairs = { enable = true },
 			highlight = { enable = true },
-			-- indent = { enable = false },
+			indent = { enable = true },
 			playground = {
 				enable = true,
 				disable = {},
