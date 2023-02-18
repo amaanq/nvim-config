@@ -46,24 +46,6 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 	end,
 })
 
--- InlayHints
-vim.api.nvim_create_augroup("LspAttach_inlayhints", {})
-vim.api.nvim_create_autocmd("LspAttach", {
-	group = "LspAttach_inlayhints",
-	callback = function(args)
-		if not (args.data and args.data.client_id) then
-			return
-		end
-
-		-- dont attach if rust
-		if vim.lsp.get_client_by_id(args.data.client_id).name == "rust_analyzer" then
-			return
-		end
-
-		require("lsp-inlayhints").on_attach(vim.lsp.get_client_by_id(args.data.client_id), args.buf, false)
-	end,
-})
-
 -- Tree-Sitter highlighting for filetypes not autodetected
 vim.filetype.add({
 	extension = {},
