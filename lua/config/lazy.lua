@@ -19,6 +19,7 @@ require("lazy").setup({
 		{ import = "plugins.extras.lang.clangd" },
 		{ import = "plugins.extras.lang.copilot" },
 		{ import = "plugins.extras.lang.csharp" },
+		{ import = "plugins.extras.lang.go" },
 		{ import = "plugins.extras.lang.java" },
 		{ import = "plugins.extras.lang.nodejs" },
 		{ import = "plugins.extras.lang.rust" },

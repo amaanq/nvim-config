@@ -113,8 +113,6 @@ return {
 				denols = {},
 				dockerls = {},
 				eslint = {},
-				golangci_lint_ls = {},
-				gopls = {},
 				html = {},
 				lua_ls = {
 					single_file_support = true,
