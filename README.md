@@ -8,6 +8,8 @@ PRs for merges and fixing conflicts by just overriding settings here :)
 If for whatever reason you used my LazyVim fork, well you should use this now.
 Highlights via screenshots are below.
 
+Major credit goes to [@folke](https://github.com/folke) as my config is heavily inspired by his.
+
 ![image](https://user-images.githubusercontent.com/29718261/218633577-99753269-7c96-4920-8cf7-83c566de09d8.png)
 
 ## Snapshot of my Tree-Sitter dev workflow
