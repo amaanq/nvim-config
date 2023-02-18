@@ -72,6 +72,13 @@ return {
 					files = { "src/parser.c", "src/scanner.c" },
 				},
 			}
+			parser_config.starlark = {
+				install_info = {
+					url = "~/projects/treesitter/tree-sitter-starlark",
+					files = { "src/parser.c", "src/scanner.cc" },
+				},
+				filetype = "bzl",
+			}
 		end,
 		opts = {
 			ensure_installed = {
@@ -136,8 +143,6 @@ return {
 				"json",
 			},
 			autopairs = { enable = true },
-			highlight = { enable = true },
-			indent = { enable = true },
 			playground = {
 				enable = true,
 				disable = {},

@@ -271,7 +271,7 @@ return {
 
 	{
 		"gorbit99/codewindow.nvim",
-		enabled = true,
+		enabled = false,
 		event = "BufReadPre",
 		keys = {
 			-- stylua: ignore
