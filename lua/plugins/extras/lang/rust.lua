@@ -53,10 +53,9 @@ return {
 					require("lazyvim.util").on_attach(function(client, buffer)
 						-- stylua: ignore
 						if client.name == "rust_analyzer" then
-						vim.keymap.set("n", "K", "<cmd>RustHoverActions<cr>", { buffer = buffer, desc = "Hover Actions (Rust)" })
-						vim.keymap.set("n", "<leader>cR", "<cmd>RustCodeAction<cr>", { buffer = buffer, desc = "Code Action (Rust)" })
-						vim.keymap.set("n", "<leader>ct", "<CMD>RustDebuggables<CR>", { buffer = buffer, desc = "Run Test" })
-						vim.keymap.set("n", "<leader>dr", "<CMD>RustDebuggables<CR>", { buffer = buffer, desc = "Run" })
+							vim.keymap.set("n", "K", "<cmd>RustHoverActions<cr>", { buffer = buffer, desc = "Hover Actions (Rust)" })
+							vim.keymap.set("n", "<leader>cR", "<cmd>RustCodeAction<cr>", { buffer = buffer, desc = "Code Action (Rust)" })
+							vim.keymap.set("n", "<leader>dr", "<cmd>RustDebuggables<cr>", { buffer = buffer, desc = "Run Debuggables (Rust)" })
 						end
 					end)
 					local mason_registry = require("mason-registry")
@@ -121,7 +120,7 @@ return {
 					require("lazyvim.util").on_attach(function(client, buffer)
 						-- stylua: ignore
 						if client.name == "taplo" then
-						vim.keymap.set("n", "K", show_documentation, { buffer = buffer, desc = "Show Crate Documentation" })
+							vim.keymap.set("n", "K", show_documentation, { buffer = buffer, desc = "Show Crate Documentation" })
 						end
 					end)
 					return false -- make sure the base implementation calls taplo.setup

@@ -25,6 +25,7 @@ return {
 		})
 
 		require("which-key").register({
+			["<leader>d"] = { name = "+debug" },
 			["<leader>db"] = { name = "+breakpoints" },
 			["<leader>ds"] = { name = "+steps" },
 			["<leader>dv"] = { name = "+views" },

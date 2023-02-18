@@ -25,50 +25,50 @@ return {
 			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 			parser_config.thrift = {
 				install_info = {
-					url = "~/projects/treesitter/tree-sitter-thrift", -- local path or git repo
+					url = "~/projects/treesitter/tree-sitter-thrift",
 					files = { "src/parser.c" },
 					branch = "main",
 				},
 			}
 			parser_config.capnp = {
 				install_info = {
-					url = "~/projects/treesitter/tree-sitter-capnp", -- local path or git repo
+					url = "~/projects/treesitter/tree-sitter-capnp",
 					files = { "src/parser.c" },
 				},
 			}
 			-- parser_config.smali = {
 			-- 	install_info = {
-			-- 		url = "~/projects/treesitter/tree-sitter-smali", -- local path or git repo
+			-- 		url = "~/projects/treesitter/tree-sitter-smali",
 			-- 		files = { "src/parser.c" },
 			-- 	},
 			-- }
 			parser_config.kdl = {
 				install_info = {
-					url = "~/projects/treesitter/tree-sitter-kdl", -- local path or git repo
+					url = "~/projects/treesitter/tree-sitter-kdl",
 					files = { "src/parser.c", "src/scanner.c" },
 				},
 			}
 			parser_config.smithy = {
 				install_info = {
-					url = "~/projects/treesitter/tree-sitter-smithy", -- local path or git repo
+					url = "~/projects/treesitter/tree-sitter-smithy",
 					files = { "src/parser.c" },
 				},
 			}
 			parser_config.func = {
 				install_info = {
-					url = "~/projects/treesitter/tree-sitter-func", -- local path or git repo
+					url = "~/projects/treesitter/tree-sitter-func",
 					files = { "src/parser.c" },
 				},
 			}
 			parser_config.gosum = {
 				install_info = {
-					url = "~/projects/treesitter/tree-sitter-go-sum", -- local path or git repo
+					url = "~/projects/treesitter/tree-sitter-go-sum",
 					files = { "src/parser.c" },
 				},
 			}
 			parser_config.ron = {
 				install_info = {
-					url = "~/projects/treesitter/tree-sitter-ron", -- local path or git repo
+					url = "~/projects/treesitter/tree-sitter-ron",
 					files = { "src/parser.c", "src/scanner.c" },
 				},
 			}
@@ -162,14 +162,7 @@ return {
 			},
 			rainbow = {
 				enable = true,
-				disable = { "lua", "rust" },
-				colors = {
-					"royalblue3",
-					"darkorange3",
-					"seagreen3",
-					"firebrick",
-					"darkorchid3",
-				},
+				disable = { "lua" },
 			},
 			refactor = {
 				smart_rename = {

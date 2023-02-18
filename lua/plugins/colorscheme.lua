@@ -133,6 +133,14 @@ return {
 					hl.TelescopePromptTitle = { bg = c.fg_gutter, fg = c.orange }
 					hl.TelescopePreviewTitle = { bg = c.bg_dark, fg = c.bg_dark }
 					hl.TelescopeResultsTitle = { bg = c.bg_dark, fg = c.bg_dark }
+
+					hl.TSRainbowRed = { fg = c.red }
+					hl.TSRainbowYellow = { fg = c.yellow }
+					hl.TSRainbowBlue = { fg = c.blue }
+					hl.TSRainbowOrange = { fg = c.orange }
+					hl.TSRainbowGreen = { fg = c.green2 }
+					hl.TSRainbowViolet = { fg = c.purple }
+					hl.TSRainbowCyan = { fg = c.cyan }
 				end,
 			}
 		end,

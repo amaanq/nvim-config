@@ -235,7 +235,6 @@ return {
 	-- better comment highlighting
 	{
 		"folke/paint.nvim",
-		enabled = false,
 		event = "BufReadPre",
 		config = function()
 			require("paint").setup({

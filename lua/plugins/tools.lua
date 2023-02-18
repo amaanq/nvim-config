@@ -47,6 +47,11 @@ return {
 			},
 		},
 		opts = { theme = "dark" }, -- 'dark' or 'light'
+		init = function()
+			require("which-key").register({
+				["<leader>o"] = { name = "+open" },
+			})
+		end,
 	},
 
 	-- better diffing

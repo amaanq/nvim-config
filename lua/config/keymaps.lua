@@ -33,6 +33,9 @@ end, { desc = "Test File" })
 vim.keymap.set("n", "<leader>tT", function()
 	util.test()
 end, { desc = "Test All Files" })
+require("which-key").register({
+	["<leader>t"] = { name = "+test" },
+})
 
 -- run lua
 vim.keymap.set("n", "<leader>cR", util.runlua, { desc = "Run Lua" })
@@ -46,7 +49,7 @@ map("n", "<leader>5", "<cmd>5ToggleTerm<cr>", { desc = "ToggleTerm 5" })
 
 -- htop
 if vim.fn.executable("htop") == 1 then
-	vim.keymap.set("n", "<leader>xb", function()
+	vim.keymap.set("n", "<leader>xh", function()
 		require("lazyvim.util").float_term({ "htop" })
 	end, { desc = "htop" })
 end
@@ -68,13 +71,13 @@ vim.keymap.set("n", "<leader>?", function()
 	google(vim.fn.expand("<cWORD>"), false)
 end, { desc = "Google" })
 
-vim.keymap.set("n", "<leader>!", function()
-	google(vim.fn.expand("<cWORD>"), true)
-end, { desc = "Google (Lucky)" })
-
 vim.keymap.set("x", "<leader>?", function()
 	google(vim.fn.getreg("g"), false)
 end, { desc = "Google" })
+
+vim.keymap.set("n", "<leader>!", function()
+	google(vim.fn.expand("<cWORD>"), true)
+end, { desc = "Google (Lucky)" })
 
 vim.keymap.set("x", "<leader>!", function()
 	google(vim.fn.getreg("g"), true)
