@@ -8,7 +8,8 @@ PRs for merges and fixing conflicts by just overriding settings here :)
 If for whatever reason you used my LazyVim fork, well you should use this now.
 Highlights via screenshots are below.
 
-Major credit goes to [@folke](https://github.com/folke) as my config is heavily inspired by his.
+Major credit goes to [@folke](https://github.com/folke) as my config is heavily
+inspired by his.
 
 ![image](https://user-images.githubusercontent.com/29718261/218633577-99753269-7c96-4920-8cf7-83c566de09d8.png)
 
@@ -81,14 +82,12 @@ Major credit goes to [@folke](https://github.com/folke) as my config is heavily 
 - [kanagawa.nvim](https://github.com/rebelot/kanagawa.nvim)
 - [lazy.nvim](https://github.com/folke/lazy.nvim)
 - [leap.nvim](https://github.com/ggandor/leap.nvim)
-- [lsp-inlayhints.nvim](https://github.com/lvimuser/lsp-inlayhints.nvim)
-- [lsp_signature.nvim](https://github.com/ray-x/lsp_signature.nvim)
 - [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim)
 - [LuaSnip](https://github.com/L3MON4D3/LuaSnip)
 - [mason-lspconfig.nvim](https://github.com/williamboman/mason-lspconfig.nvim)
 - [mason-null-ls.nvim](https://github.com/jayp0521/mason-null-ls.nvim)
 - [mason.nvim](https://github.com/williamboman/mason.nvim)
-- [materiial.nvim](https://github.com/marko-cerovac/material.nvim)
+- [material.nvim](https://github.com/marko-cerovac/material.nvim)
 - [medical-spell-files](https://github.com/melvio/medical-spell-files)
 - [middleclass](https://github.com/anuvyklack/middleclass)
 - [mini.nvim](https://github.com/echasnovski/mini.nvim)
