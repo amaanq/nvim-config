@@ -16,10 +16,9 @@ return {
 		opts = {
 			-- make sure mason installs the server
 			servers = {
-				sourcekit = {},
-			},
-			setup = {
-				sourcekit = function(_, opts) end,
+				sourcekit = {
+					filetypes = { "swift", "objective-c", "objective-cpp" },
+				},
 			},
 		},
 	},

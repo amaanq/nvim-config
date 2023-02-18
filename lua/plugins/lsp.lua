@@ -21,6 +21,7 @@ return {
 				"isort",
 				"luacheck",
 				"prettierd",
+				"prosemd-lsp",
 				"selene",
 				"shellcheck",
 				"shfmt",
@@ -166,6 +167,7 @@ return {
 				},
 				marksman = {},
 				omnisharp = {},
+				prosemd_lsp = {},
 				pyright = {},
 				ruff_lsp = {},
 				svelte = {},
@@ -175,7 +177,15 @@ return {
 				tsserver = {},
 				vala_ls = {},
 				vimls = {},
-				yamlls = {},
+				yamlls = {
+					settings = {
+						yaml = {
+							customTags = {
+								"!reference sequence", -- necessary for gitlab-ci.yaml files
+							},
+						},
+					},
+				},
 				zls = {},
 			},
 		},
