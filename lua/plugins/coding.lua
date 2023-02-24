@@ -237,11 +237,10 @@ return {
 	{
 		"nvim-cmp",
 		dependencies = {
-			"f3fora/cmp-spell",
+			-- "f3fora/cmp-spell",
 			"hrsh7th/cmp-calc",
 			"hrsh7th/cmp-emoji",
-			"jc-doyle/cmp-pandoc-references",
-			"lukas-reineke/cmp-rg",
+			-- "jc-doyle/cmp-pandoc-references",
 			"petertriho/cmp-git",
 			"rcarriga/cmp-dap",
 			"zbirenbaum/copilot-cmp",
@@ -251,15 +250,17 @@ return {
 			local cmp = require("cmp")
 			opts.sources = cmp.config.sources(vim.tbl_deep_extend("force", opts.sources, {
 				{ name = "nvim_lsp", priority = 1000 },
-				{ name = "git", priority = 800, options = { filetypes = { "gitcommit", "NeogitCommitMessage" } } },
+				{
+					name = "git",
+					priority = 800,
+					options = { filetypes = { "gitcommit", "NeogitCommitMessage", "octo" } },
+				},
 				{ name = "luasnip", priority = 750 },
-				{ name = "pandoc_references", priority = 725 },
+				-- { name = "pandoc_references", priority = 725 },
 				{ name = "emoji", priority = 700 },
-				-- stylua: ignore
-				{ name = "rg", priority = 700, keyword_length = 4, max_item_count = 10, option = { additional_arguments = "--max-depth 8" } },
 				{ name = "calc", priority = 650 },
 				{ name = "path", priority = 500 },
-				{ name = "spell", priority = 400 },
+				-- { name = "spell", priority = 400 },
 				{ name = "buffer", priority = 250 },
 			}))
 
@@ -310,7 +311,7 @@ return {
 	{
 		"mbbill/undotree",
 		cmd = "UndotreeToggle",
-		keys = { { "<leader>u", "<cmd>UndotreeToggle<cr>", desc = "UndoTree Toggle" } },
+		keys = { { "<leader>uu", "<cmd>UndotreeToggle<cr>", desc = "UndoTree Toggle" } },
 		config = function()
 			vim.g.undotree_TreeNodeShape = "◦" -- Alternative: '◉'
 			vim.g.undotree_SetFocusWhenToggle = 1
