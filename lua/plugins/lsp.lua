@@ -111,7 +111,7 @@ return {
 				bashls = {},
 				cmake = {},
 				cssls = {},
-				denols = {},
+				-- denols = {},
 				dockerls = {},
 				eslint = {},
 				html = {},
@@ -170,7 +170,6 @@ return {
 				prosemd_lsp = {},
 				pyright = {},
 				ruff_lsp = {},
-				svelte = {},
 				-- tailwindcss = {},
 				teal_ls = {},
 				texlab = {},
@@ -250,6 +249,10 @@ return {
 					fmt.goimports_reviser.with({
 						condition = function()
 							return util.executable("goimports-reviser", true)
+								and not vim.tbl_isempty(vim.fs.find("go.mod", {
+									path = vim.fn.expand("%:p"),
+									upward = true,
+								}))
 						end,
 					}),
 					fmt.isort.with({
@@ -324,6 +327,10 @@ return {
 					dgn.golangci_lint.with({
 						condition = function()
 							return util.executable("golangci-lint", true)
+								and not vim.tbl_isempty(vim.fs.find("go.mod", {
+									path = vim.fn.expand("%:p"),
+									upward = true,
+								}))
 						end,
 					}),
 					-- dgn.luacheck.with({
