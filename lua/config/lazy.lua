@@ -16,6 +16,7 @@ require("lazy").setup({
 		{ import = "lazyvim.plugins.extras.ui.mini-animate" },
 		-- import/override with your plugins
 		{ import = "plugins" },
+		{ import = "plugins.extras.dev.treesitter" },
 		{ import = "plugins.extras.lang.clangd" },
 		{ import = "plugins.extras.lang.copilot" },
 		{ import = "plugins.extras.lang.csharp" },

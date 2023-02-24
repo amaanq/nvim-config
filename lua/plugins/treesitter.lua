@@ -21,100 +21,24 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		dependencies = { "HiPhish/nvim-ts-rainbow2" },
-		init = function()
-			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-			parser_config.thrift = {
-				install_info = {
-					url = "~/projects/treesitter/tree-sitter-thrift",
-					files = { "src/parser.c" },
-					branch = "main",
-				},
-			}
-			parser_config.capnp = {
-				install_info = {
-					url = "~/projects/treesitter/tree-sitter-capnp",
-					files = { "src/parser.c" },
-				},
-			}
-			-- parser_config.smali = {
-			-- 	install_info = {
-			-- 		url = "~/projects/treesitter/tree-sitter-smali",
-			-- 		files = { "src/parser.c" },
-			-- 	},
-			-- }
-			parser_config.kdl = {
-				install_info = {
-					url = "~/projects/treesitter/tree-sitter-kdl",
-					files = { "src/parser.c", "src/scanner.c" },
-				},
-			}
-			parser_config.smithy = {
-				install_info = {
-					url = "~/projects/treesitter/tree-sitter-smithy",
-					files = { "src/parser.c" },
-				},
-			}
-			parser_config.func = {
-				install_info = {
-					url = "~/projects/treesitter/tree-sitter-func",
-					files = { "src/parser.c" },
-				},
-			}
-			parser_config.gosum = {
-				install_info = {
-					url = "~/projects/treesitter/tree-sitter-go-sum",
-					files = { "src/parser.c" },
-				},
-			}
-			parser_config.ron = {
-				install_info = {
-					url = "~/projects/treesitter/tree-sitter-ron",
-					files = { "src/parser.c", "src/scanner.c" },
-				},
-			}
-			parser_config.starlark = {
-				install_info = {
-					url = "~/projects/treesitter/tree-sitter-starlark",
-					files = { "src/parser.c", "src/scanner.cc" },
-				},
-				filetype = "bzl",
-			}
-		end,
+		--- @type TSConfig
 		opts = {
 			ensure_installed = {
-				"bash",
-				"c",
 				"capnp",
 				"cmake",
 				-- "comment", -- comments are slowing down TS bigtime, so disable for now
-				"cpp",
-				"css",
-				"c_sharp",
-				"cuda",
 				"diff",
 				"dockerfile",
-				"fish",
 				"gitattributes",
 				"gitcommit",
 				"gitignore",
 				"git_rebase",
-				"go",
-				"gomod",
 				"graphql",
 				"haskell",
-				"help",
-				"html",
 				"http",
-				"java",
-				"javascript",
-				"jsdoc",
-				"jsonc",
 				"kotlin",
 				"latex",
-				"lua",
 				"make",
-				"markdown",
-				"markdown_inline",
 				"meson",
 				"ninja",
 				"nix",
@@ -122,25 +46,13 @@ return {
 				"org",
 				"php",
 				"proto",
-				"python",
-				"query",
-				"regex",
-				"rust",
-				"scss",
 				"smali",
 				"sql",
-				"svelte",
 				"teal",
-				"toml",
-				"tsx",
-				"typescript",
 				"vala",
 				"vhs",
-				"vim",
 				"vue",
-				"yaml",
 				"zig",
-				"json",
 			},
 			autopairs = { enable = true },
 			playground = {
