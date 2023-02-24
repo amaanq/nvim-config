@@ -98,7 +98,7 @@ return {
 	{ "Shatur/neovim-ayu", lazy = false },
 	{ "shaunsingh/oxocarbon.nvim", lazy = false },
 	{ "LunarVim/horizon.nvim", lazy = false },
-	{ "rose-pine/neovim", name = "rose-pine", lazy = false, opts = { dark_variant = "moon" } },
+	{ "rose-pine/neovim", name = "rose-pine", lazy = false },
 	{
 		"tokyonight.nvim",
 		lazy = false,

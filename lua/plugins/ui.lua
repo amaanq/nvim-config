@@ -141,48 +141,6 @@ return {
 		end,
 	},
 
-	-- better comment highlighting
-	{
-		"folke/paint.nvim",
-		event = "BufReadPre",
-		config = function()
-			require("paint").setup({
-				highlights = {
-					{
-						filter = { filetype = "lua" },
-						pattern = "%s*%-%-%-%s*(@%w+)",
-						hl = "Constant",
-					},
-					{
-						filter = { filetype = "lua" },
-						pattern = "%s*%-%-%[%[(@%w+)",
-						hl = "Constant",
-					},
-					{
-						filter = { filetype = "lua" },
-						pattern = "%s*%-%-%-%s*@field%s+(%S+)",
-						hl = "@field",
-					},
-					{
-						filter = { filetype = "lua" },
-						pattern = "%s*%-%-%-%s*@class%s+(%S+)",
-						hl = "@variable.builtin",
-					},
-					{
-						filter = { filetype = "lua" },
-						pattern = "%s*%-%-%-%s*@alias%s+(%S+)",
-						hl = "@keyword",
-					},
-					{
-						filter = { filetype = "lua" },
-						pattern = "%s*%-%-%-%s*@param%s+(%S+)",
-						hl = "@parameter",
-					},
-				},
-			})
-		end,
-	},
-
 	-- style windows with different colorschemes
 	{
 		"folke/styler.nvim",
@@ -199,7 +157,6 @@ return {
 	{
 		"folke/drop.nvim",
 		event = "VeryLazy",
-		enabled = true,
 		config = function()
 			math.randomseed(os.time())
 			local theme = ({ "stars", "snow" })[math.random(1, 3)]
