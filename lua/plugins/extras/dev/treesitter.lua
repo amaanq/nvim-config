@@ -67,6 +67,12 @@ return {
 						files = { "src/parser.c" },
 					},
 				},
+				cue = {
+					install_info = {
+						url = "~/projects/treesitter/tree-sitter-cue",
+						files = { "src/parser.c", "src/scanner.c" },
+					},
+				},
 			}
 
 			for lang, install_info in pairs(local_configs) do

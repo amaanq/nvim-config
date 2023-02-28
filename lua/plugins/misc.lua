@@ -86,7 +86,7 @@ return {
 
 					-- Terminal check
 					if toggleterm_process == "lazygit" then
-						return "Committing files"
+						return "Messing with git"
 					elseif toggleterm_process == "zsh" then
 						return "In the terminal"
 					end

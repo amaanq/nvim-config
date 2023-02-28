@@ -312,6 +312,5 @@ return {
 	{
 		"LudoPinelli/comment-box.nvim",
 		event = "BufReadPre",
-		config = true,
 	},
 }
