@@ -85,7 +85,7 @@ inspired by his.
 - [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim)
 - [LuaSnip](https://github.com/L3MON4D3/LuaSnip)
 - [mason-lspconfig.nvim](https://github.com/williamboman/mason-lspconfig.nvim)
-- [mason-null-ls.nvim](https://github.com/jayp0521/mason-null-ls.nvim)
+- [mason-null-ls.nvim](https://github.com/jay-babu/mason-null-ls.nvim)
 - [mason.nvim](https://github.com/williamboman/mason.nvim)
 - [material.nvim](https://github.com/marko-cerovac/material.nvim)
 - [medical-spell-files](https://github.com/melvio/medical-spell-files)

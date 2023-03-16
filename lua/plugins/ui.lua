@@ -56,7 +56,7 @@ return {
 			dashboard.section.buttons.val = {
 				dashboard.button("p", " " .. " Open project", "<cmd>Telescope project display_type=full<cr>"),
 				dashboard.button("e", " " .. " New file", "<cmd>ene <BAR> startinsert<cr>"),
-				dashboard.button("f", " " .. " Find file", "<cmd>cd $HOME/Projects | Telescope find_files<cr>"),
+				dashboard.button("f", " " .. " Find file", "<cmd>cd $HOME/projects | Telescope find_files<cr>"),
 				dashboard.button("r", " " .. " Recent files", "<cmd>Telescope oldfiles <cr>"),
 				dashboard.button("s", "勒" .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
 				dashboard.button("c", " " .. " Config", ":e $MYVIMRC | :cd %:p:h | Telescope file_browser<cr>"),
@@ -147,7 +147,7 @@ return {
 		event = "VeryLazy",
 		opts = {
 			themes = {
-				markdown = { colorscheme = "tokyonight-storm" },
+				markdown = { colorscheme = "rose-pine" },
 				help = { colorscheme = "oxocarbon", background = "dark" },
 			},
 		},

@@ -47,8 +47,8 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 })
 
 -- Set indent level for certain filetypes
-vim.api.nvim_create_autocmd({ "FileType" }, {
-	pattern = { "lua", "query", "javascript", "typescript" },
+vim.api.nvim_create_autocmd({ "FileType", "BufRead" }, {
+	pattern = { "firrtl", "lua", "javascript", "typescript", "text", "query" },
 	callback = function()
 		vim.bo.shiftwidth = 2
 		vim.bo.tabstop = 2
@@ -59,7 +59,9 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 
 -- Tree-Sitter highlighting for filetypes not autodetected
 vim.filetype.add({
-	extension = {},
+	extension = {
+		qmldir = "qmldir",
+	},
 })
 
 -- close dap-float with <q>

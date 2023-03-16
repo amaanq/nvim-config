@@ -87,14 +87,7 @@ return {
 		end,
 	},
 	{ "projekt0n/github-nvim-theme", lazy = false },
-	{
-		"rebelot/kanagawa.nvim",
-		lazy = false,
-		config = function()
-			local kanagawa = require("kanagawa")
-			kanagawa.setup()
-		end,
-	},
+	{ "rebelot/kanagawa.nvim", lazy = false, config = true },
 	{ "Shatur/neovim-ayu", lazy = false },
 	{ "shaunsingh/oxocarbon.nvim", lazy = false },
 	{ "LunarVim/horizon.nvim", lazy = false },
@@ -103,14 +96,12 @@ return {
 		"tokyonight.nvim",
 		lazy = false,
 		priority = 1000,
-		opts = function()
+		opts = function(_, opts)
 			return {
 				style = "moon",
-				-- transparent = true,
-				-- styles = {
-				--   sidebars = "transparent",
-				--   floats = "transparent",
-				-- },
+				styles = {
+					keywords = { italic = false },
+				},
 				sidebars = {
 					"qf",
 					"vista_kind",
@@ -120,6 +111,8 @@ return {
 					"startuptime",
 					"Outline",
 				},
+				---@param hl Highlights
+				---@param c ColorScheme
 				on_highlights = function(hl, c)
 					hl.CursorLineNr = { fg = c.orange, bold = true }
 					hl.LineNr = { fg = c.orange, bold = true }
@@ -141,6 +134,13 @@ return {
 					hl.TSRainbowGreen = { fg = c.green2 }
 					hl.TSRainbowViolet = { fg = c.purple }
 					hl.TSRainbowCyan = { fg = c.cyan }
+
+					-- upcoming nvim-treesitter PR
+					hl["@string.documentation"] = { fg = c.yellow }
+					hl["@comment.documentation"] = { fg = "#636da6", italic = false, style = { italic = false } }
+
+					-- Smali
+					hl["@parameter.builtin"] = { fg = "#efc890" }
 				end,
 			}
 		end,

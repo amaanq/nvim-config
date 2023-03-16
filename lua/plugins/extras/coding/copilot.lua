@@ -4,11 +4,11 @@ return {
 	{
 		"zbirenbaum/copilot.lua",
 		lazy = false,
-		config = true,
+		cmd = "Copilot",
+		build = ":Copilot auth",
 		opts = {
 			panel = { enabled = false },
 			suggestion = { auto_trigger = true },
-			plugin_manager_path = vim.fn.stdpath("data") .. "/lazy",
 		},
 	},
 
