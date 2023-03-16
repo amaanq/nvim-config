@@ -96,6 +96,50 @@ return {
 		opts = {},
 	},
 
+	{
+		"echasnovski/mini.bracketed",
+		event = "BufReadPost",
+		config = function()
+			local bracketed = require("mini.bracketed")
+
+			-- local function put(cmd, regtype)
+			-- 	local body = vim.fn.getreg(vim.v.register)
+			-- 	local type = vim.fn.getregtype(vim.v.register)
+			-- 	---@diagnostic disable-next-line: param-type-mismatch
+			-- 	vim.fn.setreg(vim.v.register, body, regtype or "l")
+			-- 	bracketed.register_put_region()
+			-- 	vim.cmd(('normal! "%s%s'):format(vim.v.register, cmd:lower()))
+			-- 	---@diagnostic disable-next-line: param-type-mismatch
+			-- 	vim.fn.setreg(vim.v.register, body, type)
+			-- end
+
+			-- for _, cmd in ipairs({ "]p", "[p" }) do
+			-- 	put(cmd)
+			-- 	vim.keymap.set("n", cmd, function() end)
+			-- end
+			--
+			-- for _, cmd in ipairs({ "]P", "[P" }) do
+			-- 	vim.keymap.set("n", cmd, function()
+			-- 		put(cmd, "c")
+			-- 	end)
+			-- end
+
+			-- local put_keys = { "p", "P" }
+			-- for _, lhs in ipairs(put_keys) do
+			-- 	vim.keymap.set({ "n", "x" }, lhs, function()
+			-- 		return bracketed.register_put_region(lhs)
+			-- 	end, { expr = true })
+			-- end
+
+			bracketed.setup({
+				file = { suffix = "" },
+				window = { suffix = "" },
+				quickfix = { suffix = "" },
+				treesitter = { suffix = "n" },
+			})
+		end,
+	},
+
 	-- better yank/paste
 	{
 		"kkharji/sqlite.lua",
