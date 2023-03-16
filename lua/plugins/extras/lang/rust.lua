@@ -1,6 +1,8 @@
+local util = require("util")
+
 return {
 
-	-- extend auto completion
+	-- Extend auto completion
 	{
 		"hrsh7th/nvim-cmp",
 		dependencies = {
@@ -19,34 +21,34 @@ return {
 		end,
 	},
 
-	-- add Rust to treesitter
+	-- Add Rust & related to treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = function(_, opts)
 			if type(opts.ensure_installed) == "table" then
-				vim.list_extend(opts.ensure_installed, { "ron", "rust", "toml" })
+				util.list_insert_unique(opts.ensure_installed, { "ron", "rust", "toml" })
 			end
 		end,
 	},
 
-	-- correctly setup mason lsp / dap extensions
+	-- Ensure Rust LSP, debugger, and Toml toolkit are installed
 	{
 		"williamboman/mason.nvim",
 		opts = function(_, opts)
 			if type(opts.ensure_installed) == "table" then
-				vim.list_extend(opts.ensure_installed, { "codelldb", "rust-analyzer", "taplo" })
+				util.list_insert_unique(opts.ensure_installed, "codelldb")
 			end
 		end,
 	},
 
-	-- correctly setup lspconfig for Rust 🚀
+	-- Correctly setup lspconfig for Rust 🚀
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = { "simrat39/rust-tools.nvim" },
 		opts = {
-			-- make sure mason installs the server
 			servers = {
 				rust_analyzer = {},
+				taplo = {},
 			},
 			setup = {
 				rust_analyzer = function(_, opts)

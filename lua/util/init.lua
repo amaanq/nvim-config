@@ -42,11 +42,15 @@ function M.command(name, rhs, opts)
 	vim.api.nvim_create_user_command(name, rhs, opts)
 end
 
+---@param fname string
+---@return boolean
 function M.exists(fname)
 	local stat = vim.loop.fs_stat(fname)
 	return (stat and stat.type) or false
 end
 
+---@param fname string
+---@return string
 function M.fqn(fname)
 	fname = vim.fn.fnamemodify(fname, ":p")
 	return vim.loop.fs_realpath(fname) or fname
@@ -85,6 +89,7 @@ function M.clipman()
 	end
 end
 
+---@param is_file boolean
 function M.test(is_file)
 	local file = is_file and vim.fn.expand("%:p") or "./tests"
 	local init = vim.fn.glob("tests/*init*")
@@ -173,6 +178,20 @@ function M.cowboy()
 				return key
 			end
 		end, { expr = true, silent = true })
+	end
+end
+
+-- Insert values into a list if they don't already exist
+---@param tbl string[]
+---@param vals string|string[]
+function M.list_insert_unique(tbl, vals)
+	if type(vals) ~= "table" then
+		vals = { vals }
+	end
+	for _, val in ipairs(vals) do
+		if not vim.tbl_contains(tbl, val) then
+			table.insert(tbl, val)
+		end
 	end
 end
 

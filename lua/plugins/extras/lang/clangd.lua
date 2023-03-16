@@ -1,16 +1,28 @@
+local util = require("util")
+
 return {
 
-	-- add C/C++ to treesitter
+	-- Add C/C++ to treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = function(_, opts)
 			if type(opts.ensure_installed) == "table" then
-				vim.list_extend(opts.ensure_installed, { "c", "cpp" })
+				util.list_insert_unique(opts.ensure_installed, { "c", "cpp" })
 			end
 		end,
 	},
 
-	-- correctly setup lspconfig for clangd
+	-- Ensure clang_format is installed
+	{
+		"jay-babu/mason-null-ls.nvim",
+		opts = function(_, opts)
+			if type(opts.ensure_installed) == "table" then
+				util.list_insert_unique(opts.ensure_installed, { "clang_format" })
+			end
+		end,
+	},
+
+	-- Correctly setup lspconfig for clangd 🚀
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -20,13 +32,25 @@ return {
 			},
 		},
 		opts = {
-			-- make sure mason installs the server
 			servers = {
 				clangd = {},
 			},
 			setup = {
 				clangd = function(_, opts)
 					opts.capabilities.offsetEncoding = { "utf-16" }
+					opts.cmd = {
+						"clangd",
+						"--background-index",
+						"--clang-tidy",
+						"--header-insertion=iwyu",
+						"--completion-style=detailed",
+						"--function-arg-placeholders",
+					}
+					opts.init_options = {
+						usePlaceholders = true,
+						completeUnimported = true,
+						clangdFileStatus = true,
+					}
 					require("clangd_extensions").setup({
 						server = opts,
 						extensions = {

@@ -1,29 +1,24 @@
+local util = require("util")
+
 return {
 
-	-- add C# to treesitter
+	-- Add C# to treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = function(_, opts)
 			if type(opts.ensure_installed) == "table" then
-				vim.list_extend(opts.ensure_installed, { "c_sharp" })
+				util.list_insert_unique(opts.ensure_installed, "c_sharp")
 			end
 		end,
 	},
 
-	-- correctly setup mason lsp
-	{
-		"williamboman/mason.nvim",
-		opts = function(_, opts)
-			if type(opts.ensure_installed) == "table" then
-				vim.list_extend(opts.ensure_installed, { "omnisharp" })
-			end
-		end,
-	},
-
-	-- correctly setup lspconfig for C#
+	-- Correctly setup lspconfig for C# 🚀
 	{
 		"neovim/nvim-lspconfig",
 		opts = {
+			servers = {
+				omnisharp = {},
+			},
 			-- configure omnisharp to fix the semantic tokens bug (really annoying)
 			setup = {
 				omnisharp = function(_, _)

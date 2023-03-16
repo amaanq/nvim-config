@@ -12,6 +12,16 @@ return {
 		end,
 	},
 
+	-- {
+	-- 	"nvim-orgmode/orgmode",
+	-- 	dependencies = "nvim-treesitter/nvim-treesitter",
+	-- 	event = "VeryLazy",
+	-- 	opts = {},
+	-- 	config = function()
+	-- 		require("orgmode").setup_ts_grammar()
+	-- 	end,
+	-- },
+
 	-- neorg
 	{
 		"nvim-neorg/neorg",
@@ -113,4 +123,10 @@ return {
 		config = true,
 		dependencies = { "nvim-treesitter/nvim-treesitter", "MunifTanjim/nui.nvim" },
 	},
+
+	-- {
+	-- "~poof/godbolt.nvim",
+	-- 	url = "https://sr.ht/~p00f/godbolt.nvim/",
+	-- 		config = true,
+	-- 	},
 }

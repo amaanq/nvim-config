@@ -1,31 +1,62 @@
+local util = require("util")
+
 return {
 
-	-- add Go+more to treesitter
+	-- Add Go & related to treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = function(_, opts)
 			if type(opts.ensure_installed) == "table" then
-				vim.list_extend(opts.ensure_installed, { "go", "gomod", "gosum", "gowork" })
+				util.list_insert_unique(opts.ensure_installed, { "go", "gomod", "gosum", "gowork" })
 			end
 		end,
 	},
 
-	-- correctly setup mason lsp / dap extensions
+	-- Ensure Go LSP, linter, and imports reviser are installed
 	{
 		"williamboman/mason.nvim",
 		opts = function(_, opts)
 			if type(opts.ensure_installed) == "table" then
-				vim.list_extend(opts.ensure_installed, { "gopls", "golangci-lint", "goimports-reviser" })
+				util.list_insert_unique(opts.ensure_installed, "goimports-reviser")
 			end
 		end,
 	},
 
-	-- correctly setup lspconfig for Go
+	{
+		"jay-babu/mason-null-ls.nvim",
+		opts = function(_, opts)
+			if type(opts.ensure_installed) == "table" then
+				util.list_insert_unique(opts.ensure_installed, { "gomodifytags", "gofumpt", "iferr", "impl" })
+			end
+		end,
+	},
+
+	{
+		"leoluz/nvim-dap-go",
+		dependencies = {
+			"mfussenegger/nvim-dap",
+			{
+				"jay-babu/mason-nvim-dap.nvim",
+				opts = function(_, opts)
+					if type(opts.ensure_installed) == "table" then
+						util.list_insert_unique(opts.ensure_installed, "delve")
+					end
+				end,
+			},
+		},
+		ft = "go",
+		config = true,
+	},
+
+	-- Correctly setup lspconfig for Go 🚀
 	{
 		"neovim/nvim-lspconfig",
 		opts = {
-			-- make sure mason installs the servers
 			servers = {
+				golangci_lint_ls = {},
+				gopls = {},
+			},
+			settings = {
 				golangci_lint_ls = {},
 				gopls = {
 					gofumpt = true,
@@ -59,11 +90,13 @@ return {
 					completeUnimported = true,
 					staticcheck = true,
 					directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+					semanticTokens = true,
 				},
 			},
 		},
 	},
 
+	-- Add go.nvim
 	{
 		"ray-x/go.nvim",
 		dependencies = {
@@ -73,10 +106,10 @@ return {
 		},
 		config = true,
 		event = "CmdlineEnter",
-		ft = { "go", "gomod" },
-		build = '<cmd>lua require("go.install").update_all_sync()<cr>', -- if you need to install/update all binaries
+		ft = { "go", "gomod", "gosum", "gowork" },
 	},
 
+	-- Add gopher.nvim
 	{
 		"olexsmir/gopher.nvim",
 		dependencies = { "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter" },
