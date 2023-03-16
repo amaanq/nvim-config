@@ -15,13 +15,12 @@ return {
 		"williamboman/mason.nvim",
 		opts = {
 			ensure_installed = {
-				"black",
-				"deno",
 				"eslint_d",
 				"isort",
 				"luacheck",
 				"prettierd",
 				"prosemd-lsp",
+				"ruff",
 				"selene",
 				"shellcheck",
 				"shfmt",
@@ -31,16 +30,30 @@ return {
 	},
 
 	{
-		"jayp0521/mason-null-ls.nvim",
+		"jay-babu/mason-null-ls.nvim",
 		dependencies = {
 			"williamboman/mason.nvim",
 			"jose-elias-alvarez/null-ls.nvim",
 		},
-		config = function()
-			require("mason-null-ls").setup({
-				automatic_installation = true,
-			})
-		end,
+		opts = {
+			ensure_installed = {},
+			automatic_installation = true,
+		},
+		config = true,
+	},
+
+	{
+		"jay-babu/mason-nvim-dap.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			"williamboman/mason.nvim",
+			"mfussenegger/nvim-dap",
+		},
+		opts = {
+			ensure_installed = {},
+			automatic_installation = true,
+		},
+		config = true,
 	},
 
 	{
@@ -111,9 +124,7 @@ return {
 				bashls = {},
 				cmake = {},
 				cssls = {},
-				-- denols = {},
 				dockerls = {},
-				eslint = {},
 				html = {},
 				lua_ls = {
 					single_file_support = true,
@@ -169,8 +180,6 @@ return {
 				omnisharp = {},
 				prosemd_lsp = {},
 				pyright = {},
-				ruff_lsp = {},
-				-- tailwindcss = {},
 				teal_ls = {},
 				texlab = {},
 				tsserver = {},
@@ -220,12 +229,6 @@ return {
 							return util.executable("asmfmt", true)
 						end,
 					}),
-					fmt.black.with({
-						extra_args = { "--line-length=120" },
-						condition = function()
-							return util.executable("black", true)
-						end,
-					}),
 					fmt.cbfmt.with({
 						condition = function()
 							return util.executable("cbfmt", true)
@@ -239,6 +242,14 @@ return {
 					fmt.eslint_d.with({
 						condition = function()
 							return util.executable("eslint_d", true)
+								and not vim.tbl_isempty(vim.fs.find({
+									".eslintrc",
+									".eslintrc.js",
+									".eslintrc.cjs",
+									".eslintrc.json",
+									".eslintrc.yaml",
+									".eslintrc.yml",
+								}, { path = vim.fn.expand("%:p"), upward = true }))
 						end,
 					}),
 					fmt.gofmt.with({
@@ -276,6 +287,11 @@ return {
 							return util.executable("prettierd", true)
 						end,
 					}),
+					fmt.ruff.with({
+						condition = function()
+							return util.executable("ruff", true)
+						end,
+					}),
 					fmt.rustfmt.with({
 						condition = function()
 							return util.executable("rustfmt", true)
@@ -289,10 +305,12 @@ return {
 					fmt.stylua.with({
 						condition = function()
 							return util.executable("stylua", true)
-								and not vim.tbl_isempty(vim.fs.find({ ".stylua.toml", "stylua.toml" }, {
-									path = vim.fn.expand("%:p"),
-									upward = true,
-								}))
+								and not vim.tbl_isempty(
+									vim.fs.find(
+										{ ".stylua.toml", "stylua.toml" },
+										{ path = vim.fn.expand("%:p"), upward = true }
+									)
+								)
 						end,
 					}),
 					fmt.uncrustify.with({
@@ -319,11 +337,19 @@ return {
 							return util.executable("buf", true)
 						end,
 					}),
-					-- dgn.flake8.with({
-					-- 	condition = function()
-					-- 		return util.executable("flake8", true)
-					-- 	end,
-					-- }),
+					dgn.eslint_d.with({
+						condition = function()
+							return util.executable("eslint_d", true)
+								and not vim.tbl_isempty(vim.fs.find({
+									".eslintrc",
+									".eslintrc.js",
+									".eslintrc.cjs",
+									".eslintrc.json",
+									".eslintrc.yaml",
+									".eslintrc.yml",
+								}, { path = vim.fn.expand("%:p"), upward = true }))
+						end,
+					}),
 					dgn.golangci_lint.with({
 						condition = function()
 							return util.executable("golangci-lint", true)
@@ -333,22 +359,19 @@ return {
 								}))
 						end,
 					}),
-					-- dgn.luacheck.with({
-					-- 	extra_args = { "--globals", "vim", "--std", "luajit" },
-					-- }),
 					dgn.markdownlint.with({
 						condition = function()
 							return util.executable("markdownlint", true)
 						end,
 					}),
-					-- dgn.mypy.with({
-					-- 	condition = function()
-					-- 		return util.executable("mypy", true)
-					-- 	end,
-					-- }),
 					dgn.protolint.with({
 						condition = function()
 							return util.executable("protolint", true)
+						end,
+					}),
+					dgn.ruff.with({
+						condition = function()
+							return util.executable("ruff", true)
 						end,
 					}),
 					dgn.shellcheck.with({
@@ -374,6 +397,14 @@ return {
 					cda.eslint_d.with({
 						condition = function()
 							return util.executable("eslint_d", true)
+								and not vim.tbl_isempty(vim.fs.find({
+									".eslintrc",
+									".eslintrc.js",
+									".eslintrc.cjs",
+									".eslintrc.json",
+									".eslintrc.yaml",
+									".eslintrc.yml",
+								}, { path = vim.fn.expand("%:p"), upward = true }))
 						end,
 					}),
 					cda.gitsigns,
