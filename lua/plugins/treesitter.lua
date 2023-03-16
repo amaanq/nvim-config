@@ -20,13 +20,12 @@ return {
 
 	{
 		"nvim-treesitter/nvim-treesitter",
-		dependencies = { "HiPhish/nvim-ts-rainbow2" },
+		-- dependencies = { "HiPhish/nvim-ts-rainbow2" },
 		--- @type TSConfig
 		opts = {
 			ensure_installed = {
-				"capnp",
 				"cmake",
-				-- "comment", -- comments are slowing down TS bigtime, so disable for now
+				-- "comment",
 				"diff",
 				"dockerfile",
 				"gitattributes",
@@ -35,9 +34,16 @@ return {
 				"git_rebase",
 				"graphql",
 				"haskell",
+				"help",
 				"http",
+				"json",
+				"jsonc",
+				"json5",
 				"kotlin",
 				"latex",
+				"lua",
+				"markdown",
+				"markdown_inline",
 				"make",
 				"meson",
 				"ninja",
@@ -46,32 +52,29 @@ return {
 				"org",
 				"php",
 				"proto",
-				"smali",
+				"python",
+				"query",
+				"regex",
+				"scss",
 				"sql",
 				"teal",
+				"tsx",
 				"vala",
 				"vhs",
+				"vim",
 				"vue",
+				"wgsl",
+				"yaml",
 				"zig",
 			},
 			autopairs = { enable = true },
+			highlight = { enable = true },
+			matchup = {
+				enable = true,
+			},
 			playground = {
 				enable = true,
-				disable = {},
-				updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
 				persist_queries = true, -- Whether the query persists across vim sessions
-				keybindings = {
-					toggle_query_editor = "o",
-					toggle_hl_groups = "i",
-					toggle_injected_languages = "t",
-					toggle_anonymous_nodes = "a",
-					toggle_language_display = "I",
-					focus_language = "f",
-					unfocus_language = "F",
-					update = "R",
-					goto_node = "<cr>",
-					show_help = "?",
-				},
 			},
 			query_linter = {
 				enable = true,
@@ -110,6 +113,9 @@ return {
 						["if"] = "@function.inner",
 						["ac"] = "@class.outer",
 						["ic"] = "@class.inner",
+						["al"] = "@loop.outer",
+						["il"] = "@loop.inner",
+						["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
 					},
 				},
 				move = {
@@ -124,6 +130,15 @@ return {
 					enable = true,
 					peek_definition_code = {
 						["gD"] = "@function.outer",
+					},
+				},
+				swap = {
+					enable = true,
+					swap_next = {
+						["<leader>a"] = "@parameter.inner",
+					},
+					swap_previous = {
+						["<leader>A"] = "@parameter.inner",
 					},
 				},
 			},
