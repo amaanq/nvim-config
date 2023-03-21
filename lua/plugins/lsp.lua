@@ -182,7 +182,32 @@ return {
 				pyright = {},
 				teal_ls = {},
 				texlab = {},
-				tsserver = {},
+				tsserver = {
+					settings = {
+						typescript = {
+							inlayHints = {
+								includeInlayParameterNameHints = "literal",
+								includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+								includeInlayFunctionParameterTypeHints = false,
+								includeInlayVariableTypeHints = false,
+								includeInlayPropertyDeclarationTypeHints = false,
+								includeInlayFunctionLikeReturnTypeHints = true,
+								includeInlayEnumMemberValueHints = true,
+							},
+						},
+						javascript = {
+							inlayHints = {
+								includeInlayParameterNameHints = "all",
+								includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+								includeInlayFunctionParameterTypeHints = true,
+								includeInlayVariableTypeHints = true,
+								includeInlayPropertyDeclarationTypeHints = true,
+								includeInlayFunctionLikeReturnTypeHints = true,
+								includeInlayEnumMemberValueHints = true,
+							},
+						},
+					},
+				},
 				vala_ls = {},
 				vimls = {},
 				yamlls = {
@@ -415,6 +440,40 @@ return {
 					}),
 				},
 				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", ".git"),
+	-- inlay hints
+	{
+		"lvimuser/lsp-inlayhints.nvim",
+		event = "LspAttach",
+		opts = {},
+		config = function(_, opts)
+			require("lsp-inlayhints").setup(opts)
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = vim.api.nvim_create_augroup("LspAttach_inlayhints", {}),
+				callback = function(args)
+					if not (args.data and args.data.client_id) then
+						return
+					end
+
+					-- Ignore grammar.js files
+					if args.file:match("grammar.js$") then
+						return
+					end
+
+					local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+					-- Ignore these, they provide inlay hins already
+					local ignore_lsps = {
+						"clangd",
+						"gopls",
+						"rust_analyzer",
+					}
+
+					if vim.tbl_contains(ignore_lsps, client.name) then
+						return
+					end
+
+					require("lsp-inlayhints").on_attach(client, args.buf)
+				end,
 			})
 		end,
 	},

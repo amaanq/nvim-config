@@ -135,7 +135,8 @@ return {
 					hl.TSRainbowViolet = { fg = c.purple }
 					hl.TSRainbowCyan = { fg = c.cyan }
 
-					-- upcoming nvim-treesitter PR
+					hl.LspInlayHint = { link = "Comment" }
+
 					hl["@string.documentation"] = { fg = c.yellow }
 					hl["@comment.documentation"] = { fg = "#636da6", italic = false, style = { italic = false } }
 
