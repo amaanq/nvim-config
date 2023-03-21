@@ -28,10 +28,10 @@ function M.executable(cmd, warn)
 	return false
 end
 
---- @class CommandArgs
---- @field args string
---- @field fargs table
---- @field bang boolean,
+---@class CommandArgs
+---@field args string
+---@field fargs table
+---@field bang boolean
 
 ---Create an nvim command
 ---@param name any

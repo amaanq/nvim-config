@@ -59,9 +59,7 @@ vim.api.nvim_create_autocmd({ "FileType", "BufRead" }, {
 
 -- Tree-Sitter highlighting for filetypes not autodetected
 vim.filetype.add({
-	extension = {
-		qmldir = "qmldir",
-	},
+	extension = {},
 })
 
 -- close dap-float with <q>

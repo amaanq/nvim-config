@@ -149,6 +149,7 @@ return {
 			themes = {
 				markdown = { colorscheme = "rose-pine" },
 				help = { colorscheme = "oxocarbon", background = "dark" },
+				toggleterm = { colorscheme = "rose-pine" },
 			},
 		},
 	},
@@ -159,8 +160,8 @@ return {
 		event = "VeryLazy",
 		config = function()
 			math.randomseed(os.time())
-			local theme = ({ "stars", "snow" })[math.random(1, 3)]
-			require("drop").setup({ theme = theme, max = 60, interval = 50 })
+			-- local theme = ({ "stars", "snow" })[math.random(1, 3)]
+			require("drop").setup({ theme = "spring", max = 60, interval = 100 })
 		end,
 	},
 
