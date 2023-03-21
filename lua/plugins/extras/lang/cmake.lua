@@ -12,6 +12,13 @@ return {
 		end,
 	},
 
+	-- Add CMake Tools
+	{
+		"Civitasv/cmake-tools.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		event = "BufRead",
+	},
+
 	-- Correctly setup lspconfig for CMake 🚀
 	{
 		"neovim/nvim-lspconfig",
