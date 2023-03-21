@@ -124,9 +124,15 @@ return {
 		dependencies = { "nvim-treesitter/nvim-treesitter", "MunifTanjim/nui.nvim" },
 	},
 
-	-- {
-	-- "~poof/godbolt.nvim",
-	-- 	url = "https://sr.ht/~p00f/godbolt.nvim/",
-	-- 		config = true,
-	-- 	},
+	{
+		"~p00f/godbolt.nvim",
+		url = "https://git.sr.ht/~p00f/godbolt.nvim",
+		cmd = { "Godbolt", "GodboltCompiler" },
+	},
+
+	{
+		"jackMort/ChatGPT.nvim",
+		cmd = { "ChatGPTActAs", "ChatGPT" },
+		opts = {},
+	},
 }
