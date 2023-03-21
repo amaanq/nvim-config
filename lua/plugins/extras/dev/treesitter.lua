@@ -121,7 +121,7 @@ return {
 				tablegen = {
 					install_info = {
 						url = "~/projects/treesitter/tree-sitter-tablegen",
-						files = { "src/parser.c" },
+						files = { "src/parser.c", "src/scanner.c" },
 					},
 				},
 				thrift = {
@@ -147,6 +147,18 @@ return {
 					install_info = {
 						url = "~/projects/treesitter/tree-sitter-yuck",
 						files = { "src/parser.c", "src/scanner.c" },
+					},
+				},
+				pony = {
+					install_info = {
+						url = "~/projects/treesitter/tree-sitter-pony",
+						files = { "src/parser.c", "src/scanner.c" },
+					},
+				},
+				luadoc = {
+					install_info = {
+						url = "~/projects/treesitter/tree-sitter-luadoc",
+						files = { "src/parser.c" },
 					},
 				},
 			}
