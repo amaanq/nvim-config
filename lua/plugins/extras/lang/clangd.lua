@@ -33,6 +33,7 @@ return {
 		},
 		opts = {
 			servers = {
+				-- Ensure mason installs the server
 				clangd = {},
 			},
 			setup = {

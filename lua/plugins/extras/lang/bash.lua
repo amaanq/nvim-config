@@ -22,7 +22,7 @@ return {
 		end,
 	},
 
-	-- Ensure Bash debugge is installed
+	-- Ensure Bash debugger is installed
 	{
 		"jay-babu/mason-nvim-dap.nvim",
 		opts = function(_, opts)
@@ -37,6 +37,7 @@ return {
 		"neovim/nvim-lspconfig",
 		opts = {
 			servers = {
+				-- Ensure mason installs the server
 				bashls = {},
 			},
 			settings = {

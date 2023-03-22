@@ -2,7 +2,7 @@ local util = require("util")
 
 return {
 
-	-- Add java to treesitter
+	-- Add Java to treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = function(_, opts)
@@ -12,12 +12,12 @@ return {
 		end,
 	},
 
-	-- Ensure Java LSP, linter, and debugger are installed
+	-- Ensure Java tester and debugger are installed
 	{
 		"williamboman/mason.nvim",
 		opts = function(_, opts)
 			if type(opts.ensure_installed) == "table" then
-				util.list_insert_unique(opts.ensure_installed, { "jdtls", "java-test", "java-debug-adapter" })
+				util.list_insert_unique(opts.ensure_installed, { "java-test", "java-debug-adapter" })
 			end
 		end,
 	},
@@ -28,9 +28,9 @@ return {
 		dependencies = { "mfussenegger/nvim-jdtls" },
 		opts = {
 			servers = {
+				-- Ensure mason installs the server
 				jdtls = {},
 			},
-			-- configure jdtls and attach to Java ft
 			setup = {
 				jdtls = function(_, opts)
 					-- Determine OS

@@ -120,8 +120,8 @@ return {
 	{
 		"bennypowers/nvim-regexplainer",
 		event = "BufRead",
-		config = true,
 		dependencies = { "nvim-treesitter/nvim-treesitter", "MunifTanjim/nui.nvim" },
+		config = true,
 	},
 
 	{

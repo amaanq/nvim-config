@@ -17,6 +17,7 @@ return {
 		"neovim/nvim-lspconfig",
 		opts = {
 			servers = {
+				-- Ensure mason installs the server
 				omnisharp = {},
 			},
 			-- configure omnisharp to fix the semantic tokens bug (really annoying)

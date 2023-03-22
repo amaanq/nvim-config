@@ -17,6 +17,7 @@ return {
 		"neovim/nvim-lspconfig",
 		opts = {
 			servers = {
+				-- Ensure mason installs the server
 				rnix = {},
 			},
 			settings = {
@@ -35,8 +36,6 @@ return {
 					nls.builtins.formatting.alejandra,
 					nls.builtins.diagnostics.deadnix,
 				})
-			else
-				dd("not")
 			end
 		end,
 	},

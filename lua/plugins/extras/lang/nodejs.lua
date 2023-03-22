@@ -26,7 +26,7 @@ return {
 		end,
 	},
 
-	-- Add JavaScript & related to treesitter
+	-- Add JavaScript & friends to treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = function(_, opts)

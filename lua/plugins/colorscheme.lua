@@ -138,7 +138,7 @@ return {
 					hl.LspInlayHint = { link = "Comment" }
 
 					hl["@string.documentation"] = { fg = c.yellow }
-					hl["@comment.documentation"] = { fg = "#636da6", italic = false, style = { italic = false } }
+					-- hl["@comment.documentation"] = { fg = "#636da6", italic = false, style = { italic = false } }
 
 					-- Smali
 					hl["@parameter.builtin"] = { fg = "#efc890" }

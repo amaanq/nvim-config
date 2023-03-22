@@ -47,6 +47,7 @@ return {
 		dependencies = { "simrat39/rust-tools.nvim" },
 		opts = {
 			servers = {
+				-- Ensure mason installs the server
 				rust_analyzer = {},
 				taplo = {},
 			},
