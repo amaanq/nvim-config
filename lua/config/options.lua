@@ -7,12 +7,12 @@
 vim.g.mapleader = " "
 
 vim.opt.fillchars = {
-	foldopen = "",
-	foldclose = "",
-	fold = " ",
-	foldsep = " ",
-	diff = "╱",
-	eob = " ",
+  foldopen = "",
+  foldclose = "",
+  fold = " ",
+  foldsep = " ",
+  diff = "╱",
+  eob = " ",
 }
 vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 vim.o.foldlevelstart = 99
@@ -57,14 +57,14 @@ vim.g.loaded_node_provider = 0
 vim.api.nvim_create_augroup("vimrc", {})
 
 if vim.fn.has("nvim-0.8") == 1 then
-	vim.opt.backup = true
-	vim.opt.cmdheight = 0
-	vim.opt.backupdir = vim.fn.stdpath("state") .. "/backup"
+  vim.opt.backup = true
+  vim.opt.cmdheight = 0
+  vim.opt.backupdir = vim.fn.stdpath("state") .. "/backup"
 end
 
 if vim.g.neovide then
-	vim.opt.guifont = { "Menlo", "h10" }
-	vim.g.neovide_scale_factor = 0.3
+  vim.opt.guifont = { "Menlo", "h10" }
+  vim.g.neovide_scale_factor = 0.3
 end
 
 require("util.status")

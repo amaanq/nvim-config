@@ -9,12 +9,12 @@ local util = require("util")
 -- util.cowboy()
 
 local function map(mode, lhs, rhs, opts)
-	local keys = require("lazy.core.handler").handlers.keys
-	---@cast keys LazyKeysHandler
-	-- do not create the keymap if a lazy keys handler exists
-	if not keys.active[keys.parse({ lhs, mode = mode }).id] then
-		vim.keymap.set(mode, lhs, rhs, opts)
-	end
+  local keys = require("lazy.core.handler").handlers.keys
+  ---@cast keys LazyKeysHandler
+  -- do not create the keymap if a lazy keys handler exists
+  if not keys.active[keys.parse({ lhs, mode = mode }).id] then
+    vim.keymap.set(mode, lhs, rhs, opts)
+  end
 end
 
 -- Move to window using the movement keys
@@ -28,13 +28,13 @@ vim.keymap.set("n", "<C-c>", "<cmd>normal! ciw<cr>a")
 
 -- plenary testing
 vim.keymap.set("n", "<leader>tt", function()
-	util.test(true)
+  util.test(true)
 end, { desc = "Test File" })
 vim.keymap.set("n", "<leader>tT", function()
-	util.test()
+  util.test()
 end, { desc = "Test All Files" })
 require("which-key").register({
-	["<leader>t"] = { name = "+test" },
+  ["<leader>t"] = { name = "+test" },
 })
 
 -- run lua
@@ -49,9 +49,9 @@ map("n", "<leader>5", "<cmd>5ToggleTerm<cr>", { desc = "ToggleTerm 5" })
 
 -- htop
 if vim.fn.executable("htop") == 1 then
-	vim.keymap.set("n", "<leader>xh", function()
-		require("lazyvim.util").float_term({ "htop" })
-	end, { desc = "htop" })
+  vim.keymap.set("n", "<leader>xh", function()
+    require("lazyvim.util").float_term({ "htop" })
+  end, { desc = "htop" })
 end
 
 --  ╭───────────────────────────────────────────────────────────╮
@@ -60,54 +60,54 @@ end
 ---@param pat string
 ---@param lucky boolean
 local function google(pat, lucky)
-	local query = '"' .. vim.fn.substitute(pat, '["\n]', " ", "g") .. '"'
-	query = vim.fn.substitute(query, "[[:punct:] ]", [[\=printf("%%%02X", char2nr(submatch(0)))]], "g")
-	vim.fn.system(
-		vim.fn.printf(vim.g.open_command .. ' "https://www.google.com/search?%sq=%s"', lucky and "btnI&" or "", query)
-	)
+  local query = '"' .. vim.fn.substitute(pat, '["\n]', " ", "g") .. '"'
+  query = vim.fn.substitute(query, "[[:punct:] ]", [[\=printf("%%%02X", char2nr(submatch(0)))]], "g")
+  vim.fn.system(
+    vim.fn.printf(vim.g.open_command .. ' "https://www.google.com/search?%sq=%s"', lucky and "btnI&" or "", query)
+  )
 end
 
 vim.keymap.set("n", "<leader>?", function()
-	google(vim.fn.expand("<cWORD>"), false)
+  google(vim.fn.expand("<cWORD>"), false)
 end, { desc = "Google" })
 
 vim.keymap.set("x", "<leader>?", function()
-	google(vim.fn.getreg("g"), false)
+  google(vim.fn.getreg("g"), false)
 end, { desc = "Google" })
 
 vim.keymap.set("n", "<leader>!", function()
-	google(vim.fn.expand("<cWORD>"), true)
+  google(vim.fn.expand("<cWORD>"), true)
 end, { desc = "Google (Lucky)" })
 
 vim.keymap.set("x", "<leader>!", function()
-	google(vim.fn.getreg("g"), true)
+  google(vim.fn.getreg("g"), true)
 end, { desc = "Google (Lucky)" })
 
 ---@param path string
 local function open(path)
-	vim.fn.jobstart({ vim.g.open_command, path }, { detach = true })
-	vim.notify(string.format("Opening %s", path))
+  vim.fn.jobstart({ vim.g.open_command, path }, { detach = true })
+  vim.notify(string.format("Opening %s", path))
 end
 
 --  ╭────────────────────────────────────╮
 --  │ GX - replicate netrw functionality │
 --  ╰────────────────────────────────────╯
 local function open_link()
-	local file = vim.fn.expand("<cfile>")
-	if not file or vim.fn.isdirectory(file) > 0 then
-		return vim.cmd.edit(file)
-	end
+  local file = vim.fn.expand("<cfile>")
+  if not file or vim.fn.isdirectory(file) > 0 then
+    return vim.cmd.edit(file)
+  end
 
-	if file:match("http[s]?://") then
-		return open(file)
-	end
+  if file:match("http[s]?://") then
+    return open(file)
+  end
 
-	-- consider anything that looks like string/string a github link
-	local plugin_url_regex = "[%a%d%-%.%_]*%/[%a%d%-%.%_]*"
-	local link = string.match(file, plugin_url_regex)
-	if link then
-		return open(string.format("https://www.github.com/%s", link))
-	end
+  -- consider anything that looks like string/string a github link
+  local plugin_url_regex = "[%a%d%-%.%_]*%/[%a%d%-%.%_]*"
+  local link = string.match(file, plugin_url_regex)
+  if link then
+    return open(string.format("https://www.github.com/%s", link))
+  end
 end
 
 vim.keymap.set("n", "gx", open_link, { desc = "Open Link" })
@@ -117,5 +117,5 @@ vim.keymap.set("n", "gf", "<cmd>e <cfile><cr>", { desc = "Open File" })
 --  │ Commands │
 --  ╰──────────╯
 util.command("ToggleBackground", function()
-	vim.o.background = vim.o.background == "dark" and "light" or "dark"
+  vim.o.background = vim.o.background == "dark" and "light" or "dark"
 end)
