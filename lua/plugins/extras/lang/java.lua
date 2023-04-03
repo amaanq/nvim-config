@@ -33,15 +33,6 @@ return {
       },
       setup = {
         jdtls = function(_, opts)
-          -- Determine OS
-          if vim.fn.has("mac") == 1 then
-            CONFIG = "mac"
-          elseif vim.fn.has("unix") == 1 then
-            CONFIG = "linux"
-          else
-            print("Unsupported system")
-          end
-
           local mason_registry = require("mason-registry")
           local jdtls_pkg = mason_registry.get_package("jdtls")
           local jdtls_path = jdtls_pkg:get_install_path()

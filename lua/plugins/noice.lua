@@ -4,17 +4,17 @@ local M = {
 }
 
 function M.config()
-  local focused = true
-  vim.api.nvim_create_autocmd("FocusGained", {
-    callback = function()
-      focused = true
-    end,
-  })
-  vim.api.nvim_create_autocmd("FocusLost", {
-    callback = function()
-      focused = false
-    end,
-  })
+  -- local focused = true
+  -- vim.api.nvim_create_autocmd("FocusGained", {
+  --   callback = function()
+  --     focused = true
+  --   end,
+  -- })
+  -- vim.api.nvim_create_autocmd("FocusLost", {
+  --   callback = function()
+  --     focused = false
+  --   end,
+  -- })
   require("noice").setup({
     debug = false,
     lsp = {

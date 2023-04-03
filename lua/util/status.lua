@@ -4,13 +4,13 @@ _G.Status = M
 ---@return {name:string, text:string, texthl:string}[]
 function M.get_signs()
   local buf = vim.api.nvim_win_get_buf(vim.g.statusline_winid)
-  return vim.tbl_map(function(sign)
+  return vim.tbl_map(function(sign) --- @param sign {name:string, text:string, texthl:string}
     return vim.fn.sign_getdefined(sign.name)[1]
   end, vim.fn.sign_getplaced(buf, { group = "*", lnum = vim.v.lnum })[1].signs)
 end
 
 function M.column()
-  local sign, git_sign
+  local sign, git_sign ---@type {name:string, text:string, texthl:string}, {name:string, text:string, texthl:string}
   for _, s in ipairs(M.get_signs()) do
     if s.name:find("GitSign") then
       git_sign = s

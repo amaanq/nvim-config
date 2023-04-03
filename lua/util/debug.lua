@@ -47,8 +47,9 @@ function M.get_value(...)
   return vim.tbl_islist(value) and vim.tbl_count(value) <= 1 and value[1] or value
 end
 
+---@param config string
 function M.switch(config)
-  config = vim.loop.fs_realpath(config)
+  config = vim.loop.fs_realpath(config) or ""
   local config_name = vim.fn.fnamemodify(config, ":p:~"):gsub("[\\/]", "."):gsub("^~%.", ""):gsub("%.$", "")
   local root = vim.fn.fnamemodify("~/.nvim/" .. config_name, ":p"):gsub("/$", "")
   vim.fn.mkdir(root, "p")
@@ -74,14 +75,17 @@ function M.switch(config)
   ---@param env table<string,string>
   local function apply(env)
     for k, v in pairs(env) do
+      ---@type string
       vim.env[k] = v
     end
   end
 
+  ---@param fn fun(...)
+  ---@return fun(...):any
   local function wrap(fn)
     return function(...)
       apply(old)
-      local ok, ret = pcall(fn, ...)
+      local ok, ret = pcall(fn, ...) ---@type boolean, fun(...):any
       apply(new)
       if ok then
         return ret

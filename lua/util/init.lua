@@ -43,7 +43,7 @@ function M.command(name, rhs, opts)
 end
 
 ---@param fname string
----@return boolean
+---@return string|boolean
 function M.exists(fname)
   local stat = vim.loop.fs_stat(fname)
   return (stat and stat.type) or false
@@ -71,7 +71,7 @@ function M.clipman()
     if data ~= "" then
       local ok, json = pcall(vim.fn.json_decode, data)
       if ok and json then
-        local items = {}
+        local items = {} ---@type table[]
         for i = #json, 1, -1 do
           items[#items + 1] = json[i]
         end
@@ -89,7 +89,7 @@ function M.clipman()
   end
 end
 
----@param is_file boolean
+---@param is_file? boolean
 function M.test(is_file)
   local file = is_file and vim.fn.expand("%:p") or "./tests"
   local init = vim.fn.glob("tests/*init*")
@@ -97,7 +97,7 @@ function M.test(is_file)
 end
 
 function M.version()
-  local v = vim.version()
+  local v = vim.version() ---@type table
   if v and not v.prerelease then
     vim.notify(
       ("Neovim v%d.%d.%d"):format(v.major, v.minor, v.patch),
@@ -136,7 +136,7 @@ function M.runlua()
     print = function(...)
       local buf, row = get_source()
       local str = table.concat(
-        vim.tbl_map(function(o)
+        vim.tbl_map(function(o) ---@param o any
           if type(o) == "table" then
             return vim.inspect(o)
           end

@@ -2,7 +2,7 @@ return {
 
   -- This is meant for tree-sitter development.
   {
-    "nvim-treesitter",
+    "nvim-treesitter/nvim-treesitter",
     init = function()
       local util = require("util")
 
@@ -124,12 +124,12 @@ return {
             files = { "src/parser.c", "src/scanner.c" },
           },
         },
-        thrift = {
-          install_info = {
-            url = "~/projects/treesitter/tree-sitter-thrift",
-            files = { "src/parser.c" },
-          },
-        },
+        -- thrift = {
+        --   install_info = {
+        --     url = "~/projects/treesitter/tree-sitter-thrift",
+        --     files = { "src/parser.c" },
+        --   },
+        -- },
         ungrammar = {
           install_info = {
             url = "~/projects/treesitter/tree-sitter-ungrammar",
@@ -163,13 +163,13 @@ return {
         },
       }
 
-      local debug = false
+      local dbg = false
 
       for lang, install_info in pairs(local_configs) do
         local expanded_url = string.gsub(install_info.install_info.url, "^~", os.getenv("HOME") or "~")
         if util.exists(expanded_url) then
           parser_configs[lang] = install_info
-        elseif debug then
+        elseif dbg then
           dd("Skipping " .. lang .. " because " .. install_info.install_info.url .. " does not exist locally")
         end
       end

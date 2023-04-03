@@ -8,6 +8,8 @@ M.stats = {}
 M._require = _G.require
 local pack_len = vim.F.pack_len
 
+---@param name string
+---@param start integer
 function M.stat(name, start)
   M.stats[name] = M.stats[name] or { total = 0, time = 0 }
   M.stats[name].total = M.stats[name].total + 1
@@ -30,6 +32,10 @@ function M.wrap(name, fn)
   end
 end
 
+---@param name string
+---@param value table
+---@param done? table<any, boolean>
+---@return nil
 function M.hook(name, value, done)
   if value == nil then
     return nil
@@ -42,6 +48,8 @@ function M.hook(name, value, done)
   if type(value) == "function" then
     return M.wrap(name, value)
   elseif type(value) == "table" then
+    ---@param k string
+    ---@param v any
     for k, v in pairs(value) do
       if type(v) == "function" then
         rawset(value, k, M.wrap(name .. "." .. k .. "()", v))
@@ -53,6 +61,8 @@ function M.hook(name, value, done)
   return value
 end
 
+---@param modname string
+---@return table
 function M.require(modname)
   if package.loaded[modname] then
     return package.loaded[modname]
@@ -73,7 +83,7 @@ function M.start()
     pattern = "VeryLazy",
     callback = function()
       _G.require = M._require
-      local s = {}
+      local s = {} --- @type table[]
       for name, stat in pairs(M.stats) do
         stat.name = name
         s[#s + 1] = stat

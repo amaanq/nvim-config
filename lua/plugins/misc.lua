@@ -79,7 +79,7 @@ return {
         file_explorer_text = "Browsing %s",
         git_commit_text = "Committing changes",
         plugin_manager_text = "Managing plugins",
-        reading_text = function(buf_name)
+        reading_text = function(buf_name) --- @param buf_name string
           -- Extract the process name running in toggleterm from the given buffer name
           -- we want to match `zsh;#toggleterm#1`, grab the "zsh" part (aka the beginning before the semicolon) and store it into toggleterm_process
           local toggleterm_process = buf_name:match("([^;]+);#toggleterm#%d+")
