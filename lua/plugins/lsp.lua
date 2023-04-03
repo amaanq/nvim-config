@@ -93,6 +93,7 @@ return {
       })
 
       local format = require("lazyvim.plugins.lsp.format")
+      ---@diagnostic disable-next-line: duplicate-set-field
       format.on_attach = function(client, buf)
         if client.supports_method("textDocument/formatting") then
           vim.api.nvim_create_autocmd("BufWritePre", {
@@ -125,7 +126,6 @@ return {
         bashls = {},
         cmake = {},
         cssls = {},
-        dockerls = {},
         html = {},
         lua_ls = {
           single_file_support = true,
@@ -330,6 +330,11 @@ return {
             return util.executable("shfmt", true)
           end,
         }),
+        fmt.sqlfluff.with({
+          condition = function()
+            return util.executable("sqlfluff", true)
+          end,
+        }),
         fmt.stylua.with({
           condition = function()
             return util.executable("stylua", true)
@@ -375,6 +380,11 @@ return {
               }, { path = vim.fn.expand("%:p"), upward = true }))
           end,
         }),
+        dgn.gitlint.with({
+          condition = function()
+            return util.executable("gitlint", true)
+          end,
+        }),
         dgn.golangci_lint.with({
           condition = function()
             return util.executable("golangci-lint", true)
@@ -409,6 +419,16 @@ return {
             return utils.root_has_file({ "selene.toml" }) and util.executable("selene", true)
           end,
         }),
+        dgn.sqlfluff.with({
+          condition = function()
+            return util.executable("sqlfluff", true)
+          end,
+        }),
+        dgn.tsc.with({
+          condition = function()
+            return util.executable("tsc", true)
+          end,
+        }),
         dgn.write_good.with({
           condition = function()
             return util.executable("write-good", true)
@@ -432,6 +452,7 @@ return {
               }, { path = vim.fn.expand("%:p"), upward = true }))
           end,
         }),
+        cda.gitrebase,
         cda.gitsigns,
         cda.shellcheck.with({
           condition = function()
