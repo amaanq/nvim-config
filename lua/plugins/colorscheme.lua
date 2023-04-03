@@ -22,6 +22,7 @@ return {
   {
     "olimorris/onedarkpro.nvim",
     lazy = false,
+    enabled = false,
     config = function()
       require("onedarkpro").setup({
         highlights = {
@@ -96,7 +97,7 @@ return {
     "tokyonight.nvim",
     lazy = false,
     priority = 1000,
-    opts = function(_, opts)
+    opts = function(_, _opts)
       return {
         style = "moon",
         styles = {
@@ -142,8 +143,40 @@ return {
 
           -- Smali
           hl["@parameter.builtin"] = { fg = "#efc890" }
+
+          -- Rust
+          hl["@lsp.typemod.function.defaultLibrary.rust"] = { link = "@function" }
+          hl["@lsp.typemod.method.defaultLibrary.rust"] = { link = "@method" }
+          hl["@lsp.type.selfTypeKeyword.rust"] = { link = "@variable.builtin" }
+          hl["@lsp.type.decorator.rust"] = { link = "@attribute" }
+          hl["@lsp.type.deriveHelper.rust"] = { link = "@attribute" }
+          hl["@lsp.type.generic.rust"] = { link = "@variable" }
+
+          hl["@lsp.type.operator"] = { link = "@operator" }
         end,
       }
     end,
+  },
+
+  {
+    "amaanq/chic-noir.nvim",
+    dev = true,
+    lazy = false,
+    priority = 1000,
+    config = true,
+  },
+
+  {
+    "LazyVim/LazyVim",
+    -- opts = {
+    --   colorscheme = function()
+    --     opts = {
+    --       styles = {
+    --         keywords = { italic = false },
+    --       },
+    --     }
+    --     require("chic-noir").load(opts)
+    --   end,
+    -- },
   },
 }
