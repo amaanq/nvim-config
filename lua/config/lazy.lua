@@ -26,6 +26,7 @@ return function(opts)
       { import = "plugins.extras.lang.clangd" },
       { import = "plugins.extras.lang.cmake" },
       { import = "plugins.extras.lang.csharp" },
+      { import = "plugins.extras.lang.docker" },
       { import = "plugins.extras.lang.go" },
       { import = "plugins.extras.lang.java" },
       { import = "plugins.extras.lang.nix" },
