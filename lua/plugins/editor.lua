@@ -69,4 +69,12 @@ return {
       end)
     end,
   },
+
+  {
+    "samjwill/nvim-unception",
+    event = "BufReadPost",
+    init = function()
+      vim.g.unception_open_buffer_in_new_tab = true
+    end,
+  },
 }
