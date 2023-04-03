@@ -21,6 +21,9 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     -- dependencies = { "HiPhish/nvim-ts-rainbow2" },
+    dependencies = {
+      "windwp/nvim-ts-autotag",
+    },
     --- @type TSConfig
     opts = {
       ensure_installed = {
@@ -34,7 +37,6 @@ return {
         "git_rebase",
         "graphql",
         "haskell",
-        "help",
         "http",
         "json",
         "jsonc",
@@ -65,12 +67,14 @@ return {
         "vala",
         "vhs",
         "vim",
+        "vimdoc",
         "vue",
         "wgsl",
         "yaml",
         "zig",
       },
       autopairs = { enable = true },
+      autotag = { enable = true },
       highlight = { enable = true },
       matchup = {
         enable = true,
