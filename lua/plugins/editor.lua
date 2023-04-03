@@ -42,6 +42,13 @@ return {
     end,
   },
 
+  {
+    "RRethy/vim-illuminate",
+    opts = {
+      large_file_cutoff = 20000,
+    },
+  },
+
   -- add nvim-ufo
   {
     "kevinhwang91/nvim-ufo",
