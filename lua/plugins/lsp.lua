@@ -70,6 +70,19 @@ return {
   -- lsp servers
   {
     "neovim/nvim-lspconfig",
+    dependencies = {
+      {
+        "SmiteshP/nvim-navbuddy",
+        dependencies = {
+          "SmiteshP/nvim-navic",
+          "MunifTanjim/nui.nvim",
+        },
+        opts = { lsp = { auto_attach = true } },
+        keys = {
+          { "<leader>cln", "<cmd>Navbuddy<cr>", desc = "Lsp Navigation" },
+        },
+      },
+    },
     init = function()
       local keys = require("lazyvim.plugins.lsp.keymaps").get()
 
@@ -87,6 +100,7 @@ return {
       }
       keys[#keys + 1] = { "<leader>clh", vim.lsp.codelens.run, desc = "Run Code Lens" }
       keys[#keys + 1] = { "<leader>cld", vim.lsp.codelens.refresh, desc = "Refresh Code Lens" }
+      keys[#keys + 1] = { "<leader>cls", "<cmd>LspRestart<cr>", desc = "Restart Lsp" }
 
       require("which-key").register({
         ["<leader>cl"] = { name = "+lsp" },
