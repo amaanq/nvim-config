@@ -134,6 +134,7 @@ return {
     end,
     opts = {
       ---@type lspconfig.options
+      diagnostics = { virtual_text = { prefix = "icons" } },
       servers = {
         ansiblels = {},
         asm_lsp = {},

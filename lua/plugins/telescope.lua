@@ -15,7 +15,7 @@ return {
     },
     keys = {
       {
-        "<leader>fp",
+        "<leader>fP",
         "<cmd>Telescope project display_type=full<cr>",
         desc = "Find Plugin File",
       },

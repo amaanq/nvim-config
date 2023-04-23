@@ -56,7 +56,7 @@ return {
         desc = "Peek (Markdown Preview)",
       },
     },
-    opts = { theme = "dark" }, -- 'dark' or 'light'
+    opts = { theme = "dark", app = "browser" }, -- 'dark' or 'light'
     init = function()
       require("which-key").register({
         ["<leader>o"] = { name = "+open" },
