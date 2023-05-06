@@ -80,6 +80,7 @@ return {
   -- floating winbar
   {
     "b0o/incline.nvim",
+    enabled = false,
     event = "BufReadPre",
     config = function()
       local colors = require("tokyonight.colors").setup()
