@@ -151,6 +151,15 @@ return {
           hl["@lsp.type.decorator.rust"] = { link = "@attribute" }
           hl["@lsp.type.deriveHelper.rust"] = { link = "@attribute" }
           hl["@lsp.type.generic.rust"] = { link = "@variable" }
+          hl["@lsp.type.formatSpecifier.rust"] = { link = "@punctuation.special" }
+          hl["@lsp.type.variable.rust"] = { link = "@variable" }
+          hl["@lsp.type.escapeSequence"] = { link = "@string.escape" }
+          hl["@lsp.type.selfKeyword"] = { link = "@variable.builtin" }
+          hl["@lsp.typemod.variable.constant.rust"] = { link = "@constant" }
+          hl["@lsp.typemod.keyword.async.rust"] = { link = "@keyword.coroutine" }
+          hl["@lsp.typemod.enumMember.defaultLibrary"] = { link = "@constant.builtin" }
+          hl["@lsp.typemod.enum.defaultLibrary"] = { link = "@type.builtin" }
+          hl["@lsp.type.keyword.rust"] = {}
 
           hl["@lsp.type.operator"] = { link = "@operator" }
         end,
