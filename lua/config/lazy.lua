@@ -28,6 +28,7 @@ return function(opts)
       { import = "plugins.extras.lang.csharp" },
       { import = "plugins.extras.lang.docker" },
       { import = "plugins.extras.lang.go" },
+      { import = "plugins.extras.lang.haskell" },
       { import = "plugins.extras.lang.java" },
       { import = "plugins.extras.lang.nix" },
       { import = "plugins.extras.lang.nodejs" },
