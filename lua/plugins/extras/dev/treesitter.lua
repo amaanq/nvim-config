@@ -103,7 +103,7 @@ return {
         smali = {
           install_info = {
             url = "~/projects/treesitter/tree-sitter-smali",
-            files = { "src/parser.c" },
+            files = { "src/parser.c", "src/scanner.c" },
           },
         },
         smithy = {
@@ -161,7 +161,29 @@ return {
             files = { "src/parser.c" },
           },
         },
+        puppet = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-puppet",
+            files = { "src/parser.c" },
+          },
+        },
+        luau = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-luau",
+            files = { "src/parser.c", "src/scanner.c" },
+          },
+        },
       }
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "lua",
+        callback = function(ev)
+          local cwd = vim.fn.getcwd()
+          if vim.fn.finddir("tree-sitter-luau", cwd) ~= "" then
+            vim.bo.filetype = "luau"
+          end
+        end,
+      })
 
       local dbg = false
 
