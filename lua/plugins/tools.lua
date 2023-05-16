@@ -1,17 +1,5 @@
 return {
 
-  -- projects
-  {
-    "ahmedkhalf/project.nvim",
-    config = function()
-      require("project_nvim").setup({
-        detection_methods = { "pattern", "lsp" },
-        ignore_lsp = { "null-ls" },
-        patterns = { ".git" },
-      })
-    end,
-  },
-
   -- {
   -- 	"nvim-orgmode/orgmode",
   -- 	dependencies = "nvim-treesitter/nvim-treesitter",
