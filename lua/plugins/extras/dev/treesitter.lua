@@ -8,6 +8,7 @@ return {
 
       local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
 
+      ---@type table<string, ParserInfo>
       local local_configs = {
         bass = {
           install_info = {
@@ -173,6 +174,21 @@ return {
             files = { "src/parser.c", "src/scanner.c" },
           },
         },
+        snakemake = {
+          install_info = {
+            url = "https://github.com/osthomas/tree-sitter-snakemake",
+            branch = "main",
+            location = "tree-sitter-snakemake",
+            files = { "src/parser.c", "src/scanner.cc" },
+          },
+          experimental = true,
+        },
+        odin = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-odin",
+            files = { "src/parser.c", "src/scanner.c" },
+          },
+        },
       }
 
       vim.api.nvim_create_autocmd("FileType", {
@@ -189,7 +205,7 @@ return {
 
       for lang, install_info in pairs(local_configs) do
         local expanded_url = string.gsub(install_info.install_info.url, "^~", os.getenv("HOME") or "~")
-        if util.exists(expanded_url) then
+        if util.exists(expanded_url) or expanded_url:find("https?://") then
           parser_configs[lang] = install_info
         elseif dbg then
           dd("Skipping " .. lang .. " because " .. install_info.install_info.url .. " does not exist locally")
