@@ -14,15 +14,17 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter-context",
+    -- dev = true,
     event = "BufReadPre",
-    config = true,
+    enabled = true,
+    opts = { mode = "cursor" },
   },
 
   {
     "nvim-treesitter/nvim-treesitter",
     -- dependencies = { "HiPhish/nvim-ts-rainbow2" },
     dependencies = {
-      "windwp/nvim-ts-autotag",
+      { "windwp/nvim-ts-autotag", opts = {} },
     },
     --- @type TSConfig
     opts = {
@@ -155,6 +157,10 @@ return {
           ["."] = "textsubjects-smart",
           [";"] = "textsubjects-container-outer",
         },
+      },
+      context_commentstring = {
+        enable = true,
+        enable_autocmd = false,
       },
     },
   },
