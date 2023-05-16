@@ -132,6 +132,7 @@ return {
         file = { suffix = "" },
         window = { suffix = "" },
         quickfix = { suffix = "" },
+        yank = { suffix = "" },
         treesitter = { suffix = "n" },
       })
     end,
@@ -139,65 +140,35 @@ return {
 
   -- better yank/paste
   {
-    "kkharji/sqlite.lua",
-    enabled = function()
-      return not jit.os:find("Windows")
-    end,
-  },
-  {
     "gbprod/yanky.nvim",
     enabled = true,
-    event = "BufReadPost",
-    config = function()
-      -- vim.g.clipboard = {
-      --   name = "xsel_override",
-      --   copy = {
-      --     ["+"] = "xsel --input --clipboard",
-      --     ["*"] = "xsel --input --primary",
-      --   },
-      --   paste = {
-      --     ["+"] = "xsel --output --clipboard",
-      --     ["*"] = "xsel --output --primary",
-      --   },
-      --   cache_enabled = 1,
-      -- }
-
-      require("yanky").setup({
-        highlight = {
-          timer = 150,
-        },
-        ring = {
-          storage = jit.os:find("Windows") and "shada" or "sqlite",
-        },
-      })
-
-      vim.keymap.set({ "n", "x" }, "y", "<Plug>(YankyYank)")
-
-      vim.keymap.set({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
-      vim.keymap.set({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
-      vim.keymap.set({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)")
-      vim.keymap.set({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)")
-
-      vim.keymap.set("n", "<c-n>", "<Plug>(YankyCycleForward)")
-      vim.keymap.set("n", "<c-p>", "<Plug>(YankyCycleBackward)")
-
-      vim.keymap.set("n", "]p", "<Plug>(YankyPutIndentAfterLinewise)")
-      vim.keymap.set("n", "[p", "<Plug>(YankyPutIndentBeforeLinewise)")
-      vim.keymap.set("n", "]P", "<Plug>(YankyPutIndentAfterLinewise)")
-      vim.keymap.set("n", "[P", "<Plug>(YankyPutIndentBeforeLinewise)")
-
-      vim.keymap.set("n", ">p", "<Plug>(YankyPutIndentAfterShiftRight)")
-      vim.keymap.set("n", "<p", "<Plug>(YankyPutIndentAfterShiftLeft)")
-      vim.keymap.set("n", ">P", "<Plug>(YankyPutIndentBeforeShiftRight)")
-      vim.keymap.set("n", "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)")
-
-      vim.keymap.set("n", "=p", "<Plug>(YankyPutAfterFilter)")
-      vim.keymap.set("n", "=P", "<Plug>(YankyPutBeforeFilter)")
-
-      vim.keymap.set("n", "<leader>P", function()
-        require("telescope").extensions.yank_history.yank_history({})
-      end, { desc = "Paste from Yanky" })
-    end,
+    event = "VeryLazy",
+    dependencies = { { "kkharji/sqlite.lua", enabled = not jit.os:find("Windows") } },
+    opts = {
+      highlight = { timer = 150 },
+      ring = { storage = jit.os:find("Windows") and "shada" or "sqlite" },
+    },
+    keys = {
+      -- stylua: ignore
+      { "<leader>P", function() require("telescope").extensions.yank_history.yank_history({ }) end, desc = "Paste from Yanky" },
+      { "y", "<Plug>(YankyYank)", mode = { "n", "x" } },
+      { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" } },
+      { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" } },
+      { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" } },
+      { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" } },
+      { "[y", "<Plug>(YankyCycleForward)" },
+      { "]y", "<Plug>(YankyCycleBackward)" },
+      { "]p", "<Plug>(YankyPutIndentAfterLinewise)" },
+      { "[p", "<Plug>(YankyPutIndentBeforeLinewise)" },
+      { "]P", "<Plug>(YankyPutIndentAfterLinewise)" },
+      { "[P", "<Plug>(YankyPutIndentBeforeLinewise)" },
+      { ">p", "<Plug>(YankyPutIndentAfterShiftRight)" },
+      { "<p", "<Plug>(YankyPutIndentAfterShiftLeft)" },
+      { ">P", "<Plug>(YankyPutIndentBeforeShiftRight)" },
+      { "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)" },
+      { "=p", "<Plug>(YankyPutAfterFilter)" },
+      { "=P", "<Plug>(YankyPutBeforeFilter)" },
+    },
   },
 
   -- better increase/descrease
@@ -231,6 +202,7 @@ return {
           augend.integer.alias.hex,
           augend.date.alias["%Y/%m/%d"],
           augend.constant.alias.bool,
+          augend.constant.new({ elements = { "let", "const" } }),
           augend.semver.alias.semver,
         },
       })
@@ -240,39 +212,7 @@ return {
   {
     "simrat39/symbols-outline.nvim",
     keys = { { "<leader>cs", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
-    config = function()
-      local icons = require("lazyvim.config").icons
-      require("symbols-outline").setup({
-        symbols = {
-          File = { icon = icons.kinds.File, hl = "TSURI" },
-          Module = { icon = icons.kinds.Module, hl = "TSNamespace" },
-          Namespace = { icon = icons.kinds.Namespace, hl = "TSNamespace" },
-          Package = { icon = icons.kinds.Package, hl = "TSNamespace" },
-          Class = { icon = icons.kinds.Class, hl = "TSType" },
-          Method = { icon = icons.kinds.Method, hl = "TSMethod" },
-          Property = { icon = icons.kinds.Property, hl = "TSMethod" },
-          Field = { icon = icons.kinds.Field, hl = "TSField" },
-          Constructor = { icon = icons.kinds.Constructor, hl = "TSConstructor" },
-          Enum = { icon = icons.kinds.Enum, hl = "TSType" },
-          Interface = { icon = icons.kinds.Interface, hl = "TSType" },
-          Function = { icon = icons.kinds.Function, hl = "TSFunction" },
-          Variable = { icon = icons.kinds.Variable, hl = "TSConstant" },
-          Constant = { icon = icons.kinds.Constant, hl = "TSConstant" },
-          String = { icon = icons.kinds.String, hl = "TSString" },
-          Number = { icon = icons.kinds.Number, hl = "TSNumber" },
-          Boolean = { icon = icons.kinds.Boolean, hl = "TSBoolean" },
-          Array = { icon = icons.kinds.Array, hl = "TSConstant" },
-          Object = { icon = icons.kinds.Object, hl = "TSType" },
-          Key = { icon = icons.kinds.Key, hl = "TSType" },
-          Null = { icon = icons.kinds.Null, hl = "TSType" },
-          EnumMember = { icon = icons.kinds.EnumMember, hl = "TSField" },
-          Struct = { icon = icons.kinds.Struct, hl = "TSType" },
-          Event = { icon = icons.kinds.Event, hl = "TSType" },
-          Operator = { icon = icons.kinds.Operator, hl = "TSOperator" },
-          TypeParameter = { icon = icons.kinds.TypeParameter, hl = "TSParameter" },
-        },
-      })
-    end,
+    config = true,
   },
 
   {
