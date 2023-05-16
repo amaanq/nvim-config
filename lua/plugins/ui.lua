@@ -158,6 +158,7 @@ return {
   -- silly drops
   {
     "folke/drop.nvim",
+    enabled = false,
     event = "VeryLazy",
     config = function()
       math.randomseed(os.time())
