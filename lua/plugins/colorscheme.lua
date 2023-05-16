@@ -189,14 +189,6 @@ return {
   },
 
   {
-    "amaanq/chic-noir.nvim",
-    dev = true,
-    lazy = false,
-    priority = 1000,
-    config = true,
-  },
-
-  {
     "LazyVim/LazyVim",
     -- opts = {
     --   colorscheme = function()
