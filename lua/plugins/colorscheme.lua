@@ -13,10 +13,31 @@ return {
   {
     "marko-cerovac/material.nvim",
     lazy = false,
+    priority = 1000,
     init = function()
       vim.g.material_style = "deep ocean"
     end,
-    config = true,
+    opts = {
+      plugins = {
+        "dap",
+        "dashboard",
+        "gitsigns",
+        "hop",
+        "indent-blankline",
+        "lspsaga",
+        "mini",
+        "neogit",
+        "neorg",
+        "nvim-cmp",
+        "nvim-navic",
+        "nvim-tree",
+        "nvim-web-devicons",
+        "sneak",
+        "telescope",
+        "trouble",
+        "which-key",
+      },
+    },
   },
   { "numToStr/Sakura.nvim", lazy = false },
   {
