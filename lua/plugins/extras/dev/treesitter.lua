@@ -189,11 +189,17 @@ return {
             files = { "src/parser.c", "src/scanner.c" },
           },
         },
+        objc = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-objc",
+            files = { "src/parser.c" },
+          },
+        },
       }
 
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "lua",
-        callback = function(ev)
+        callback = function(_ev)
           local cwd = vim.fn.getcwd()
           if vim.fn.finddir("tree-sitter-luau", cwd) ~= "" then
             vim.bo.filetype = "luau"
