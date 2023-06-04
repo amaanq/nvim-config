@@ -181,6 +181,7 @@ return {
           hl["@lsp.typemod.enumMember.defaultLibrary"] = { link = "@constant.builtin" }
           hl["@lsp.typemod.enum.defaultLibrary"] = { link = "@type.builtin" }
           hl["@lsp.type.keyword.rust"] = {}
+          hl["@lsp.typemod.keyword.injected"] = { link = "@keyword" }
 
           hl["@lsp.type.operator"] = { link = "@operator" }
         end,
