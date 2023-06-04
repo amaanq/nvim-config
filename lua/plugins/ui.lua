@@ -3,11 +3,11 @@ return {
   -- Better `vim.notify()`
   {
     "rcarriga/nvim-notify",
-    opts = function(_, opts)
-      opts.level = vim.log.levels.INFO
-      opts.fps = 144
-      opts.stages = "fade_in_slide_out"
-    end,
+    opts = {
+      level = vim.log.levels.INFO,
+      fps = 144,
+      stages = "fade_in_slide_out",
+    },
   },
 
   -- bufferline
@@ -168,7 +168,7 @@ return {
     opts = {
       themes = {
         markdown = { colorscheme = "rose-pine" },
-        help = { colorscheme = "oxocarbon", background = "dark" },
+        help = { colorscheme = "rose-pine", background = "dark" },
         toggleterm = { colorscheme = "rose-pine" },
       },
     },
