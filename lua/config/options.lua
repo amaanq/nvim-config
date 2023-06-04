@@ -19,8 +19,8 @@ vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 vim.o.foldcolumn = "1"
 
--- vim.opt.foldmethod = "expr"
--- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 vim.opt.expandtab = false -- Use tabs instead of spaces
 vim.opt.grepprg = "rg --vimgrep --smart-case --"
@@ -40,7 +40,6 @@ vim.g.vim_dir = vim.g.dotfiles .. "/.config/nvim"
 --  │ Default plugins │
 --  ╰─────────────────╯
 -- Stop loading built in plugins
-vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_tutor_mode_plugin = 1
 vim.g.loaded_2html_plugin = 1
@@ -68,3 +67,12 @@ if vim.g.neovide then
 end
 
 require("util.status")
+
+-- make all keymaps silent by default
+local keymap_set = vim.keymap.set
+---@diagnostic disable-next-line: duplicate-set-field
+vim.keymap.set = function(mode, lhs, rhs, opts)
+  opts = opts or {}
+  opts.silent = opts.silent ~= false
+  return keymap_set(mode, lhs, rhs, opts)
+end

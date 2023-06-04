@@ -59,17 +59,21 @@ vim.api.nvim_create_autocmd({ "FileType", "BufRead" }, {
 
 -- Tree-Sitter highlighting for filetypes not autodetected
 vim.filetype.add({
-  extension = {},
+  extension = {
+    qmljs = "qmljs",
+    pp = "puppet",
+  },
 })
 
 -- close dap-float with <q>
 vim.api.nvim_create_autocmd("FileType", {
   pattern = {
     "dap-float",
+    "httpResult",
   },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
-    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true, desc = "Close Dap Float" })
+    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true, desc = "Close Window" })
   end,
 })
 
@@ -107,7 +111,7 @@ vim.api.nvim_create_autocmd("BufRead", {
   callback = function()
     local size = vim.fn.getfsize(vim.fn.expand("%:p"))
     if size > 500000 then
-      vim.treesitter.stop()
+      -- vim.treesitter.stop()
     end
   end,
 })
