@@ -208,6 +208,9 @@ return {
         teal_ls = {},
         texlab = {},
         tsserver = {
+          root_dir = function(...)
+            return require("lspconfig.util").root_pattern(".git")(...)
+          end,
           settings = {
             typescript = {
               inlayHints = {
