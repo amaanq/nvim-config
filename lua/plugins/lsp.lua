@@ -218,7 +218,7 @@ return {
                 includeInlayParameterNameHintsWhenArgumentMatchesName = false,
                 includeInlayFunctionParameterTypeHints = false,
                 includeInlayVariableTypeHints = false,
-                includeInlayPropertyDeclarationTypeHints = false,
+                includeInlayPropertyDeclarationTypeHints = true,
                 includeInlayFunctionLikeReturnTypeHints = true,
                 includeInlayEnumMemberValueHints = true,
               },
