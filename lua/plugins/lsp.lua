@@ -131,6 +131,14 @@ return {
 					]])
         end
       end
+
+      -- disable lsp watcher. Too slow on linux
+      local ok, wf = pcall(require, "vim.lsp._watchfiles")
+      if ok then
+        wf._watchfunc = function()
+          return function() end
+        end
+      end
     end,
     opts = {
       ---@type lspconfig.options
