@@ -1,5 +1,17 @@
 local util = require("util")
 
+-- Disable semantic tokens for objc temporarily
+-- vim.api.nvim_create_autocmd({ "LspAttach" }, {
+--   callback = function(args)
+--     ---@type lsp.Client
+--     local client = vim.lsp.get_client_by_id(args.data.client_id)
+--     -- check if file is objc
+--     if vim.fn.expand("%:e") == "m" then
+--       client.server_capabilities.semanticTokensProvider = nil
+--     end
+--   end,
+-- })
+
 return {
 
   -- Add C/C++ to treesitter
@@ -55,6 +67,9 @@ return {
           require("clangd_extensions").setup({
             server = opts,
             extensions = {
+              inlay_hints = {
+                inline = false,
+              },
               ast = {
                 --These require codicons (https://github.com/microsoft/vscode-codicons)
                 role_icons = {
