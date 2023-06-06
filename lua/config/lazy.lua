@@ -17,6 +17,7 @@ return function(opts)
       -- LazyVim extras
       { import = "lazyvim.plugins.extras.lang.typescript" },
       { import = "lazyvim.plugins.extras.lang.json" },
+      { import = "lazyvim.plugins.extras.test.core" },
       { import = "lazyvim.plugins.extras.ui.mini-animate" },
       { import = "lazyvim.plugins.extras.util.mini-hipatterns" },
       { import = "lazyvim.plugins.extras.util.project" },
