@@ -180,6 +180,8 @@ return {
           hl["@lsp.typemod.keyword.async.rust"] = { link = "@keyword.coroutine" }
           hl["@lsp.typemod.enumMember.defaultLibrary"] = { link = "@constant.builtin" }
           hl["@lsp.typemod.enum.defaultLibrary"] = { link = "@type.builtin" }
+          -- why are these both so bad?
+          hl["@lsp.type.keyword.go"] = {}
           hl["@lsp.type.keyword.rust"] = {}
           hl["@lsp.typemod.keyword.injected"] = { link = "@keyword" }
 
