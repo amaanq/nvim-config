@@ -307,11 +307,11 @@ return {
               }, { path = vim.fn.expand("%:p"), upward = true }))
           end,
         }),
-        fmt.gofmt.with({
-          condition = function()
-            return util.executable("gofmt", true)
-          end,
-        }),
+        -- fmt.gofmt.with({
+        --   condition = function()
+        --     return util.executable("gofmt", true)
+        --   end,
+        -- }),
         fmt.goimports_reviser.with({
           condition = function()
             return util.executable("goimports-reviser", true)
@@ -412,15 +412,15 @@ return {
             return util.executable("gitlint", true)
           end,
         }),
-        dgn.golangci_lint.with({
-          condition = function()
-            return util.executable("golangci-lint", true)
-              and not vim.tbl_isempty(vim.fs.find("go.mod", {
-                path = vim.fn.expand("%:p"),
-                upward = true,
-              }))
-          end,
-        }),
+        -- dgn.golangci_lint.with({
+        --   condition = function()
+        --     return util.executable("golangci-lint", true)
+        --       and not vim.tbl_isempty(vim.fs.find("go.mod", {
+        --         path = vim.fn.expand("%:p"),
+        --         upward = true,
+        --       }))
+        --   end,
+        -- }),
         dgn.markdownlint.with({
           condition = function()
             return util.executable("markdownlint", true)
@@ -436,11 +436,11 @@ return {
             return util.executable("ruff", true)
           end,
         }),
-        dgn.shellcheck.with({
-          condition = function()
-            return util.executable("shellcheck", true)
-          end,
-        }),
+        -- dgn.shellcheck.with({
+        --   condition = function()
+        --     return util.executable("shellcheck", true)
+        --   end,
+        -- }),
         dgn.selene.with({
           condition = function(utils)
             return utils.root_has_file({ "selene.toml" }) and util.executable("selene", true)
@@ -480,12 +480,11 @@ return {
           end,
         }),
         cda.gitrebase,
-        cda.gitsigns,
-        cda.shellcheck.with({
-          condition = function()
-            return util.executable("shellcheck", true)
-          end,
-        }),
+        -- cda.shellcheck.with({
+        --   condition = function()
+        --     return util.executable("shellcheck", true)
+        --   end,
+        -- }),
       })
     end,
   },
