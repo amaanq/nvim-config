@@ -119,3 +119,54 @@ vim.keymap.set("n", "gf", "<cmd>e <cfile><cr>", { desc = "Open File" })
 util.command("ToggleBackground", function()
   vim.o.background = vim.o.background == "dark" and "light" or "dark"
 end)
+
+-- Swap clangd compile commands
+
+local function swap_compilecommands()
+  local json = require("json")
+  -- take rootdir/compile_commands.json and swap the two entries
+  local rootdir = vim.fn.getcwd()
+  local file = rootdir .. "/compile_commands.json"
+  local f = io.open(file, "r")
+  if not f then
+    vim.notify("No compile_commands.json found")
+    return
+  end
+  local data = f:read("*all")
+  f:close()
+  local commands = json.decode(data)
+  commands[1], commands[2] = commands[2], commands[1]
+
+  f = io.open(file, "w")
+  if not f then
+    vim.notify("Could not open compile_commands.json for writing!")
+    return
+  end
+  f:write(json.encode(commands))
+  f:close()
+  vim.notify("Swapped compile_commands.json!")
+end
+
+local function swap_compilecommands2()
+  local shell_code = [=[
+#!/usr/bin/env bash
+
+compile_commands_file="$PWD/compile_commands.json"
+echo "$compile_commands_file"
+tmp_file=$(mktemp)
+
+jq '[.[1], .[0]]' "$compile_commands_file" >"$tmp_file" && mv "$tmp_file" "$compile_commands_file"
+]=]
+  local tmp_file = vim.fn.tempname()
+  local f = io.open(tmp_file, "w")
+  if not f then
+    vim.notify("Could not open tmp_file for writing!")
+    return
+  end
+  f:write(shell_code)
+  f:close()
+  vim.fn.jobstart({ "sh", tmp_file }, { detach = true })
+  vim.notify("Swapped compile_commands.json!")
+end
+
+vim.keymap.set("n", "<leader>clf", swap_compilecommands2, { desc = "Swap Compile Commands" })
