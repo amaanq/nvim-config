@@ -15,6 +15,8 @@ return {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
+        -- "deno",
+        -- "dprint",
         "eslint_d",
         "isort",
         "luacheck",
@@ -77,7 +79,7 @@ return {
           "SmiteshP/nvim-navic",
           "MunifTanjim/nui.nvim",
         },
-        opts = { lsp = { auto_attach = true } },
+        opts = { lsp = { auto_attach = true, inlay_hints = { enabled = true } } },
         keys = {
           { "<leader>cln", "<cmd>Navbuddy<cr>", desc = "Lsp Navigation" },
         },
@@ -289,11 +291,17 @@ return {
             return util.executable("cbfmt", true)
           end,
         }),
-        fmt.clang_format.with({
-          condition = function()
-            return util.executable("clang-format", true)
-          end,
-        }),
+        -- fmt.clang_format.with({
+        --   condition = function()
+        --     return util.executable("clang-format", true)
+        --   end,
+        -- }),
+        -- fmt.dprint.with({
+        --   condition = function()
+        --     -- return util.executable("dprint", true)
+        --     return true
+        --   end,
+        -- }),
         fmt.eslint_d.with({
           condition = function()
             return util.executable("eslint_d", true)
@@ -370,11 +378,11 @@ return {
               )
           end,
         }),
-        fmt.uncrustify.with({
-          condition = function()
-            return util.executable("uncrustify", true)
-          end,
-        }),
+        -- fmt.uncrustify.with({
+        --   condition = function()
+        --     return util.executable("uncrustify", true)
+        --   end,
+        -- }),
         fmt.zigfmt.with({
           condition = function()
             return util.executable("zig", true)
@@ -394,6 +402,11 @@ return {
             return util.executable("buf", true)
           end,
         }),
+        -- dgn.deno_lint.with({
+        --   condition = function()
+        --     return util.executable("deno", true)
+        --   end,
+        -- }),
         dgn.eslint_d.with({
           condition = function()
             return util.executable("eslint_d", true)
