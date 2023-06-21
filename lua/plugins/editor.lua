@@ -78,6 +78,12 @@ return {
   },
 
   {
+    "ggandor/flit.nvim",
+    enabled = true,
+    opts = { labeled_modes = "v" },
+  },
+
+  {
     "samjwill/nvim-unception",
     event = "BufReadPost",
     init = function()

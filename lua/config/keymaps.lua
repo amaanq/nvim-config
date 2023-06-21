@@ -6,7 +6,7 @@
 
 local util = require("util")
 
--- util.cowboy()
+util.cowboy()
 
 local function map(mode, lhs, rhs, opts)
   local keys = require("lazy.core.handler").handlers.keys
@@ -25,17 +25,6 @@ vim.keymap.set("n", "<right>", "<C-w>l")
 
 -- change word with <c-c>
 vim.keymap.set("n", "<C-c>", "<cmd>normal! ciw<cr>a")
-
--- plenary testing
-vim.keymap.set("n", "<leader>tt", function()
-  util.test(true)
-end, { desc = "Test File" })
-vim.keymap.set("n", "<leader>tT", function()
-  util.test()
-end, { desc = "Test All Files" })
-require("which-key").register({
-  ["<leader>t"] = { name = "+test" },
-})
 
 -- run lua
 vim.keymap.set("n", "<leader>cR", util.runlua, { desc = "Run Lua" })
