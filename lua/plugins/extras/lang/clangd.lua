@@ -24,16 +24,6 @@ return {
     end,
   },
 
-  -- Ensure clang_format is installed
-  {
-    "jay-babu/mason-null-ls.nvim",
-    opts = function(_, opts)
-      if type(opts.ensure_installed) == "table" then
-        util.list_insert_unique(opts.ensure_installed, "clang_format")
-      end
-    end,
-  },
-
   -- Correctly setup lspconfig for clangd 🚀
   {
     "neovim/nvim-lspconfig",
@@ -58,6 +48,7 @@ return {
             "--header-insertion=iwyu",
             "--completion-style=detailed",
             "--function-arg-placeholders",
+            "--fallback-style=llvm",
           }
           opts.init_options = {
             usePlaceholders = true,
