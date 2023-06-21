@@ -169,6 +169,14 @@ return {
                   "--log-level=trace",
                 },
               },
+              hint = {
+                enable = true,
+                setType = false,
+                paramType = true,
+                paramName = "Disable",
+                semicolon = "Disable",
+                arrayIndex = "Disable",
+              },
               diagnostics = {
                 disable = { "incomplete-signature-doc" },
                 -- enable = false,
@@ -522,9 +530,10 @@ return {
             return
           end
 
+          ---@type lsp.Client
           local client = vim.lsp.get_client_by_id(args.data.client_id)
 
-          -- Ignore these, they provide inlay hins already
+          -- Ignore these, they provide inlay hints already
           local ignore_lsps = {
             "clangd",
             "gopls",
@@ -535,7 +544,7 @@ return {
             return
           end
 
-          require("lsp-inlayhints").on_attach(client, args.buf)
+          require("lsp-inlayhints").on_attach(client, args.buf, false)
         end,
       })
     end,
