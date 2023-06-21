@@ -80,7 +80,7 @@ return {
         matlab = {
           install_info = {
             url = "~/projects/treesitter/tree-sitter-matlab",
-            files = { "src/parser.c" },
+            files = { "src/parser.c", "src/scanner.c" },
           },
         },
         passwd = {
@@ -193,6 +193,12 @@ return {
           install_info = {
             url = "~/projects/treesitter/tree-sitter-objc",
             files = { "src/parser.c" },
+          },
+        },
+        d = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-d",
+            files = { "src/parser.c", "src/scanner.c" },
           },
         },
       }
