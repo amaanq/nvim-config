@@ -21,6 +21,27 @@ return {
   },
 
   {
+    "haringsrob/nvim_context_vt",
+    opts = {
+      disable_ft = { "json" },
+      disable_virtual_lines = true,
+      ---@param node TSNode
+      ---@param ft string
+      ---@param _ table
+      custom_parser = function(node, ft, _)
+        local utils = require("nvim_context_vt.utils")
+
+        if ft == "lua" and node:type() == "if_statement" then
+          return nil
+        end
+
+        return "▶ " .. utils.get_node_text(node)[1]:gsub("{", "")
+      end,
+    },
+    event = "BufReadPre",
+  },
+
+  {
     "nvim-treesitter/nvim-treesitter",
     -- dependencies = { "HiPhish/nvim-ts-rainbow2" },
     dependencies = {
