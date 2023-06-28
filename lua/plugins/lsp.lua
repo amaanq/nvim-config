@@ -15,10 +15,7 @@ return {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
-        -- "deno",
-        -- "dprint",
         "eslint_d",
-        "isort",
         "luacheck",
         "prettierd",
         "prosemd-lsp",
@@ -177,8 +174,14 @@ return {
                 semicolon = "Disable",
                 arrayIndex = "Disable",
               },
+              doc = {
+                privateName = { "^_" },
+              },
+              type = {
+                castNumberToInteger = true,
+              },
               diagnostics = {
-                disable = { "incomplete-signature-doc" },
+                disable = { "incomplete-signature-doc", "trailing-space" },
                 -- enable = false,
                 groupSeverity = {
                   strong = "Warning",
@@ -215,7 +218,6 @@ return {
         omnisharp = {},
         prosemd_lsp = {},
         pyright = {},
-        teal_ls = {},
         texlab = {},
         tsserver = {
           root_dir = function(...)
@@ -301,7 +303,12 @@ return {
         }),
         -- fmt.clang_format.with({
         --   condition = function()
+        --     -- don't use clang_format if uncrustify config is present
         --     return util.executable("clang-format", true)
+        --       and vim.tbl_isempty(vim.fs.find({
+        --         "uncrustify.cfg",
+        --         ".uncrustify.cfg",
+        --       }, { path = vim.fn.expand("%:p"), upward = true }))
         --   end,
         -- }),
         -- fmt.dprint.with({
@@ -386,11 +393,23 @@ return {
               )
           end,
         }),
-        -- fmt.uncrustify.with({
-        --   condition = function()
-        --     return util.executable("uncrustify", true)
-        --   end,
-        -- }),
+        fmt.uncrustify.with({
+          condition = function()
+            local paths = vim.fs.find(
+              { "uncrustify.cfg", ".uncrustify.cfg" },
+              { path = vim.fn.expand("%:p"), upward = true }
+            )
+            if vim.tbl_isempty(paths) then
+              return false
+            end
+            if not util.executable("uncrustify", true) then
+              return false
+            end
+            ---@type string
+            vim.env.UNCRUSTIFY_CONFIG = paths[1]
+            return true
+          end,
+        }),
         fmt.zigfmt.with({
           condition = function()
             return util.executable("zig", true)
@@ -410,11 +429,6 @@ return {
             return util.executable("buf", true)
           end,
         }),
-        -- dgn.deno_lint.with({
-        --   condition = function()
-        --     return util.executable("deno", true)
-        --   end,
-        -- }),
         dgn.eslint_d.with({
           condition = function()
             return util.executable("eslint_d", true)
@@ -538,6 +552,7 @@ return {
             "clangd",
             "gopls",
             "rust_analyzer",
+            "tsserver",
           }
 
           if vim.tbl_contains(ignore_lsps, client.name) then

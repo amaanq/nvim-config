@@ -36,7 +36,16 @@ return {
     opts = {
       servers = {
         -- Ensure mason installs the server
-        clangd = {},
+        clangd = {
+          root_dir = function(...)
+            return require("lspconfig.util").root_pattern(
+              "compile_commands.json",
+              "compile_flags.txt",
+              "configure.ac",
+              ".git"
+            )(...)
+          end,
+        },
       },
       setup = {
         clangd = function(_, opts)

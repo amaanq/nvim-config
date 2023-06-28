@@ -48,7 +48,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 
 -- Set indent level for certain filetypes
 vim.api.nvim_create_autocmd({ "FileType", "BufRead" }, {
-  pattern = { "firrtl", "lua", "javascript", "typescript", "text", "query" },
+  pattern = { "firrtl", "lua", "javascript", "typescript", "typescriptreact", "text", "query" },
   callback = function()
     vim.bo.shiftwidth = 2
     vim.bo.tabstop = 2

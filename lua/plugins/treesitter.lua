@@ -23,7 +23,7 @@ return {
   {
     "haringsrob/nvim_context_vt",
     opts = {
-      disable_ft = { "json" },
+      disable_ft = { "json", "yaml" },
       disable_virtual_lines = true,
       ---@param node TSNode
       ---@param ft string
@@ -31,7 +31,17 @@ return {
       custom_parser = function(node, ft, _)
         local utils = require("nvim_context_vt.utils")
 
+        -- useless if the node is less than 10 lines
+        if node:end_() - node:start() < 10 then
+          return nil
+        end
+
         if ft == "lua" and node:type() == "if_statement" then
+          return nil
+        end
+
+        -- only match if alphabetical characters are present
+        if not utils.get_node_text(node)[1]:match("%w") then
           return nil
         end
 
