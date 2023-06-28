@@ -15,6 +15,7 @@ return function(opts)
         opts = {},
       },
       -- LazyVim extras
+      { import = "lazyvim.plugins.extras.coding.yanky" },
       { import = "lazyvim.plugins.extras.editor.flash" },
       { import = "lazyvim.plugins.extras.editor.mini-files" },
       { import = "lazyvim.plugins.extras.lang.typescript" },
