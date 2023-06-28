@@ -16,6 +16,7 @@ return function(opts)
       },
       -- LazyVim extras
       { import = "lazyvim.plugins.extras.editor.flash" },
+      { import = "lazyvim.plugins.extras.editor.mini-files" },
       { import = "lazyvim.plugins.extras.lang.typescript" },
       { import = "lazyvim.plugins.extras.lang.json" },
       { import = "lazyvim.plugins.extras.test.core" },
