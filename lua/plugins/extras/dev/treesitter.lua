@@ -28,22 +28,10 @@ return {
             files = { "src/parser.c" },
           },
         },
-        cue = {
-          install_info = {
-            url = "~/projects/treesitter/tree-sitter-cue",
-            files = { "src/parser.c", "src/scanner.c" },
-          },
-        },
-        dhall = {
-          install_info = {
-            url = "~/projects/treesitter/tree-sitter-dhall",
-            files = { "src/parser.c", "src/scanner.c" },
-          },
-        },
         firrtl = {
           install_info = {
             url = "~/projects/treesitter/tree-sitter-firrtl",
-            files = { "src/parser.c", "src/scanner.cc" },
+            files = { "src/parser.c", "src/scanner.c" },
           },
         },
         func = {
@@ -89,28 +77,10 @@ return {
             files = { "src/parser.c" },
           },
         },
-        po = {
-          install_info = {
-            url = "~/projects/treesitter/tree-sitter-po",
-            files = { "src/parser.c" },
-          },
-        },
-        qmldir = {
-          install_info = {
-            url = "~/projects/treesitter/tree-sitter-qmldir",
-            files = { "src/parser.c" },
-          },
-        },
         smali = {
           install_info = {
             url = "~/projects/treesitter/tree-sitter-smali",
             files = { "src/parser.c", "src/scanner.c" },
-          },
-        },
-        smithy = {
-          install_info = {
-            url = "~/projects/treesitter/tree-sitter-smithy",
-            files = { "src/parser.c" },
           },
         },
         squirrel = {
@@ -131,12 +101,6 @@ return {
         --     files = { "src/parser.c" },
         --   },
         -- },
-        ungrammar = {
-          install_info = {
-            url = "~/projects/treesitter/tree-sitter-ungrammar",
-            files = { "src/parser.c" },
-          },
-        },
         uxntal = {
           install_info = {
             url = "~/projects/treesitter/tree-sitter-uxntal",
