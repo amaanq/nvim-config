@@ -259,7 +259,6 @@ return {
             },
           },
         },
-        zls = {},
       },
       setup = {},
     },
@@ -335,15 +334,15 @@ return {
         --     return util.executable("gofmt", true)
         --   end,
         -- }),
-        fmt.goimports_reviser.with({
-          condition = function()
-            return util.executable("goimports-reviser", true)
-              and not vim.tbl_isempty(vim.fs.find("go.mod", {
-                path = vim.fn.expand("%:p"),
-                upward = true,
-              }))
-          end,
-        }),
+        -- fmt.goimports_reviser.with({
+        --   condition = function()
+        --     return util.executable("goimports-reviser", true)
+        --       and not vim.tbl_isempty(vim.fs.find("go.mod", {
+        --         path = vim.fn.expand("%:p"),
+        --         upward = true,
+        --       }))
+        --   end,
+        -- }),
         fmt.isort.with({
           condition = function()
             return util.executable("isort", true)

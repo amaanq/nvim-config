@@ -16,7 +16,7 @@ vim.api.nvim_create_autocmd("User", {
   pattern = "LazyVimStarted",
   callback = function()
     vim.schedule(function()
-      -- require("lazy.core.cache").inspect()
+      -- require("util.profiler").inspect()
     end)
   end,
 })

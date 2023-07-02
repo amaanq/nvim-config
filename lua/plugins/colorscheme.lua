@@ -182,6 +182,7 @@ return {
           -- why are these both so bad?
           hl["@lsp.type.keyword.go"] = {}
           hl["@lsp.type.keyword.rust"] = {}
+          hl["@lsp.type.keyword.zig"] = {}
           hl["@lsp.typemod.keyword.injected"] = { link = "@keyword" }
 
           hl["@lsp.type.operator"] = { link = "@operator" }
