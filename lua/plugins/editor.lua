@@ -84,4 +84,22 @@ return {
       vim.g.unception_open_buffer_in_new_tab = true
     end,
   },
+
+  {
+    "flash.nvim",
+    opts = {
+      modes = {
+        char = {
+          jump_labels = function(motion)
+            -- never show jump labels by default
+            -- return false
+            -- Always show jump labels for ftFT
+            return vim.v.count == 0 and motion:find("[ftFT]")
+            -- Show jump labels for ftFT in operator-pending mode
+            -- return vim.v.count == 0 and motion:find("[ftFT]") and vim.fn.mode(true):find("o")
+          end,
+        },
+      },
+    },
+  },
 }
