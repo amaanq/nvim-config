@@ -10,29 +10,16 @@ return {
           require("telescope").load_extension("fzf")
         end,
       },
-      { "nvim-telescope/telescope-project.nvim" },
       { "debugloop/telescope-undo.nvim" },
-    },
-    keys = {
-      {
-        "<leader>fP",
-        "<cmd>Telescope project display_type=full<cr>",
-        desc = "Find Plugin File",
-      },
     },
     opts = {
       defaults = {
         layout_strategy = "horizontal",
         layout_config = { prompt_position = "top" },
         sorting_strategy = "ascending",
-        winblend = 0,
+        winblend = 10,
       },
       extensions = {
-        project = {
-          base_dirs = {
-            "~/projects",
-          },
-        },
         undo = {
           use_delta = true,
           side_by_side = true,
@@ -47,7 +34,6 @@ return {
       local telescope = require("telescope")
       telescope.setup(opts)
       telescope.load_extension("dap")
-      telescope.load_extension("project")
       telescope.load_extension("undo")
     end,
   },
