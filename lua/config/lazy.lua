@@ -16,8 +16,10 @@ return function(opts)
       },
       -- LazyVim extras
       { import = "lazyvim.plugins.extras.coding.yanky" },
+      { import = "lazyvim.plugins.extras.dap.core" },
       { import = "lazyvim.plugins.extras.editor.flash" },
       { import = "lazyvim.plugins.extras.editor.mini-files" },
+      { import = "lazyvim.plugins.extras.lang.clangd" },
       { import = "lazyvim.plugins.extras.lang.go" },
       { import = "lazyvim.plugins.extras.lang.rust" },
       { import = "lazyvim.plugins.extras.lang.typescript" },
@@ -33,7 +35,6 @@ return function(opts)
       { import = "plugins.extras.coding.copilot" },
       { import = "plugins.extras.dev.treesitter" },
       { import = "plugins.extras.lang.bash" },
-      { import = "plugins.extras.lang.clangd" },
       { import = "plugins.extras.lang.cmake" },
       { import = "plugins.extras.lang.csharp" },
       { import = "plugins.extras.lang.docker" },
