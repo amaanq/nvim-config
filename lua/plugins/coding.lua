@@ -208,26 +208,54 @@ return {
       -- "jc-doyle/cmp-pandoc-references",
       "petertriho/cmp-git",
       "rcarriga/cmp-dap",
-      "zbirenbaum/copilot-cmp",
     },
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
+      local has_words_before = function()
+        unpack = unpack or table.unpack
+        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+      end
+
+      local luasnip = require("luasnip")
       local cmp = require("cmp")
-      opts.sources = cmp.config.sources(vim.tbl_deep_extend("force", opts.sources, {
-        { name = "nvim_lsp", priority = 1000 },
+
+      opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
         {
           name = "git",
-          priority = 800,
           options = { filetypes = { "gitcommit", "NeogitCommitMessage", "octo" } },
         },
-        { name = "luasnip", priority = 750 },
         -- { name = "pandoc_references", priority = 725 },
         { name = "emoji", priority = 700 },
         { name = "calc", priority = 650 },
-        { name = "path", priority = 500 },
         -- { name = "spell", priority = 400 },
-        { name = "buffer", priority = 250 },
       }))
+
+      opts.mapping = vim.tbl_extend("force", opts.mapping, {
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            -- You could replace select_next_item() with confirm({ select = true }) to get VS Code autocompletion behavior
+            cmp.confirm({ select = true })
+          -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
+          -- this way you will only jump inside the snippet region
+          elseif luasnip.expand_or_locally_jumpable() then
+            luasnip.expand_or_locally_jumpable()
+          elseif has_words_before() then
+            cmp.complete()
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif luasnip.jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+      })
 
       cmp.setup.filetype({ "dap-repl", "dapui_watches" }, {
         sources = { { name = "dap" } },
@@ -237,7 +265,7 @@ return {
 
   {
     "gorbit99/codewindow.nvim",
-    enabled = true,
+    enabled = false,
     event = "BufReadPre",
     keys = {
 			-- stylua: ignore
