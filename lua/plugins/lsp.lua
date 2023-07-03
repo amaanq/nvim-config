@@ -369,11 +369,6 @@ return {
             return util.executable("ruff", true)
           end,
         }),
-        fmt.rustfmt.with({
-          condition = function()
-            return util.executable("rustfmt", true)
-          end,
-        }),
         fmt.shfmt.with({
           condition = function()
             return util.executable("shfmt", true)
