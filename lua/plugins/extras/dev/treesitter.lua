@@ -165,6 +165,12 @@ return {
             files = { "src/parser.c", "src/scanner.c" },
           },
         },
+        cairo = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-cairo",
+            files = { "src/parser.c", "src/scanner.c" },
+          },
+        },
       }
 
       vim.api.nvim_create_autocmd("FileType", {
