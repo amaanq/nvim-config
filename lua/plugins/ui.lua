@@ -7,15 +7,17 @@ return {
       level = vim.log.levels.INFO,
       fps = 144,
       stages = "fade_in_slide_out",
+      background_colour = "#000000",
     },
   },
 
   -- bufferline
   {
     "akinsho/bufferline.nvim",
+    ---@param opts bufferline.UserConfig
     opts = function(_, opts)
       opts.options.show_close_icon = true
-      opts.options.separator_style = "slant"
+      -- opts.options.separator_style = "slant"
       opts.options.offsets = {
         {
           filetype = "neo-tree",
@@ -35,6 +37,29 @@ return {
         delay = 200,
         reveal = { "close" },
       }
+      opts.highlights = function(config) ---@param bufferline.Config
+        local hl = {}
+
+        for name, tbl in pairs(config.highlights) do
+          local tbl_copy = {}
+          for k, v in pairs(tbl) do
+            -- Modify gui to remove italic
+            if k == "gui" then
+              local parts = vim.split(v, ",")
+              for _, part in pairs(parts) do
+                if part ~= "italic" then
+                  tbl_copy["gui"] = part
+                end
+              end
+            else
+              tbl_copy[k] = v
+            end
+          end
+          hl[name] = tbl_copy
+        end
+
+        return hl
+      end
     end,
   },
 
@@ -169,7 +194,7 @@ return {
       themes = {
         markdown = { colorscheme = "rose-pine" },
         help = { colorscheme = "rose-pine", background = "dark" },
-        toggleterm = { colorscheme = "rose-pine" },
+        -- toggleterm = { colorscheme = "rose-pine" },
       },
     },
   },
@@ -237,15 +262,11 @@ return {
   },
 
   {
-    "akinsho/nvim-toggleterm.lua",
+    "akinsho/toggleterm.nvim",
     keys = "<C-`>",
     event = "VeryLazy",
     init = function()
-      -- Hide number column for
-      -- vim.cmd [[au TermOpen * setlocal nonumber norelativenumber]]
-
-      -- Esc twice to get to normal mode
-      vim.cmd([[tnoremap <ESC> <C-\><C-N>]])
+      vim.keymap.set("t", "<ESC>", "<C-\\><C-n>", { noremap = true, silent = true })
     end,
     opts = {
       size = 20,

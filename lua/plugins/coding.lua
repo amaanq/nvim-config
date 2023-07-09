@@ -257,6 +257,17 @@ return {
         end, { "i", "s" }),
       })
 
+      opts.window = {
+        completion = {
+          border = "rounded",
+          winhighlight = "Normal:Pmenu",
+        },
+        documentation = {
+          border = "rounded",
+          winhighlight = "Normal:Pmenu",
+        },
+      }
+
       cmp.setup.filetype({ "dap-repl", "dapui_watches" }, {
         sources = { { name = "dap" } },
       })

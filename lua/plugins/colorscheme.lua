@@ -108,7 +108,7 @@ return {
       })
     end,
   },
-  { "projekt0n/github-nvim-theme", lazy = false },
+  -- { "projekt0n/github-nvim-theme", lazy = false },
   { "rebelot/kanagawa.nvim", lazy = false, config = true },
   { "Shatur/neovim-ayu", lazy = false },
   { "shaunsingh/oxocarbon.nvim", lazy = false },
@@ -122,7 +122,10 @@ return {
         style = "moon",
         styles = {
           keywords = { italic = false },
+          sidebars = "transparent",
+          floats = "transparent",
         },
+        transparent = true,
         sidebars = {
           "qf",
           "vista_kind",

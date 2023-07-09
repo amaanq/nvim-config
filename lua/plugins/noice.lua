@@ -41,6 +41,12 @@ return {
     }
 
     opts.views = {
+      mini = {
+        win_options = {
+          winblend = 0,
+          winhighlight = { Normal = "Pmenu", FloatBorder = "Pmenu" },
+        },
+      },
       cmdline_popup = {
         position = {
           row = 5,
