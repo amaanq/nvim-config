@@ -14,6 +14,7 @@ return function(opts)
         import = "lazyvim.plugins",
         opts = {},
       },
+      { import = "plugins" },
       -- LazyVim extras
       { import = "lazyvim.plugins.extras.coding.yanky" },
       { import = "lazyvim.plugins.extras.dap.core" },
@@ -29,8 +30,7 @@ return function(opts)
       { import = "lazyvim.plugins.extras.util.mini-hipatterns" },
       { import = "lazyvim.plugins.extras.util.project" },
       { import = "lazyvim.plugins.extras.vscode" },
-      -- My own plugins
-      { import = "plugins" },
+      -- My own extras
       { import = "plugins.extras.coding.copilot" },
       { import = "plugins.extras.dev.treesitter" },
       { import = "plugins.extras.lang.bash" },
