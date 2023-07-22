@@ -17,7 +17,6 @@ return function(opts)
       -- LazyVim extras
       { import = "lazyvim.plugins.extras.coding.yanky" },
       { import = "lazyvim.plugins.extras.dap.core" },
-      { import = "lazyvim.plugins.extras.editor.flash" },
       { import = "lazyvim.plugins.extras.editor.mini-files" },
       { import = "lazyvim.plugins.extras.lang.clangd" },
       { import = "lazyvim.plugins.extras.lang.go" },
