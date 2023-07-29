@@ -425,4 +425,8 @@ return {
     cmd = { "QL" },
   },
 
+  -- {
+  --   "indent-blankline.nvim",
+  --   dev = true,
+  -- },
 }
