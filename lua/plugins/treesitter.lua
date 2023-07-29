@@ -100,6 +100,7 @@ return {
       highlight = { enable = true },
       matchup = {
         enable = true,
+        disable = { "c", "cpp" },
         enable_quotes = true,
       },
       playground = {
