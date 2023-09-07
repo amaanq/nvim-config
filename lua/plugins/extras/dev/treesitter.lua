@@ -143,7 +143,7 @@ return {
             url = "https://github.com/osthomas/tree-sitter-snakemake",
             branch = "main",
             location = "tree-sitter-snakemake",
-            files = { "src/parser.c", "src/scanner.cc" },
+            files = { "src/parser.c", "src/scanner.c" },
           },
           experimental = true,
         },
@@ -159,15 +159,57 @@ return {
             files = { "src/parser.c" },
           },
         },
-        d = {
-          install_info = {
-            url = "~/projects/treesitter/tree-sitter-d",
-            files = { "src/parser.c", "src/scanner.c" },
-          },
-        },
+        -- d = {
+        --   install_info = {
+        --     url = "~/projects/treesitter/tree-sitter-d",
+        --     files = { "src/parser.c", "src/scanner.c" },
+        --   },
+        -- },
         cairo = {
           install_info = {
             url = "~/projects/treesitter/tree-sitter-cairo",
+            files = { "src/parser.c", "src/scanner.c" },
+          },
+        },
+        make = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-make",
+            files = { "src/parser.c" },
+          },
+        },
+        bitbake = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-bitbake",
+            files = { "src/parser.c", "src/scanner.c" },
+          },
+        },
+        re2c = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-re2c",
+            files = { "src/parser.c" },
+          },
+        },
+        forth = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-forth",
+            files = { "src/parser.c" },
+          },
+        },
+        doxygen = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-doxygen",
+            files = { "src/parser.c", "src/scanner.c" },
+          },
+        },
+        -- bash = {
+        --   install_info = {
+        --     url = "~/projects/treesitter/tree-sitter-bash",
+        --     files = { "src/parser.c", "src/scanner.c" },
+        --   },
+        -- },
+        kconfig = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-kconfig",
             files = { "src/parser.c", "src/scanner.c" },
           },
         },
