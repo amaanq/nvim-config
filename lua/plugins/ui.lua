@@ -340,17 +340,17 @@ return {
     config = true,
   },
 
-  {
-    "zbirenbaum/neodim",
-    event = "LspAttach",
-    opts = {
-      hide = {
-        virtual_text = false,
-        signs = false,
-        underline = false,
-      },
-    },
-  },
+  -- {
+  --   "zbirenbaum/neodim",
+  --   event = "LspAttach",
+  --   opts = {
+  --     hide = {
+  --       virtual_text = false,
+  --       signs = false,
+  --       underline = false,
+  --     },
+  --   },
+  -- },
 
   {
     "LudoPinelli/comment-box.nvim",
