@@ -15,6 +15,7 @@ return {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
+        "black",
         "eslint_d",
         "luacheck",
         "prettierd",
@@ -295,6 +296,12 @@ return {
             return util.executable("asmfmt", true)
           end,
         }),
+        fmt.black.with({
+          condition = function()
+            return util.executable("black", true)
+          end,
+          args = { "--line-length", "120" },
+        }),
         fmt.cbfmt.with({
           condition = function()
             return util.executable("cbfmt", true)
@@ -343,11 +350,11 @@ return {
         --       }))
         --   end,
         -- }),
-        fmt.isort.with({
-          condition = function()
-            return util.executable("isort", true)
-          end,
-        }),
+        -- fmt.isort.with({
+        --   condition = function()
+        --     return util.executable("isort", true)
+        --   end,
+        -- }),
         fmt.nginx_beautifier.with({
           condition = function()
             return util.executable("nginxbeautifier", true)
@@ -364,11 +371,11 @@ return {
             return util.executable("prettierd", true)
           end,
         }),
-        fmt.ruff.with({
-          condition = function()
-            return util.executable("ruff", true)
-          end,
-        }),
+        -- fmt.ruff.with({
+        --   condition = function()
+        --     return util.executable("ruff", true)
+        --   end,
+        -- }),
         fmt.shfmt.with({
           condition = function()
             return util.executable("shfmt", true)
@@ -423,19 +430,19 @@ return {
             return util.executable("buf", true)
           end,
         }),
-        dgn.eslint_d.with({
-          condition = function()
-            return util.executable("eslint_d", true)
-              and not vim.tbl_isempty(vim.fs.find({
-                ".eslintrc",
-                ".eslintrc.js",
-                ".eslintrc.cjs",
-                ".eslintrc.json",
-                ".eslintrc.yaml",
-                ".eslintrc.yml",
-              }, { path = vim.fn.expand("%:p"), upward = true }))
-          end,
-        }),
+        -- dgn.eslint_d.with({
+        --   condition = function()
+        --     return util.executable("eslint_d", true)
+        --       and not vim.tbl_isempty(vim.fs.find({
+        --         ".eslintrc",
+        --         ".eslintrc.js",
+        --         ".eslintrc.cjs",
+        --         ".eslintrc.json",
+        --         ".eslintrc.yaml",
+        --         ".eslintrc.yml",
+        --       }, { path = vim.fn.expand("%:p"), upward = true }))
+        --   end,
+        -- }),
         dgn.gitlint.with({
           condition = function()
             return util.executable("gitlint", true)
@@ -460,11 +467,11 @@ return {
             return util.executable("protolint", true)
           end,
         }),
-        dgn.ruff.with({
-          condition = function()
-            return util.executable("ruff", true)
-          end,
-        }),
+        -- dgn.ruff.with({
+        --   condition = function()
+        --     return util.executable("ruff", true)
+        --   end,
+        -- }),
         -- dgn.shellcheck.with({
         --   condition = function()
         --     return util.executable("shellcheck", true)
@@ -495,19 +502,19 @@ return {
         --  ╭──────────────╮
         --  │ Code Actions │
         --  ╰──────────────╯
-        cda.eslint_d.with({
-          condition = function()
-            return util.executable("eslint_d", true)
-              and not vim.tbl_isempty(vim.fs.find({
-                ".eslintrc",
-                ".eslintrc.js",
-                ".eslintrc.cjs",
-                ".eslintrc.json",
-                ".eslintrc.yaml",
-                ".eslintrc.yml",
-              }, { path = vim.fn.expand("%:p"), upward = true }))
-          end,
-        }),
+        -- cda.eslint_d.with({
+        --   condition = function()
+        --     return util.executable("eslint_d", true)
+        --       and not vim.tbl_isempty(vim.fs.find({
+        --         ".eslintrc",
+        --         ".eslintrc.js",
+        --         ".eslintrc.cjs",
+        --         ".eslintrc.json",
+        --         ".eslintrc.yaml",
+        --         ".eslintrc.yml",
+        --       }, { path = vim.fn.expand("%:p"), upward = true }))
+        --   end,
+        -- }),
         cda.gitrebase,
         -- cda.shellcheck.with({
         --   condition = function()
