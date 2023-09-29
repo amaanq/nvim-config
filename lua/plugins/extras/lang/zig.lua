@@ -7,7 +7,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       if type(opts.ensure_installed) == "table" then
-        util.list_insert_unique(opts.ensure_installed, "zig")
+        -- util.list_insert_unique(opts.ensure_installed, "zig")
       end
     end,
   },
@@ -18,10 +18,13 @@ return {
     opts = {
       servers = {
         -- Ensure mason installs the server
-        zls = {},
-      },
-      setup = {
-        zls = {},
+        zls = {
+          -- Zig is too new and the latest stable version is way behind dev
+          mason = false,
+          settings = {
+            enable_inlay_hints = false,
+          },
+        },
       },
     },
   },

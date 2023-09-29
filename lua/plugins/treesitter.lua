@@ -93,7 +93,6 @@ return {
         "vue",
         "wgsl",
         "yaml",
-        "zig",
       },
       autopairs = { enable = true },
       autotag = { enable = true },

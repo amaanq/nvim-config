@@ -411,11 +411,11 @@ return {
             return true
           end,
         }),
-        fmt.zigfmt.with({
-          condition = function()
-            return util.executable("zig", true)
-          end,
-        }),
+        -- fmt.zigfmt.with({
+        --   condition = function()
+        --     return util.executable("zig", true)
+        --   end,
+        -- }),
 
         --  ╭─────────────╮
         --  │ Diagnostics │

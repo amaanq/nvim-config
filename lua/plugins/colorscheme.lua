@@ -186,6 +186,7 @@ return {
           hl["@lsp.type.keyword.go"] = {}
           hl["@lsp.type.keyword.rust"] = {}
           hl["@lsp.type.keyword.zig"] = {}
+          hl["@lsp.type.type.zig"] = {}
           hl["@lsp.typemod.keyword.injected"] = { link = "@keyword" }
 
           hl["@lsp.type.operator"] = { link = "@operator" }
@@ -194,17 +195,17 @@ return {
     end,
   },
 
-  {
-    "LazyVim/LazyVim",
-    -- opts = {
-    --   colorscheme = function()
-    --     opts = {
-    --       styles = {
-    --         keywords = { italic = false },
-    --       },
-    --     }
-    --     require("chic-noir").load(opts)
-    --   end,
-    -- },
-  },
+  -- {
+  --   "LazyVim/LazyVim",
+  -- opts = {
+  --   colorscheme = function()
+  --     opts = {
+  --       styles = {
+  --         keywords = { italic = false },
+  --       },
+  --     }
+  --     require("chic-noir").load(opts)
+  --   end,
+  -- },
+  -- },
 }

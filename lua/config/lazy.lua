@@ -42,6 +42,7 @@ return function(opts)
       { import = "plugins.extras.lang.java" },
       { import = "plugins.extras.lang.nix" },
       { import = "plugins.extras.lang.nodejs" },
+      { import = "plugins.extras.lang.zig" },
     },
     defaults = {
       lazy = true,
