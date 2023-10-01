@@ -25,6 +25,9 @@ function M.wrap(name, fn)
     local start = vim.loop.hrtime()
     local ret = pack_len(pcall(fn, ...))
     M.stat(name, start)
+    if not ret[1] then
+      error(ret[2])
+    end
     return unpack(ret, 2, ret.n)
     -- error(ret[2])
   end
@@ -45,7 +48,7 @@ function M.hook(name, value, done)
   done[value] = true
   if type(value) == "function" then
     return M.wrap(name, value)
-  elseif type(value) == "table" then
+  elseif type(value) == "table" and getmetatable(value) == nil then
     ---@param k string
     ---@param v any
     for k, v in pairs(value) do
@@ -69,7 +72,7 @@ function M.require(modname)
   local ret = pack_len(pcall(M._require, modname))
   M.stat(modname, start)
   if ret[1] then
-    M.hook(modname, ret[2])
+    ret[2] = M.hook(modname, ret[2])
     return unpack(ret, 2, ret.n)
   end
   error(ret[2])
