@@ -1,6 +1,5 @@
 return {
   "folke/twilight.nvim",
-  "jose-elias-alvarez/typescript.nvim",
 
   {
     "echasnovski/mini.splitjoin",

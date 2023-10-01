@@ -34,7 +34,7 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "williamboman/mason.nvim",
-      "jose-elias-alvarez/null-ls.nvim",
+      "nvimtools/none-ls.nvim",
     },
     opts = {
       ensure_installed = {},
@@ -249,7 +249,6 @@ return {
             },
           },
         },
-        vala_ls = {},
         vimls = {},
         yamlls = {
           settings = {
@@ -275,7 +274,7 @@ return {
 
   -- null-ls
   {
-    "jose-elias-alvarez/null-ls.nvim",
+    "nvimtools/none-ls.nvim",
     opts = function(_, opts)
       local util = require("util")
       local nls = require("null-ls")
