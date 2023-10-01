@@ -192,7 +192,7 @@ return {
     event = "VeryLazy",
     opts = {
       themes = {
-        markdown = { colorscheme = "rose-pine" },
+        -- markdown = { colorscheme = "rose-pine" },
         help = { colorscheme = "rose-pine", background = "dark" },
         -- toggleterm = { colorscheme = "rose-pine" },
       },

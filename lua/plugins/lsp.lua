@@ -105,44 +105,17 @@ return {
       require("which-key").register({
         ["<leader>cl"] = { name = "+lsp" },
       })
-
-      local format = require("lazyvim.plugins.lsp.format")
-      ---@diagnostic disable-next-line: duplicate-set-field
-      format.on_attach = function(client, buf)
-        if client.supports_method("textDocument/formatting") then
-          vim.api.nvim_create_autocmd("BufWritePre", {
-            group = vim.api.nvim_create_augroup("LspFormat." .. buf, {}),
-            buffer = buf,
-            callback = function()
-              if format.autoformat then
-                format.format()
-              end
-            end,
-          })
-        end
-
-        if client.supports_method("textDocument/codeLens") then
-          vim.cmd([[
-						augroup lsp_document_codelens
-							au! * <buffer>
-							autocmd BufEnter ++once         <buffer> lua require"vim.lsp.codelens".refresh()
-							autocmd BufWritePost,CursorHold <buffer> lua require"vim.lsp.codelens".refresh()
-						augroup END
-					]])
-        end
-      end
-
-      -- disable lsp watcher. Too slow on linux
-      local ok, wf = pcall(require, "vim.lsp._watchfiles")
-      if ok then
-        wf._watchfunc = function()
-          return function() end
-        end
-      end
     end,
     opts = {
-      ---@type lspconfig.options
       diagnostics = { virtual_text = { prefix = "icons" } },
+      capabilities = {
+        workspace = {
+          didChangeWatchedFiles = {
+            dynamicRegistration = false,
+          },
+        },
+      },
+      ---@type lspconfig.options
       servers = {
         ansiblels = {},
         asm_lsp = {},
@@ -520,47 +493,6 @@ return {
         --     return util.executable("shellcheck", true)
         --   end,
         -- }),
-      })
-    end,
-  },
-
-  -- inlay hints
-  {
-    "lvimuser/lsp-inlayhints.nvim",
-    branch = "anticonceal",
-    event = "LspAttach",
-    opts = {},
-    config = function(_, opts)
-      require("lsp-inlayhints").setup(opts)
-      vim.api.nvim_create_autocmd("LspAttach", {
-        group = vim.api.nvim_create_augroup("LspAttach_inlayhints", {}),
-        callback = function(args)
-          if not (args.data and args.data.client_id) then
-            return
-          end
-
-          -- Ignore grammar.js files
-          if args.file:match("grammar.js$") then
-            return
-          end
-
-          ---@type lsp.Client
-          local client = vim.lsp.get_client_by_id(args.data.client_id)
-
-          -- Ignore these, they provide inlay hints already
-          local ignore_lsps = {
-            "clangd",
-            "gopls",
-            "rust_analyzer",
-            "tsserver",
-          }
-
-          if vim.tbl_contains(ignore_lsps, client.name) then
-            return
-          end
-
-          require("lsp-inlayhints").on_attach(client, args.buf, false)
-        end,
       })
     end,
   },
