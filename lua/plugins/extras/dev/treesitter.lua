@@ -138,15 +138,15 @@ return {
             files = { "src/parser.c", "src/scanner.c" },
           },
         },
-        snakemake = {
-          install_info = {
-            url = "https://github.com/osthomas/tree-sitter-snakemake",
-            branch = "main",
-            location = "tree-sitter-snakemake",
-            files = { "src/parser.c", "src/scanner.c" },
-          },
-          experimental = true,
-        },
+        -- snakemake = {
+        --   install_info = {
+        --     url = "https://github.com/osthomas/tree-sitter-snakemake",
+        --     branch = "main",
+        --     location = "tree-sitter-snakemake",
+        --     files = { "src/parser.c", "src/scanner.c" },
+        --   },
+        --   experimental = true,
+        -- },
         odin = {
           install_info = {
             url = "~/projects/treesitter/tree-sitter-odin",
@@ -211,6 +211,12 @@ return {
           install_info = {
             url = "~/projects/treesitter/tree-sitter-kconfig",
             files = { "src/parser.c", "src/scanner.c" },
+          },
+        },
+        nasm = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-nasm",
+            files = { "src/parser.c" },
           },
         },
       }

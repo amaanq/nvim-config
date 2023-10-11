@@ -60,6 +60,7 @@ vim.api.nvim_create_autocmd({ "FileType", "BufRead" }, {
 -- Tree-Sitter highlighting for filetypes not autodetected
 vim.filetype.add({
   extension = {
+    nasm = "nasm",
     qmljs = "qmljs",
     pp = "puppet",
   },
