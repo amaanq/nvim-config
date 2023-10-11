@@ -42,10 +42,7 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
-    -- dependencies = { "HiPhish/nvim-ts-rainbow2" },
-    dependencies = {
-      { "windwp/nvim-ts-autotag", opts = {} },
-    },
+    dependencies = {},
     --- @type TSConfig
     opts = {
       ensure_installed = {
@@ -185,4 +182,6 @@ return {
       },
     },
   },
+
+  { "windwp/nvim-ts-autotag", opts = {}, event = "InsertEnter" },
 }

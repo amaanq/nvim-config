@@ -139,7 +139,7 @@ return {
         ---@param c ColorScheme
         on_highlights = function(hl, c)
           hl.CursorLineNr = { fg = c.orange, bold = true }
-          hl.LineNr = { fg = c.orange, bold = true }
+          -- hl.LineNr = { fg = c.orange, bold = true }
           hl.LineNrAbove = { fg = c.fg_gutter }
           hl.LineNrBelow = { fg = c.fg_gutter }
           local prompt = "#2d3149"

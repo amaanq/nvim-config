@@ -7,9 +7,12 @@ return {
   },
 
   {
-    "huggingface/hfcc.nvim",
+    "huggingface/llm.nvim",
     opts = {
       api_token = "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",
+      lsp = {
+        bin_path = vim.api.nvim_call_function("stdpath", { "data" }) .. "/mason/bin/llm-ls",
+      },
       model = "bigcode/starcoder",
       query_params = {
         max_new_tokens = 200,
@@ -31,6 +34,9 @@ return {
       plugin._.super.config()
 
       -- add treesitter jumping
+      ---@param capture string
+      ---@param start boolean
+      ---@param down boolean
       local function jump(capture, start, down)
         local rhs = function()
           local parser = vim.treesitter.get_parser()
@@ -38,6 +44,7 @@ return {
             return vim.notify("No treesitter parser for the current buffer", vim.log.levels.ERROR)
           end
 
+          ---@type Query
           local query = vim.treesitter.get_query(vim.bo.filetype, "textobjects")
           if not query then
             return vim.notify("No textobjects query for the current buffer", vim.log.levels.ERROR)
@@ -78,19 +85,19 @@ return {
     end,
   },
 
-  {
-    "danymat/neogen",
-    keys = {
-      {
-        "<leader>cc",
-        function()
-          require("neogen").generate()
-        end,
-        desc = "Neogen Comment",
-      },
-    },
-    opts = { snippet_engine = "luasnip" },
-  },
+  -- {
+  --   "danymat/neogen",
+  --   keys = {
+  --     {
+  --       "<leader>cc",
+  --       function()
+  --         require("neogen").generate()
+  --       end,
+  --       desc = "Neogen Comment",
+  --     },
+  --   },
+  --   opts = { snippet_engine = "luasnip" },
+  -- },
 
   {
     "smjonas/inc-rename.nvim",
@@ -98,67 +105,51 @@ return {
     config = true,
   },
 
-  {
-    "ThePrimeagen/refactoring.nvim",
-    keys = {
-      {
-        "<leader>r",
-        function()
-          require("refactoring").select_refactor()
-        end,
-        mode = "v",
-        noremap = true,
-        silent = true,
-        expr = false,
-      },
-    },
-    opts = {},
-  },
-
-  {
-    "echasnovski/mini.bracketed",
-    event = "BufReadPost",
-    config = function()
-      local bracketed = require("mini.bracketed")
-
-      -- local function put(cmd, regtype)
-      -- 	local body = vim.fn.getreg(vim.v.register)
-      -- 	local type = vim.fn.getregtype(vim.v.register)
-      -- 	---@diagnostic disable-next-line: param-type-mismatch
-      -- 	vim.fn.setreg(vim.v.register, body, regtype or "l")
-      -- 	bracketed.register_put_region()
-      -- 	vim.cmd(('normal! "%s%s'):format(vim.v.register, cmd:lower()))
-      -- 	---@diagnostic disable-next-line: param-type-mismatch
-      -- 	vim.fn.setreg(vim.v.register, body, type)
-      -- end
-
-      -- for _, cmd in ipairs({ "]p", "[p" }) do
-      -- 	put(cmd)
-      -- 	vim.keymap.set("n", cmd, function() end)
-      -- end
-      --
-      -- for _, cmd in ipairs({ "]P", "[P" }) do
-      -- 	vim.keymap.set("n", cmd, function()
-      -- 		put(cmd, "c")
-      -- 	end)
-      -- end
-
-      -- local put_keys = { "p", "P" }
-      -- for _, lhs in ipairs(put_keys) do
-      -- 	vim.keymap.set({ "n", "x" }, lhs, function()
-      -- 		return bracketed.register_put_region(lhs)
-      -- 	end, { expr = true })
-      -- end
-
-      bracketed.setup({
-        file = { suffix = "" },
-        window = { suffix = "" },
-        quickfix = { suffix = "" },
-        yank = { suffix = "" },
-        treesitter = { suffix = "n" },
-      })
-    end,
-  },
+  -- {
+  --   "echasnovski/mini.bracketed",
+  --   enabled = false,
+  --   event = "BufReadPost",
+  --   config = function()
+  --     local bracketed = require("mini.bracketed")
+  --
+  --     -- local function put(cmd, regtype)
+  --     -- 	local body = vim.fn.getreg(vim.v.register)
+  --     -- 	local type = vim.fn.getregtype(vim.v.register)
+  --     -- 	---@diagnostic disable-next-line: param-type-mismatch
+  --     -- 	vim.fn.setreg(vim.v.register, body, regtype or "l")
+  --     -- 	bracketed.register_put_region()
+  --     -- 	vim.cmd(('normal! "%s%s'):format(vim.v.register, cmd:lower()))
+  --     -- 	---@diagnostic disable-next-line: param-type-mismatch
+  --     -- 	vim.fn.setreg(vim.v.register, body, type)
+  --     -- end
+  --
+  --     -- for _, cmd in ipairs({ "]p", "[p" }) do
+  --     -- 	put(cmd)
+  --     -- 	vim.keymap.set("n", cmd, function() end)
+  --     -- end
+  --     --
+  --     -- for _, cmd in ipairs({ "]P", "[P" }) do
+  --     -- 	vim.keymap.set("n", cmd, function()
+  --     -- 		put(cmd, "c")
+  --     -- 	end)
+  --     -- end
+  --
+  --     -- local put_keys = { "p", "P" }
+  --     -- for _, lhs in ipairs(put_keys) do
+  --     -- 	vim.keymap.set({ "n", "x" }, lhs, function()
+  --     -- 		return bracketed.register_put_region(lhs)
+  --     -- 	end, { expr = true })
+  --     -- end
+  --
+  --     bracketed.setup({
+  --       file = { suffix = "" },
+  --       window = { suffix = "" },
+  --       quickfix = { suffix = "" },
+  --       yank = { suffix = "" },
+  --       treesitter = { suffix = "n" },
+  --     })
+  --   end,
+  -- },
 
   -- better increase/descrease
   {
@@ -205,6 +196,14 @@ return {
     opts = {},
   },
 
+  -- Supertab
+  {
+    "L3MON4D3/LuaSnip",
+    keys = function()
+      return {}
+    end,
+  },
+
   {
     "nvim-cmp",
     dependencies = {
@@ -245,7 +244,7 @@ return {
           -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
           -- this way you will only jump inside the snippet region
           elseif luasnip.expand_or_locally_jumpable() then
-            luasnip.expand_or_locally_jumpable()
+            luasnip.expand_or_jump()
           elseif has_words_before() then
             cmp.complete()
           else

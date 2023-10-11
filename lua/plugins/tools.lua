@@ -11,21 +11,21 @@ return {
   -- },
 
   -- neorg
-  {
-    "nvim-neorg/neorg",
-    enabled = false,
-    ft = "norg",
-    opts = {
-      load = {
-        ["core.defaults"] = {},
-        ["core.norg.concealer"] = {},
-        ["core.norg.completion"] = {
-          config = { engine = "nvim-cmp" },
-        },
-        ["core.integrations.nvim-cmp"] = {},
-      },
-    },
-  },
+  -- {
+  --   "nvim-neorg/neorg",
+  --   enabled = false,
+  --   ft = "norg",
+  --   opts = {
+  --     load = {
+  --       ["core.defaults"] = {},
+  --       ["core.norg.concealer"] = {},
+  --       ["core.norg.completion"] = {
+  --         config = { engine = "nvim-cmp" },
+  --       },
+  --       ["core.integrations.nvim-cmp"] = {},
+  --     },
+  --   },
+  -- },
 
   -- markdown preview
   {
