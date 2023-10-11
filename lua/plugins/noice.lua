@@ -21,6 +21,10 @@ return {
     })
     table.insert(opts.routes, 1, {
       filter = {
+        ["not"] = {
+          event = "lsp",
+          kind = "progress",
+        },
         event = "msg_show",
         find = "%d+L, %d+B",
         cond = function()
