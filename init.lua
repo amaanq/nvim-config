@@ -1,3 +1,7 @@
+if vim.env.VSCODE then
+  vim.g.vscode = true
+end
+
 if vim.loader then
   vim.loader.enable()
   vim.schedule(function()
@@ -10,28 +14,13 @@ _G.dd = function(...)
 end
 vim.print = _G.dd
 
--- require("util.profiler").start()
+-- require("util.profiler").startup()
 
-vim.api.nvim_create_autocmd("User", {
-  pattern = "LazyVimStarted",
-  callback = function()
-    vim.schedule(function()
-      -- require("util.profiler").inspect()
-    end)
-  end,
-})
+-- vim.loader._profile({ loaders = true })
 
+-- vim.g.profile_loaders = true
 require("config.lazy")({
   debug = false,
-  defaults = {
-    lazy = true,
-    -- cond = false,
-  },
-  performance = {
-    cache = {
-      enabled = true,
-    },
-  },
 })
 
 -- require("util.dashboard").setup()

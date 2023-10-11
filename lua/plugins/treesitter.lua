@@ -3,6 +3,7 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter-context",
+    event = "User LazyFile",
     -- dev = true,
     event = "BufReadPre",
     enabled = true,
