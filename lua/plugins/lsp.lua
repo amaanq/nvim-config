@@ -1,3 +1,5 @@
+local util = require("util")
+
 return {
   -- neodev
   {
@@ -29,19 +31,19 @@ return {
     },
   },
 
-  {
-    "jay-babu/mason-null-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "williamboman/mason.nvim",
-      "nvimtools/none-ls.nvim",
-    },
-    opts = {
-      ensure_installed = {},
-      automatic_installation = true,
-    },
-    config = true,
-  },
+  -- {
+  --   "jay-babu/mason-null-ls.nvim",
+  --   event = { "BufReadPre", "BufNewFile" },
+  --   dependencies = {
+  --     "williamboman/mason.nvim",
+  --     "nvimtools/none-ls.nvim",
+  --   },
+  --   opts = {
+  --     ensure_installed = {},
+  --     automatic_installation = true,
+  --   },
+  --   config = true,
+  -- },
 
   {
     "jay-babu/mason-nvim-dap.nvim",
@@ -245,133 +247,42 @@ return {
     config = true,
   },
 
-  -- null-ls
   {
-    "nvimtools/none-ls.nvim",
-    opts = function(_, opts)
-      local util = require("util")
-      local nls = require("null-ls")
-      local fmt = nls.builtins.formatting
-      local dgn = nls.builtins.diagnostics
-      local cda = nls.builtins.code_actions
-
-      opts.debounce = 150
-      opts.save_after_format = false
-      opts.root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", ".git")
-
-      vim.list_extend(opts.sources, {
-        --  ╭────────────╮
-        --  │ Formatting │
-        --  ╰────────────╯
-        fmt.asmfmt.with({
-          condition = function()
-            return util.executable("asmfmt", true)
+    "stevearc/conform.nvim",
+    optional = true,
+    opts = {
+      formatters_by_ft = {
+        ["markdown"] = { { "prettierd", "prettier" } },
+        ["markdown.mdx"] = { { "prettierd", "prettier" } },
+        ["javascript"] = { "eslint_d" },
+        ["javascriptreact"] = { "eslint_d" },
+        ["typescript"] = { "eslint_d" },
+        ["typescriptreact"] = { "eslint_d" },
+        ["python"] = { "isort", "black" },
+        ["sh"] = { "shfmt" },
+        ["c"] = { "uncrustify" },
+        ["cpp"] = { "uncrustify" },
+      },
+      formatters = {
+        eslint_d = {
+          condition = function(ctx)
+            return vim.fs.find({ ".eslintrc", ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json" }, {
+              path = ctx.filename,
+              upward = true,
+            })[1]
           end,
-        }),
-        fmt.black.with({
-          condition = function()
-            return util.executable("black", true)
+        },
+        dprint = {
+          condition = function(ctx)
+            return vim.fs.find({ "dprint.json" }, { path = ctx.filename, upward = true })[1]
           end,
-          args = { "--line-length", "120" },
-        }),
-        fmt.cbfmt.with({
-          condition = function()
-            return util.executable("cbfmt", true)
-          end,
-        }),
-        -- fmt.clang_format.with({
-        --   condition = function()
-        --     -- don't use clang_format if uncrustify config is present
-        --     return util.executable("clang-format", true)
-        --       and vim.tbl_isempty(vim.fs.find({
-        --         "uncrustify.cfg",
-        --         ".uncrustify.cfg",
-        --       }, { path = vim.fn.expand("%:p"), upward = true }))
-        --   end,
-        -- }),
-        -- fmt.dprint.with({
-        --   condition = function()
-        --     -- return util.executable("dprint", true)
-        --     return true
-        --   end,
-        -- }),
-        fmt.eslint_d.with({
-          condition = function()
-            return util.executable("eslint_d", true)
-              and not vim.tbl_isempty(vim.fs.find({
-                ".eslintrc",
-                ".eslintrc.js",
-                ".eslintrc.cjs",
-                ".eslintrc.json",
-                ".eslintrc.yaml",
-                ".eslintrc.yml",
-              }, { path = vim.fn.expand("%:p"), upward = true }))
-          end,
-        }),
-        -- fmt.gofmt.with({
-        --   condition = function()
-        --     return util.executable("gofmt", true)
-        --   end,
-        -- }),
-        -- fmt.goimports_reviser.with({
-        --   condition = function()
-        --     return util.executable("goimports-reviser", true)
-        --       and not vim.tbl_isempty(vim.fs.find("go.mod", {
-        --         path = vim.fn.expand("%:p"),
-        --         upward = true,
-        --       }))
-        --   end,
-        -- }),
-        -- fmt.isort.with({
-        --   condition = function()
-        --     return util.executable("isort", true)
-        --   end,
-        -- }),
-        fmt.nginx_beautifier.with({
-          condition = function()
-            return util.executable("nginxbeautifier", true)
-          end,
-        }),
-        fmt.pg_format.with({
-          condition = function()
-            return util.executable("pg_format", true)
-          end,
-        }),
-        fmt.prettierd.with({
-          filetypes = { "graphql", "html", "json", "markdown", "yaml" },
-          condition = function()
-            return util.executable("prettierd", true)
-          end,
-        }),
-        -- fmt.ruff.with({
-        --   condition = function()
-        --     return util.executable("ruff", true)
-        --   end,
-        -- }),
-        fmt.shfmt.with({
-          condition = function()
-            return util.executable("shfmt", true)
-          end,
-        }),
-        fmt.sqlfluff.with({
-          condition = function()
-            return util.executable("sqlfluff", true)
-          end,
-        }),
-        fmt.stylua.with({
-          condition = function()
-            return util.executable("stylua", true)
-              and not vim.tbl_isempty(
-                vim.fs.find({ ".stylua.toml", "stylua.toml" }, { path = vim.fn.expand("%:p"), upward = true })
-              )
-          end,
-        }),
-        fmt.uncrustify.with({
-          condition = function()
-            local paths = vim.fs.find(
-              { "uncrustify.cfg", ".uncrustify.cfg" },
-              { path = vim.fn.expand("%:p"), upward = true }
-            )
+        },
+        uncrustify = {
+          condition = function(ctx)
+            local paths = vim.fs.find({ "uncrustify.cfg", ".uncrustify.cfg" }, {
+              path = ctx.filename,
+              upward = true,
+            })
             if vim.tbl_isempty(paths) then
               return false
             end
@@ -382,118 +293,179 @@ return {
             vim.env.UNCRUSTIFY_CONFIG = paths[1]
             return true
           end,
-        }),
-        -- fmt.zigfmt.with({
-        --   condition = function()
-        --     return util.executable("zig", true)
-        --   end,
-        -- }),
+        },
+      },
+    },
+  },
+  {
+    "mfussenegger/nvim-lint",
+    opts = {
+      linters_by_ft = {
+        lua = { "selene", "luacheck" },
+        markdown = { "markdownlint" },
+      },
+      linters = {
+        selene = {
+          condition = function(ctx)
+            return vim.fs.find({ "selene.toml" }, { path = ctx.filename, upward = true })[1]
+          end,
+        },
+        luacheck = {
+          condition = function(ctx)
+            return vim.fs.find({ ".luacheckrc" }, { path = ctx.filename, upward = true })[1]
+          end,
+        },
+      },
+    },
+  },
 
-        --  ╭─────────────╮
-        --  │ Diagnostics │
-        --  ╰─────────────╯
-        dgn.ansiblelint.with({
-          condition = function()
-            return util.executable("ansible-lint", true)
-          end,
-        }),
-        dgn.buf.with({
-          condition = function()
-            return util.executable("buf", true)
-          end,
-        }),
-        -- dgn.eslint_d.with({
-        --   condition = function()
-        --     return util.executable("eslint_d", true)
-        --       and not vim.tbl_isempty(vim.fs.find({
-        --         ".eslintrc",
-        --         ".eslintrc.js",
-        --         ".eslintrc.cjs",
-        --         ".eslintrc.json",
-        --         ".eslintrc.yaml",
-        --         ".eslintrc.yml",
-        --       }, { path = vim.fn.expand("%:p"), upward = true }))
-        --   end,
-        -- }),
-        dgn.gitlint.with({
-          condition = function()
-            return util.executable("gitlint", true)
-          end,
-        }),
-        -- dgn.golangci_lint.with({
-        --   condition = function()
-        --     return util.executable("golangci-lint", true)
-        --       and not vim.tbl_isempty(vim.fs.find("go.mod", {
-        --         path = vim.fn.expand("%:p"),
-        --         upward = true,
-        --       }))
-        --   end,
-        -- }),
-        dgn.markdownlint.with({
-          condition = function()
-            return util.executable("markdownlint", true)
-          end,
-        }),
-        dgn.protolint.with({
-          condition = function()
-            return util.executable("protolint", true)
-          end,
-        }),
-        -- dgn.ruff.with({
-        --   condition = function()
-        --     return util.executable("ruff", true)
-        --   end,
-        -- }),
-        -- dgn.shellcheck.with({
-        --   condition = function()
-        --     return util.executable("shellcheck", true)
-        --   end,
-        -- }),
-        dgn.selene.with({
-          condition = function(utils)
-            return utils.root_has_file({ "selene.toml" }) and util.executable("selene", true)
-          end,
-        }),
-        dgn.sqlfluff.with({
-          condition = function()
-            return util.executable("sqlfluff", true)
-          end,
-        }),
-        dgn.tsc.with({
-          condition = function()
-            return util.executable("tsc", true)
-          end,
-        }),
-        dgn.write_good.with({
-          condition = function()
-            return util.executable("write-good", true)
-          end,
-        }),
-        dgn.zsh,
-
-        --  ╭──────────────╮
-        --  │ Code Actions │
-        --  ╰──────────────╯
-        -- cda.eslint_d.with({
-        --   condition = function()
-        --     return util.executable("eslint_d", true)
-        --       and not vim.tbl_isempty(vim.fs.find({
-        --         ".eslintrc",
-        --         ".eslintrc.js",
-        --         ".eslintrc.cjs",
-        --         ".eslintrc.json",
-        --         ".eslintrc.yaml",
-        --         ".eslintrc.yml",
-        --       }, { path = vim.fn.expand("%:p"), upward = true }))
-        --   end,
-        -- }),
-        cda.gitrebase,
-        -- cda.shellcheck.with({
-        --   condition = function()
-        --     return util.executable("shellcheck", true)
-        --   end,
-        -- }),
-      })
-    end,
+  -- null-ls
+  {
+    "nvimtools/none-ls.nvim",
+    enabled = false,
+    -- opts = function(_, opts)
+    -- local util = require("util")
+    -- local nls = require("null-ls")
+    -- local fmt = nls.builtins.formatting
+    -- local dgn = nls.builtins.diagnostics
+    --
+    -- opts.debounce = 150
+    -- opts.save_after_format = false
+    -- opts.root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", ".git")
+    --
+    -- vim.list_extend(opts.sources, {
+    --   --  ╭────────────╮
+    --   --  │ Formatting │
+    --   --  ╰────────────╯
+    --   fmt.black.with({
+    --     condition = function()
+    --       return util.executable("black", true)
+    --     end,
+    --     args = { "--line-length", "120" },
+    --   }),
+    --   -- fmt.dprint.with({
+    --   --   condition = function()
+    --   --     -- return util.executable("dprint", true)
+    --   --     return true
+    --   --   end,
+    --   -- }),
+    --   fmt.eslint_d.with({
+    --     condition = function()
+    --       return util.executable("eslint_d", true)
+    --         and not vim.tbl_isempty(vim.fs.find({
+    --           ".eslintrc",
+    --           ".eslintrc.js",
+    --           ".eslintrc.cjs",
+    --           ".eslintrc.json",
+    --           ".eslintrc.yaml",
+    --           ".eslintrc.yml",
+    --         }, { path = vim.fn.expand("%:p"), upward = true }))
+    --     end,
+    --   }),
+    --   fmt.isort.with({
+    --     condition = function()
+    --       return util.executable("isort", true)
+    --     end,
+    --   }),
+    --   fmt.nginx_beautifier.with({
+    --     condition = function()
+    --       return util.executable("nginxbeautifier", true)
+    --     end,
+    --   }),
+    --   fmt.pg_format.with({
+    --     condition = function()
+    --       return util.executable("pg_format", true)
+    --     end,
+    --   }),
+    --   fmt.prettierd.with({
+    --     filetypes = { "graphql", "html", "json", "markdown", "yaml" },
+    --     condition = function()
+    --       return util.executable("prettierd", true)
+    --     end,
+    --   }),
+    --   fmt.shfmt.with({
+    --     condition = function()
+    --       return util.executable("shfmt", true)
+    --     end,
+    --   }),
+    --   fmt.sqlfluff.with({
+    --     condition = function()
+    --       return util.executable("sqlfluff", true)
+    --     end,
+    --   }),
+    --   fmt.stylua.with({
+    --     condition = function()
+    --       return util.executable("stylua", true)
+    --         and not vim.tbl_isempty(
+    --           vim.fs.find({ ".stylua.toml", "stylua.toml" }, { path = vim.fn.expand("%:p"), upward = true })
+    --         )
+    --     end,
+    --   }),
+    --   fmt.uncrustify.with({
+    --     condition = function()
+    --       local paths = vim.fs.find(
+    --         { "uncrustify.cfg", ".uncrustify.cfg" },
+    --         { path = vim.fn.expand("%:p"), upward = true }
+    --       )
+    --       if vim.tbl_isempty(paths) then
+    --         return false
+    --       end
+    --       if not util.executable("uncrustify", true) then
+    --         return false
+    --       end
+    --       ---@type string
+    --       vim.env.UNCRUSTIFY_CONFIG = paths[1]
+    --       return true
+    --     end,
+    --   }),
+    --
+    --   --  ╭─────────────╮
+    --   --  │ Diagnostics │
+    --   --  ╰─────────────╯
+    --   dgn.ansiblelint.with({
+    --     condition = function()
+    --       return util.executable("ansible-lint", true)
+    --     end,
+    --   }),
+    --   dgn.buf.with({
+    --     condition = function()
+    --       return util.executable("buf", true)
+    --     end,
+    --   }),
+    --   -- dgn.eslint_d.with({
+    --   --   condition = function()
+    --   --     return util.executable("eslint_d", true)
+    --   --       and not vim.tbl_isempty(vim.fs.find({
+    --   --         ".eslintrc",
+    --   --         ".eslintrc.js",
+    --   --         ".eslintrc.cjs",
+    --   --         ".eslintrc.json",
+    --   --         ".eslintrc.yaml",
+    --   --         ".eslintrc.yml",
+    --   --       }, { path = vim.fn.expand("%:p"), upward = true }))
+    --   --   end,
+    --   -- }),
+    --   dgn.markdownlint.with({
+    --     condition = function()
+    --       return util.executable("markdownlint", true)
+    --     end,
+    --   }),
+    --   dgn.protolint.with({
+    --     condition = function()
+    --       return util.executable("protolint", true)
+    --     end,
+    --   }),
+    --   dgn.selene.with({
+    --     condition = function(utils)
+    --       return utils.root_has_file({ "selene.toml" }) and util.executable("selene", true)
+    --     end,
+    --   }),
+    --   dgn.sqlfluff.with({
+    --     condition = function()
+    --       return util.executable("sqlfluff", true)
+    --     end,
+    --   }),
+    -- })
+    -- end,
   },
 }
