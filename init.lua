@@ -4,13 +4,13 @@ end
 
 if vim.loader then
   vim.loader.enable()
-  vim.schedule(function()
-    vim.notify("nvim loader is enabled")
-  end)
 end
 
 _G.dd = function(...)
   require("util.debug").dump(...)
+end
+_G.bt = function(...)
+  require("util.debug").bt(...)
 end
 vim.print = _G.dd
 
@@ -21,6 +21,10 @@ vim.print = _G.dd
 -- vim.g.profile_loaders = true
 require("config.lazy")({
   debug = false,
+  profiling = {
+    loader = false,
+    require = false,
+  },
 })
 
 -- require("util.dashboard").setup()

@@ -7,39 +7,6 @@ return {
   },
 
   {
-    "huggingface/llm.nvim",
-    opts = {
-      api_token = "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",
-      lsp = {
-        bin_path = vim.api.nvim_call_function("stdpath", { "data" }) .. "/mason/bin/llm-ls",
-      },
-      model = "bigcode/starcoder",
-      query_params = {
-        max_new_tokens = 200,
-      },
-    },
-    init = function()
-      vim.api.nvim_create_user_command("StarCoder", function()
-        require("hfcc.completion").complete()
-      end, {})
-    end,
-  },
-
-  -- {
-  --   "danymat/neogen",
-  --   keys = {
-  --     {
-  --       "<leader>cc",
-  --       function()
-  --         require("neogen").generate()
-  --       end,
-  --       desc = "Neogen Comment",
-  --     },
-  --   },
-  --   opts = { snippet_engine = "luasnip" },
-  -- },
-
-  {
     "smjonas/inc-rename.nvim",
     cmd = "IncRename",
     config = true,
@@ -165,16 +132,11 @@ return {
       local luasnip = require("luasnip")
       local cmp = require("cmp")
 
-      opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
-        {
-          name = "git",
-          options = { filetypes = { "gitcommit", "NeogitCommitMessage", "octo" } },
-        },
-        -- { name = "pandoc_references", priority = 725 },
-        { name = "emoji", priority = 700 },
-        { name = "calc", priority = 650 },
-        -- { name = "spell", priority = 400 },
-      }))
+      table.insert(opts.sources, { name = "git" })
+      -- table.insert(opts.sources, { name = "pandoc_references" })
+      table.insert(opts.sources, { name = "emoji" })
+      table.insert(opts.sources, { name = "calc" })
+      -- table.insert(opts.sources, { name = "spell" })
 
       opts.mapping = vim.tbl_extend("force", opts.mapping, {
         ["<Tab>"] = cmp.mapping(function(fallback)
@@ -220,6 +182,28 @@ return {
   },
 
   {
+    "Wansmer/treesj",
+    keys = {
+      { "J", "<cmd>TSJToggle<cr>", desc = "Join Toggle" },
+    },
+    opts = { use_default_keymaps = false, max_join_length = 150 },
+  },
+
+  {
+    "cshuaimin/ssr.nvim",
+    keys = {
+      {
+        "<leader>sR",
+        function()
+          require("ssr").open()
+        end,
+        mode = { "n", "x" },
+        desc = "Structural Replace",
+      },
+    },
+  },
+
+  {
     "gorbit99/codewindow.nvim",
     enabled = false,
     event = "BufReadPre",
@@ -254,16 +238,6 @@ return {
           "Trouble",
         },
       })
-    end,
-  },
-
-  {
-    "mbbill/undotree",
-    cmd = "UndotreeToggle",
-    keys = { { "<leader>uu", "<cmd>UndotreeToggle<cr>", desc = "UndoTree Toggle" } },
-    config = function()
-      vim.g.undotree_TreeNodeShape = "◦" -- Alternative: '◉'
-      vim.g.undotree_SetFocusWhenToggle = 1
     end,
   },
 
@@ -370,8 +344,17 @@ return {
     cmd = { "QL" },
   },
 
-  -- {
-  --   "indent-blankline.nvim",
-  --   dev = true,
-  -- },
+  { "wakatime/vim-wakatime", event = "VeryLazy" },
+
+  {
+    "andymass/vim-matchup",
+    event = "BufReadPost",
+    init = function()
+      vim.o.mps = vim.o.mps .. ',<:>,":"'
+    end,
+    config = function()
+      vim.g.matchup_matchparen_deferred = 1
+      vim.g.matchup_matchparen_offscreen = { method = "status_manual" }
+    end,
+  },
 }

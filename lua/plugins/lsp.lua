@@ -319,7 +319,7 @@ return {
     },
   },
 
-  -- null-ls
+  -- none-ls
   {
     "nvimtools/none-ls.nvim",
     enabled = false,

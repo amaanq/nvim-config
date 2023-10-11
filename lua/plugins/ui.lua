@@ -102,30 +102,6 @@ return {
     end,
   },
 
-  -- floating winbar
-  {
-    "b0o/incline.nvim",
-    enabled = false,
-    event = "BufReadPre",
-    config = function()
-      local colors = require("tokyonight.colors").setup()
-      require("incline").setup({
-        highlight = {
-          groups = {
-            InclineNormal = { guibg = "#3e68d7", guifg = colors.black },
-            InclineNormalNC = { guifg = "#3e68d7", guibg = colors.black },
-          },
-        },
-        window = { margin = { vertical = 0, horizontal = 1 } },
-        render = function(props)
-          local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
-          local icon, color = require("nvim-web-devicons").get_icon_color(filename)
-          return { { icon, guifg = color }, { " " }, { filename } }
-        end,
-      })
-    end,
-  },
-
   -- auto-resize windows
   {
     "anuvyklack/windows.nvim",
@@ -301,7 +277,6 @@ return {
       require("gitlinker").setup()
     end,
   },
-  { "pwntester/octo.nvim", cmd = "Octo", config = true },
 
   {
     "lukas-reineke/virt-column.nvim",
@@ -355,5 +330,19 @@ return {
   {
     "LudoPinelli/comment-box.nvim",
     event = "BufReadPre",
+  },
+
+  "folke/twilight.nvim",
+  {
+    "folke/zen-mode.nvim",
+    cmd = "ZenMode",
+    opts = {
+      plugins = {
+        gitsigns = true,
+        tmux = true,
+        kitty = { enabled = false, font = "+2" },
+      },
+    },
+    keys = { { "<leader>z", "<cmd>ZenMode<cr>", desc = "Zen Mode" } },
   },
 }

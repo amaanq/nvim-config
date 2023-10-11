@@ -1,20 +1,5 @@
 return {
 
-  -- add folding range to capabilities
-  -- {
-  --   "neovim/nvim-lspconfig",
-  --   opts = {
-  --     capabilities = {
-  --       textDocument = {
-  --         foldingRange = {
-  --           dynamicRegistration = false,
-  --           lineFoldingOnly = true,
-  --         },
-  --       },
-  --     },
-  --   },
-  -- },
-
   -- file explorer
   {
     "nvim-neo-tree/neo-tree.nvim",
@@ -48,35 +33,6 @@ return {
       large_file_cutoff = 20000,
     },
   },
-
-  -- add nvim-ufo
-  -- {
-  --   "kevinhwang91/nvim-ufo",
-  --   enabled = false,
-  --   dependencies = {
-  --     "kevinhwang91/promise-async",
-  --     -- {
-  --     -- 	"luukvbaal/statuscol.nvim",
-  --     -- 	config = function()
-  --     -- 		require("statuscol").setup({
-  --     -- 			foldfunc = "builtin",
-  --     -- 			setopt = true,
-  --     -- 		})
-  --     -- 	end,
-  --     -- },
-  --   },
-  --   event = "BufReadPost",
-  --   opts = {},
-  --   init = function()
-  --     -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
-  --     vim.keymap.set("n", "zR", function()
-  --       require("ufo").openAllFolds()
-  --     end)
-  --     vim.keymap.set("n", "zM", function()
-  --       require("ufo").closeAllFolds()
-  --     end)
-  --   end,
-  -- },
 
   {
     "samjwill/nvim-unception",
