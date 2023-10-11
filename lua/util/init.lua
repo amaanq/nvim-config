@@ -118,6 +118,7 @@ function M.runlua()
   ---@type {lnum:number, col:number, message:string}[]
   local diagnostics = {}
 
+  ---@return integer, integer
   local function get_source()
     local info = debug.getinfo(3, "Sl")
     ---@diagnostic disable-next-line: param-type-mismatch
@@ -168,7 +169,7 @@ function M.cowboy()
       if vim.v.count > 0 then
         count = 0
       end
-      if count >= 10 then
+      if count >= 10 and vim.bo.buftype ~= "nofile" then
         ok, id = pcall(vim.notify, "Hold it Cowboy!", vim.log.levels.WARN, {
           icon = "🤠",
           replace = id,
