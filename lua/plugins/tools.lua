@@ -69,11 +69,11 @@ return {
     cmd = { "Godbolt", "GodboltCompiler" },
   },
 
-  {
-    "jackMort/ChatGPT.nvim",
-    cmd = { "ChatGPTActAs", "ChatGPT" },
-    opts = {},
-  },
+  -- {
+  --   "jackMort/ChatGPT.nvim",
+  --   cmd = { "ChatGPTActAs", "ChatGPT" },
+  --   opts = {},
+  -- },
 
   {
     "andweeb/presence.nvim",

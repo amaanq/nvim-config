@@ -96,12 +96,12 @@ return {
     end,
   },
 
-  {
-    "simrat39/symbols-outline.nvim",
-    keys = { { "<leader>cs", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
-    cmd = "SymbolsOutline",
-    opts = {},
-  },
+  -- {
+  --   "simrat39/symbols-outline.nvim",
+  --   keys = { { "<leader>cs", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
+  --   cmd = "SymbolsOutline",
+  --   opts = {},
+  -- },
 
   -- Supertab
   {
@@ -288,7 +288,7 @@ return {
     end,
     keys = {
       {
-        "<leader>cp",
+        "<leader>cq",
         function()
           require("rest-nvim").run(true)
         end,

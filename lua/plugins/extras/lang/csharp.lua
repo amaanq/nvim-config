@@ -39,7 +39,7 @@ return {
             return table.concat(words)
           end
 
-          require("lazyvim.util").on_attach(function(client, _) ---@param client lspconfig.options.omnisharp
+          require("lazyvim.util").lsp.on_attach(function(client, _) ---@param client lspconfig.options.omnisharp
             if client.name == "omnisharp" then
               local tokenModifiers = client.server_capabilities.semanticTokensProvider.legend.tokenModifiers ---@type string[]
               for i, v in ipairs(tokenModifiers) do
