@@ -63,6 +63,9 @@ vim.filetype.add({
     nasm = "nasm",
     qmljs = "qmljs",
     pp = "puppet",
+    objdump = "objdump",
+    gn = "gn",
+    gni = "gn",
   },
 })
 

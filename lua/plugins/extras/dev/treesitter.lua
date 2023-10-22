@@ -219,6 +219,18 @@ return {
             files = { "src/parser.c" },
           },
         },
+        objdump = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-objdump",
+            files = { "src/parser.c", "src/scanner.c" },
+          },
+        },
+        gn = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-gn",
+            files = { "src/parser.c", "src/scanner.c" },
+          },
+        },
       }
 
       vim.api.nvim_create_autocmd("FileType", {
