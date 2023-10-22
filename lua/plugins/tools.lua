@@ -1,33 +1,6 @@
 return {
   { "pwntester/octo.nvim", cmd = "Octo", opts = {} },
 
-  -- markdown preview
-  {
-    "toppair/peek.nvim",
-    build = "deno task --quiet build:fast",
-    keys = {
-      {
-        "<leader>cp",
-        ft = "markdown",
-        function()
-          local peek = require("peek")
-          if peek.is_open() then
-            peek.close()
-          else
-            peek.open()
-          end
-        end,
-        desc = "Peek (Markdown Preview)",
-      },
-    },
-    opts = { theme = "dark" }, -- 'dark' or 'light'
-    init = function()
-      require("which-key").register({
-        ["<leader>o"] = { name = "+open" },
-      })
-    end,
-  },
-
   -- better diffing
   {
     "sindrets/diffview.nvim",
@@ -78,55 +51,88 @@ return {
   {
     "andweeb/presence.nvim",
     event = "BufRead",
-    config = function()
-      require("presence"):setup({
-        auto_update = true,
-        main_image = "file",
-        log_level = nil,
-        debounce_timeout = 10,
-        blacklist = {
-          "toggleterm",
-          "zsh",
-          "zsh*",
-          "ToggleTerm",
-          "zsh;#toggleterm#1",
-          "zsh;#toggleterm#2",
-          "zsh;#toggleterm#3",
-          "zsh;#toggleterm#4",
-          "zsh;#toggleterm#5",
-        },
-        enable_line_number = true,
-        buttons = true,
-        show_time = true,
-
-        -- Rich Presence text options
-        editing_text = "Editing %s",
-        file_explorer_text = "Browsing %s",
-        git_commit_text = "Committing changes",
-        plugin_manager_text = "Managing plugins",
-        reading_text = function(buf_name) --- @param buf_name string
-          -- Extract the process name running in toggleterm from the given buffer name
-          -- we want to match `zsh;#toggleterm#1`, grab the "zsh" part (aka the beginning before the semicolon) and store it into toggleterm_process
-          local toggleterm_process = buf_name:match("([^;]+);#toggleterm#%d+")
-
-          -- Terminal check
-          if toggleterm_process == "lazygit" then
-            return "Messing with git"
-          elseif toggleterm_process == "zsh" then
-            return "In the terminal"
+    opts = {
+      main_image = "file",
+      enable_line_number = true,
+      blacklist = {
+        ".*zsh.*",
+        ".*ToggleTerm.*",
+        ".*toggleterm.*",
+      },
+      buttons = function(_, repo_url)
+        if repo_url then
+          if repo_url:match("amaanq") then
+            return nil
+          end
+          -- Check if repo url uses short ssh syntax
+          local domain, project = repo_url:match("^git@(.+):(.+)$")
+          if domain and project then
+            repo_url = string.format("https://%s/%s", domain, project)
           end
 
-          -- Lazygit check `59683:lazygit` grab the "lazygit" part (aka the end after the colon) and store it into lazygit_process
-          local lazygit_process = buf_name:match("%d+:(.+)")
-          if lazygit_process == "lazygit" then
-            return "In Lazygit"
+          -- Check if repo url uses a valid protocol
+          local protocols = {
+            "ftp",
+            "git",
+            "http",
+            "https",
+            "ssh",
+          }
+          local protocol, relative = repo_url:match("^(.+)://(.+)$")
+          if not vim.tbl_contains(protocols, protocol) or not relative then
+            return nil
           end
 
-          return string.format("Reading %s", buf_name)
-        end,
-        workspace_text = "Working on %s",
-        line_number_text = "Line %s out of %s",
-      })
-    end,
+          -- Check if repo url has the user specified
+          local user, path = relative:match("^(.+)@(.+)$")
+          if user and path then
+            repo_url = string.format("https://%s", path)
+          else
+            repo_url = string.format("https://%s", relative)
+          end
+
+          return {
+            { label = "View Repository", url = repo_url },
+          }
+        end
+
+        return nil
+      end,
+      ---@param filename string
+      editing_text = function(filename)
+        -- if in .config/nvim, return "Editing dotfiles"
+        -- if in ~/projects/treesitter/*/grammar.js, return "Editing a tree-sitter grammar"
+        -- else return "Editing %s"
+        if filename:match(".config/nvim") then
+          return "Editing my dotfiles"
+        elseif filename:match("projects/treesitter/.+/grammar.js") then
+          -- try and get the name from the * part, if it's tree-sitter-{name}, else just return "Editing a tree-sitter grammar"
+          local name = filename:match("projects/treesitter/.+/grammar.js"):match("tree%-sitter%-(.+)")
+          if name then
+            return string.format("Editing %s's tree-sitter grammar", name)
+          end
+          return "Editing a tree-sitter grammar"
+        else
+          return string.format("Editing %s", filename)
+        end
+      end,
+      reading_text = function(buf_name) --- @param buf_name string
+        local toggleterm_process = buf_name:match("([^;]+);#toggleterm#%d+")
+
+        -- Terminal check
+        if toggleterm_process == "lazygit" then
+          return "Messing with git"
+        elseif toggleterm_process == "zsh" then
+          return "In the terminal"
+        end
+
+        local lazygit_process = buf_name:match("%d+:(.+)")
+        if lazygit_process == "lazygit" then
+          return "In Lazygit"
+        end
+
+        return string.format("Reading %s", buf_name)
+      end,
+    },
   },
 }

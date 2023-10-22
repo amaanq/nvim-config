@@ -1,3 +1,5 @@
+local Util = require("lazyvim.util")
+
 return {
 
   -- Better `vim.notify()`
@@ -60,46 +62,6 @@ return {
 
         return hl
       end
-    end,
-  },
-
-  -- dashboard
-  {
-    "goolord/alpha-nvim",
-    enabled = false,
-    opts = function()
-      local dashboard = require("alpha.themes.dashboard")
-      local logo = [[
-      ██╗      █████╗ ███████╗██╗   ██╗██╗   ██╗██╗███╗   ███╗          Z
-      ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝██║   ██║██║████╗ ████║      Z    
-      ██║     ███████║  ███╔╝  ╚████╔╝ ██║   ██║██║██╔████╔██║   z       
-      ██║     ██╔══██║ ███╔╝    ╚██╔╝  ╚██╗ ██╔╝██║██║╚██╔╝██║ z         
-      ███████╗██║  ██║███████╗   ██║    ╚████╔╝ ██║██║ ╚═╝ ██║
-      ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝     ╚═══╝  ╚═╝╚═╝     ╚═╝
-      ]]
-
-      dashboard.section.header.val = vim.split(logo, "\n")
-      dashboard.section.buttons.val = {
-        dashboard.button("p", " " .. " Open project", "<cmd>Telescope project display_type=full<cr>"),
-        dashboard.button("e", " " .. " New file", "<cmd>ene <BAR> startinsert<cr>"),
-        dashboard.button("f", " " .. " Find file", "<cmd>cd $HOME/projects | Telescope find_files<cr>"),
-        dashboard.button("r", "󰈚 " .. " Recent files", "<cmd>Telescope oldfiles <cr>"),
-        dashboard.button("s", "󰑓 " .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
-        dashboard.button("c", " " .. " Config", ":e $MYVIMRC | :cd %:p:h | Telescope file_browser<cr>"),
-        dashboard.button("g", " " .. " Find text", ":Telescope live_grep <cr>"),
-        dashboard.button("l", "󰒲 " .. " Lazy", "<cmd>Lazy<cr>"),
-        dashboard.button("m", " " .. " Mason", "<cmd>Mason<cr>"),
-        dashboard.button("q", " " .. " Quit", "<cmd>qa<cr>"),
-      }
-      for _, button in ipairs(dashboard.section.buttons.val) do
-        button.opts.hl = "AlphaButtons"
-        button.opts.hl_shortcut = "AlphaShortcut"
-      end
-      dashboard.section.footer.opts.hl = "Type"
-      dashboard.section.header.opts.hl = "AlphaHeader"
-      dashboard.section.buttons.opts.hl = "AlphaButtons"
-      dashboard.opts.layout[1].val = 8
-      return dashboard
     end,
   },
 
@@ -233,12 +195,6 @@ return {
   },
 
   {
-    "norcalli/nvim-terminal.lua",
-    ft = "terminal",
-    config = true,
-  },
-
-  {
     "akinsho/toggleterm.nvim",
     init = function()
       vim.keymap.set("t", "<ESC>", "<C-\\><C-n>", { noremap = true, silent = true })
@@ -313,42 +269,52 @@ return {
     event = "VeryLazy",
     config = true,
   },
-  { "rhysd/git-messenger.vim", event = "BufRead" },
-  { "rhysd/committia.vim", event = "BufRead" },
+  {
+    "rhysd/git-messenger.vim",
+    event = "VeryLazy",
+    keys = { { "<leader>gm", "<cmd>GitMessenger<cr>", desc = "Git Messenger" } },
+  },
+  -- { "rhysd/committia.vim", event = "BufRead" },
   {
     "ruifm/gitlinker.nvim",
-    event = "BufRead",
+    event = "VeryLazy",
     dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      require("gitlinker").setup()
-    end,
+    keys = {
+      { "<leader>gy", "<cmd>lua require('gitlinker').get_buf_range_url('n')<cr>", desc = "Copy Git Link" },
+      {
+        "<leader>gY",
+        "<cmd>lua require('gitlinker').get_buf_range_url('n', {action_callback = require('gitlinker.actions').open_in_browser})<cr>",
+        desc = "Open Git Link",
+      },
+    },
+    opts = {},
   },
 
-  {
-    "lukas-reineke/virt-column.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("virt-column").setup({ char = "▕" })
-    end,
-  },
+  -- {
+  --   "lukas-reineke/virt-column.nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("virt-column").setup({ char = "▕" })
+  --   end,
+  -- },
 
   { "itchyny/vim-highlighturl", event = "VeryLazy" },
 
-  {
-    "lukas-reineke/headlines.nvim",
-    ft = { "org", "norg", "markdown", "yaml" },
-    config = function()
-      require("headlines").setup({
-        markdown = {
-          headline_highlights = { "Headline1", "Headline2", "Headline3" },
-        },
-        org = {
-          headline_highlights = false,
-        },
-        norg = { codeblock_highlight = false },
-      })
-    end,
-  },
+  -- {
+  --   "lukas-reineke/headlines.nvim",
+  --   ft = { "org", "norg", "markdown", "yaml" },
+  --   config = function()
+  --     require("headlines").setup({
+  --       markdown = {
+  --         headline_highlights = { "Headline1", "Headline2", "Headline3" },
+  --       },
+  --       org = {
+  --         headline_highlights = false,
+  --       },
+  --       norg = { codeblock_highlight = false },
+  --     })
+  --   end,
+  -- },
 
   {
     "utilyre/barbecue.nvim",
@@ -372,7 +338,7 @@ return {
   --     },
   --   },
   -- },
-
+  --
   {
     "LudoPinelli/comment-box.nvim",
     event = "BufReadPre",

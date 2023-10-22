@@ -2,18 +2,9 @@ return {
   { "nvim-treesitter/playground", cmd = "TSPlaygroundToggle" },
 
   {
-    "nvim-treesitter/nvim-treesitter-context",
-    event = "LazyFile",
-    -- dev = true,
-    event = "BufReadPre",
-    enabled = true,
-    opts = { mode = "cursor" },
-  },
-
-  {
     "haringsrob/nvim_context_vt",
     opts = {
-      disable_ft = { "json", "yaml" },
+      disable_ft = { "json", "yaml", "xml" },
       disable_virtual_lines = true,
       ---@param node TSNode
       ---@param ft string
@@ -38,7 +29,7 @@ return {
         return "▶ " .. utils.get_node_text(node)[1]:gsub("{", "")
       end,
     },
-    event = "BufReadPre",
+    event = "VeryLazy",
   },
 
   {

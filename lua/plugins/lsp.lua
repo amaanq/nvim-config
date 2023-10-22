@@ -59,15 +59,15 @@ return {
     config = true,
   },
 
-  {
-    "DNLHC/glance.nvim",
-    event = "BufReadPre",
-    config = true,
-    keys = {
-      { "gM", "<cmd>Glance implementations<cr>", desc = "Goto Implementations (Glance)" },
-      { "gY", "<cmd>Glance type_definitions<cr>", desc = "Goto Type Definition (Glance)" },
-    },
-  },
+  -- {
+  --   "DNLHC/glance.nvim",
+  --   event = "BufReadPre",
+  --   config = true,
+  --   keys = {
+  --     { "gM", "<cmd>Glance implementations<cr>", desc = "Goto Implementations (Glance)" },
+  --     { "gY", "<cmd>Glance type_definitions<cr>", desc = "Goto Type Definition (Glance)" },
+  --   },
+  -- },
 
   -- lsp servers
   {
@@ -238,14 +238,6 @@ return {
       },
       setup = {},
     },
-  },
-
-  -- Rust Crates 🚀
-  {
-    "Saecki/crates.nvim",
-    event = { "BufRead Cargo.toml" },
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = true,
   },
 
   {

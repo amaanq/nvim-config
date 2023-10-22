@@ -30,17 +30,17 @@ return {
   {
     "RRethy/vim-illuminate",
     opts = {
-      large_file_cutoff = 20000,
+      large_file_cutoff = 10000,
     },
   },
 
-  {
-    "samjwill/nvim-unception",
-    event = "BufReadPost",
-    init = function()
-      vim.g.unception_open_buffer_in_new_tab = true
-    end,
-  },
+  -- {
+  --   "samjwill/nvim-unception",
+  --   event = "BufReadPost",
+  --   init = function()
+  --     vim.g.unception_open_buffer_in_new_tab = true
+  --   end,
+  -- },
 
   {
     "flash.nvim",
@@ -60,9 +60,9 @@ return {
     },
   },
 
-  {
-    "LunarVim/bigfile.nvim",
-    config = true,
-    event = "VeryLazy",
-  },
+  -- {
+  --   "LunarVim/bigfile.nvim",
+  --   config = true,
+  --   event = "VeryLazy",
+  -- },
 }

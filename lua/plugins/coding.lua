@@ -3,6 +3,7 @@ return {
     "zbirenbaum/copilot.lua",
     opts = {
       filetypes = { ["*"] = true },
+      suggestion = { enabled = true, auto_trigger = true },
     },
   },
 
@@ -58,7 +59,7 @@ return {
   --   end,
   -- },
 
-  -- better increase/descrease
+  -- better increase/decrease
   {
     "monaqa/dial.nvim",
     event = "VeryLazy",
@@ -96,13 +97,6 @@ return {
     end,
   },
 
-  -- {
-  --   "simrat39/symbols-outline.nvim",
-  --   keys = { { "<leader>cs", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
-  --   cmd = "SymbolsOutline",
-  --   opts = {},
-  -- },
-
   -- Supertab
   {
     "L3MON4D3/LuaSnip",
@@ -115,7 +109,7 @@ return {
     "nvim-cmp",
     dependencies = {
       -- "f3fora/cmp-spell",
-      "hrsh7th/cmp-calc",
+      -- "hrsh7th/cmp-calc",
       "hrsh7th/cmp-emoji",
       -- "jc-doyle/cmp-pandoc-references",
       "petertriho/cmp-git",
@@ -135,7 +129,7 @@ return {
       table.insert(opts.sources, { name = "git" })
       -- table.insert(opts.sources, { name = "pandoc_references" })
       table.insert(opts.sources, { name = "emoji" })
-      table.insert(opts.sources, { name = "calc" })
+      -- table.insert(opts.sources, { name = "calc" })
       -- table.insert(opts.sources, { name = "spell" })
 
       opts.mapping = vim.tbl_extend("force", opts.mapping, {
@@ -193,7 +187,7 @@ return {
     "cshuaimin/ssr.nvim",
     keys = {
       {
-        "<leader>sR",
+        "<leader>sj",
         function()
           require("ssr").open()
         end,
@@ -203,43 +197,43 @@ return {
     },
   },
 
-  {
-    "gorbit99/codewindow.nvim",
-    enabled = false,
-    event = "BufReadPre",
-    keys = {
-			-- stylua: ignore
-			{ "<leader>um", function() require("codewindow").toggle_minimap() end, desc = "Toggle Minimap" },
-    },
-    config = function()
-      require("codewindow").setup({
-        z_index = 25,
-        auto_enable = true,
-        exclude_filetypes = {
-          "alpha",
-          "dap-terminal",
-          "DiffviewFiles",
-          "git",
-          "gitcommit",
-          "help",
-          "lazy",
-          "lspinfo",
-          "mason",
-          "NeogitCommitMessage",
-          "NeogitStatus",
-          "neotest-summary",
-          "neo-tree",
-          "neo-tree-popup",
-          "noice",
-          "Outline",
-          "qf",
-          "spectre_panel",
-          "toggleterm",
-          "Trouble",
-        },
-      })
-    end,
-  },
+  -- {
+  --   "gorbit99/codewindow.nvim",
+  --   enabled = false,
+  --   event = "BufReadPre",
+  --   keys = {
+  -- 	-- stylua: ignore
+  -- 	{ "<leader>um", function() require("codewindow").toggle_minimap() end, desc = "Toggle Minimap" },
+  --   },
+  --   config = function()
+  --     require("codewindow").setup({
+  --       z_index = 25,
+  --       auto_enable = true,
+  --       exclude_filetypes = {
+  --         "alpha",
+  --         "dap-terminal",
+  --         "DiffviewFiles",
+  --         "git",
+  --         "gitcommit",
+  --         "help",
+  --         "lazy",
+  --         "lspinfo",
+  --         "mason",
+  --         "NeogitCommitMessage",
+  --         "NeogitStatus",
+  --         "neotest-summary",
+  --         "neo-tree",
+  --         "neo-tree-popup",
+  --         "noice",
+  --         "Outline",
+  --         "qf",
+  --         "spectre_panel",
+  --         "toggleterm",
+  --         "Trouble",
+  --       },
+  --     })
+  --   end,
+  -- },
 
   {
     "andythigpen/nvim-coverage",
@@ -293,6 +287,7 @@ return {
           require("rest-nvim").run(true)
         end,
         desc = "Preview Request",
+        ft = "http",
       },
       {
         "<leader>ct",
@@ -300,6 +295,7 @@ return {
           require("rest-nvim").run()
         end,
         desc = "Test Request",
+        ft = "http",
       },
     },
   },
