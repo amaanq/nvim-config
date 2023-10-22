@@ -18,19 +18,15 @@ return function(opts)
         },
       },
       { import = "plugins" },
-      { import = "plugins.extras.coding.copilot" },
-      { import = "plugins.extras.dev.treesitter" },
-      { import = "plugins.extras.lang.bash" },
-      { import = "plugins.extras.lang.haskell" },
-      { import = "plugins.extras.lang.nix" },
-      { import = "plugins.extras.lang.nodejs" },
-      { import = "plugins.extras.lang.zig" },
     },
     defaults = {
       lazy = true,
       version = false, -- always use the latest git commit
     },
-    dev = { patterns = jit.os:find("Windows") and {} or { "amaanq" } },
+    dev = {
+      patterns = jit.os:find("Windows") and {} or { "amaanq" },
+      fallback = jit.os:find("Windows"),
+    },
     install = { colorscheme = { "tokyonight", "habamax" } },
     checker = { enabled = true },
     diff = {
