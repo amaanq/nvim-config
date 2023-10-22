@@ -49,6 +49,36 @@ return {
   -- },
 
   {
+    "t-troebst/perfanno.nvim",
+    opts = {},
+    keys = {
+      { "<leader>alf", "<cmd>PerfLoadFlat<cr>", desc = "Load flat profile" },
+      { "<leader>alg", "<cmd>PerfLoadCallGraph<cr>", desc = "Load call graph" },
+      { "<leader>alo", "<cmd>PerfLoadFlameGraph<cr>", desc = "Load flame graph" },
+      { "<leader>ae", "<cmd>PerfPickEvent<cr>", desc = "Pick event" },
+      { "<leader>aa", "<cmd>PerfAnnotate<cr>", desc = "Annotate" },
+      { "<leader>af", "<cmd>PerfAnnotateFunction<cr>", desc = "Annotate function" },
+      { "<leader>at", "<cmd>PerfToggleAnnotations<cr>", desc = "Toggle annotations" },
+      { "<leader>ah", "<cmd>PerfHottestLines<cr>", desc = "Hottest lines" },
+      { "<leader>as", "<cmd>PerfHottestSymbols<cr>", desc = "Hottest symbols" },
+      { "<leader>ac", "<cmd>PerfHottestCallersFunction<cr>", desc = "Hottest callers function" },
+      { "<leader>all", "<cmd>PerfLuaProfileStart<cr>", desc = "Start Lua Profiler" },
+      { "<leader>als", "<cmd>PerfLuaProfileStop<cr>", desc = "Stop Lua Profiler" },
+    },
+    cmd = {
+      "PerfLuaProfileStart",
+      "PerfLuaProfileStop",
+      "PerfLoadFlat",
+      "PerfLoadCallGraph",
+      "PerfLoadFlameGraph",
+      "PerfCacheLoad",
+      "PerfCacheSave",
+      "PerfCacheDelete",
+      "PerfCycleFormat",
+    },
+  },
+
+  {
     "andweeb/presence.nvim",
     event = "BufRead",
     opts = {
