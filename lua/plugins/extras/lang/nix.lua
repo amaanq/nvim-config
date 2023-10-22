@@ -1,5 +1,3 @@
-local util = require("util")
-
 return {
 
   -- Add Nix to treesitter
@@ -7,7 +5,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       if type(opts.ensure_installed) == "table" then
-        util.list_insert_unique(opts.ensure_installed, "nix")
+        vim.list_extend(opts.ensure_installed, { "nix" })
       end
     end,
   },
@@ -28,7 +26,7 @@ return {
 
   {
     "nvimtools/none-ls.nvim",
-    enabled = false,
+    optional = true,
     opts = function(_, opts)
       local nls = require("null-ls")
       if type(opts.sources) == "table" then

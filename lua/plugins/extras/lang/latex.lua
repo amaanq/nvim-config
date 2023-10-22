@@ -1,5 +1,3 @@
-local util = require("util")
-
 return {
 
   -- Extend auto completion
@@ -22,7 +20,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       if type(opts.ensure_installed) == "table" then
-        util.list_insert_unique(opts.ensure_installed, { "bibtex", "latex" })
+        vim.list_extend(opts.ensure_installed, { "bibtex", "latex" })
       end
     end,
   },

@@ -1,5 +1,3 @@
-local util = require("util")
-
 return {
 
   -- Add Haskell & related to treesitter
@@ -7,7 +5,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       if type(opts.ensure_installed) == "table" then
-        util.list_insert_unique(opts.ensure_installed, { "haskell" })
+        vim.list_extend(opts.ensure_installed, { "haskell" })
       end
     end,
   },
@@ -17,7 +15,7 @@ return {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       if type(opts.ensure_installed) == "table" then
-        util.list_insert_unique(opts.ensure_installed, { "haskell-language-server", "haskell-debug-adapter" })
+        vim.list_extend(opts.ensure_installed, { "haskell-language-server", "haskell-debug-adapter" })
       end
     end,
   },

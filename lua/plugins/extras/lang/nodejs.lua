@@ -1,5 +1,3 @@
-local util = require("util")
-
 return {
 
   -- Extend auto completion
@@ -31,7 +29,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       if type(opts.ensure_installed) == "table" then
-        util.list_insert_unique(opts.ensure_installed, { "css", "html", "javascript", "jsdoc", "scss" })
+        vim.list_extend(opts.ensure_installed, { "css", "html", "javascript", "jsdoc", "scss" })
       end
     end,
   },
@@ -41,7 +39,7 @@ return {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       if type(opts.ensure_installed) == "table" then
-        util.list_insert_unique(opts.ensure_installed, { "css-lsp", "html-lsp", "js-debug-adapter" })
+        vim.list_extend(opts.ensure_installed, { "css-lsp", "html-lsp", "js-debug-adapter" })
       end
     end,
   },
@@ -56,6 +54,7 @@ return {
       local mason_registry = require("mason-registry")
       local js_debug_pkg = mason_registry.get_package("js-debug-adapter")
       local js_debug_path = js_debug_pkg:get_install_path()
+      ---@diagnostic disable-next-line: missing-fields
       dap_js.setup({
         debugger_path = js_debug_path,
         adapters = { "pwa-node", "node-terminal" }, -- which adapters to register in nvim-dap
