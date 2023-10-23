@@ -49,6 +49,8 @@ Changelog
 chatproto
 chmod
 chunkinfo
+CICD
+cicd
 CLI
 cli
 cmdline
@@ -313,6 +315,8 @@ vimscript
 vimwiki
 virtualtext
 vsplit
+WASM
+wasm
 well
 WhichKey
 wiki
