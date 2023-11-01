@@ -16,6 +16,7 @@ return function(opts)
         "LazyVim/LazyVim",
         import = "lazyvim.plugins",
         news = {
+          colorscheme = "rose-pine",
           lazyvim = true,
           neovim = true,
         },

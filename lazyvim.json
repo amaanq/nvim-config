@@ -37,6 +37,7 @@
     "plugins.extras.lang.nix",
     "plugins.extras.lang.nodejs",
     "plugins.extras.lang.scala",
+    "plugins.extras.lang.verilog",
     "plugins.extras.lang.zig"
   ],
   "news": {

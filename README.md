@@ -1,15 +1,32 @@
 # 💤 Neovim Config
 
-I finally decided to use the starter template instead of maintaining my own fork
-of LazyVim, which anyone else should do, but iirc I forked LazyVim before the
-template came out. Now, LazyVim can be updated without me running a bunch of
-PRs for merges and fixing conflicts by just overriding settings here :)
+<a href="https://dotfyle.com/amaanq/nvim-config"><img src="https://dotfyle.com/amaanq/nvim-config/badges/plugins?style=flat" /></a>
+<a href="https://dotfyle.com/amaanq/nvim-config"><img src="https://dotfyle.com/amaanq/nvim-config/badges/leaderkey?style=flat" /></a>
+<a href="https://dotfyle.com/amaanq/nvim-config"><img src="https://dotfyle.com/amaanq/nvim-config/badges/plugin-manager?style=flat" /></a>
 
-If for whatever reason you used my LazyVim fork, well you should use this now.
-Highlights via screenshots are below.
+This is what I currently daily drive when writing code.
 
 Major credit goes to [@folke](https://github.com/folke) as my config is heavily
 inspired by his.
+
+## Trying out my config
+
+## Install Instructions
+
+> Install requires Neovim 0.9+. Always review the code before installing a configuration.
+
+Clone the repository and install the plugins:
+
+```sh
+git clone git@github.com:amaanq/nvim-config ~/.config/amaanq/nvim-config
+NVIM_APPNAME=amaanq/nvim-config/ nvim --headless +"Lazy! sync" +qa
+```
+
+Open Neovim with this config:
+
+```sh
+NVIM_APPNAME=amaanq/nvim-config/ nvim
+```
 
 ![image](https://user-images.githubusercontent.com/29718261/218633577-99753269-7c96-4920-8cf7-83c566de09d8.png)
 
@@ -41,145 +58,158 @@ inspired by his.
 
 ## Plugins
 
-- [alpha-nvim](https://github.com/goolord/alpha-nvim)
-- [barbecue.nvim](https://github.com/utilyre/barbecue.nvim)
-- [catppuccin](https://github.com/catppuccin/nvim)
-- [clangd_extensions](https://github.com/p00f/clangd_extensions.nvim)
-- [cmp-buffer](https://github.com/hrsh7th/cmp-buffer)
-- [cmp-calc](https://github.com/hrsh7th/cmp-calc)
-- [cmp-emoji](https://github.com/hrsh7th/cmp-emoji)
-- [cmp-npm](https://github.com/David-Kunz/cmp-npm)
-- [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp)
-- [cmp-pandoc-references](https://github.com/jc-doyle/cmp-pandoc-references)
-- [cmp-path](https://github.com/hrsh7th/cmp-path)
-- [cmp_luasnip](https://github.com/saadparwaiz1/cmp_luasnip)
-- [codewindow.nvim](<https://github.com/gorbit99/codewindow.nvim(https://github.com/Saecki/crates.nvim)>)
-- [comment-box.nvim](https://github.com/LudoPinelli/comment-box.nvim)
-- [committia.vim](https://github.com/rhysd/committia.vim)
-- [copilot](https://github.com/zbirenbaum/copilot.lua)
-- [copilot-cmp](https://github.com/zbirenbaum/copilot-cmp)
-- [crates.nvim](https://github.com/Saecki/crates.nvim)
-- [dap-buddy.nvim](https://github.com/Pocco81/dap-buddy.nvim)
-- [dial.nvim](https://github.com/monaqa/dial.nvim)
-- [diffview.nvim](https://github.com/sindrets/diffview.nvim)
-- [dressing.nvim](https://github.com/stevearc/dressing.nvim)
-- [drop.nvim](https://github.com/folke/drop.nvim)
-- [flit.nvim](https://github.com/ggandor/flit.nvim)
-- [friendly-snippets](https://github.com/rafamadriz/friendly-snippets)
-- [git-blame.nvim](https://github.com/f-person/git-blame.nvim)
-- [git-conflict.nvim](https://github.com/akinsho/git-conflict.nvim)
-- [git-messenger.vim](https://github.com/rhysd/git-messenger.vim)
-- [github-nvim-theme](https://github.com/projekt0n/github-nvim-theme)
-- [gitlinker.nvim](https://github.com/ruifm/gitlinker.nvim)
-- [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
-- [glance.nvim](https://github.com/DNLHC/glance.nvim)
-- [gruvbox.nvim](https://github.com/ellisonleao/gruvbox.nvim)
-- [headlines.nvim](https://github.com/lukas-reineke/headlines.nvim)
-- [horizon.nvim](https://github.com/LunarVim/horizon.nvim)
-- [inc-rename.nvim](https://github.com/smjonas/inc-rename.nvim)
-- [incline.nvim](https://github.com/b0o/incline.nvim)
-- [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
-- [kanagawa.nvim](https://github.com/rebelot/kanagawa.nvim)
-- [lazy.nvim](https://github.com/folke/lazy.nvim)
-- [leap.nvim](https://github.com/ggandor/leap.nvim)
-- [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim)
-- [LuaSnip](https://github.com/L3MON4D3/LuaSnip)
-- [mason-lspconfig.nvim](https://github.com/williamboman/mason-lspconfig.nvim)
-- [mason-null-ls.nvim](https://github.com/jay-babu/mason-null-ls.nvim)
-- [mason.nvim](https://github.com/williamboman/mason.nvim)
-- [material.nvim](https://github.com/marko-cerovac/material.nvim)
-- [medical-spell-files](https://github.com/melvio/medical-spell-files)
-- [middleclass](https://github.com/anuvyklack/middleclass)
-- [mini.nvim](https://github.com/echasnovski/mini.nvim)
-- [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim)
-- [neoconf.nvim](https://github.com/folke/neoconf.nvim)
-- [neodev.nvim](https://github.com/folke/neodev.nvim)
-- [neodim](https://github.com/zbirenbaum/neodim)
-- [neogen](https://github.com/danymat/neogen)
-- [neogit](https://github.com/TimUntersberger/neogit)
-- [neorg](https://github.com/nvim-neorg/neorg)
-- [neotest](https://github.com/nvim-neotest/neotest)
-- [neotest-go](https://github.com/nvim-neotest/neotest-go)
-- [neotest-haskell](https://github.com/mrcjkb/neotest-haskell)
-- [neotest-jest](https://github.com/haydenmeade/neotest-jest)
-- [neotest-plenary](https://github.com/nvim-neotest/neotest-plenary)
-- [neotest-python](https://github.com/nvim-neotest/neotest-python)
-- [neotest-rust](https://github.com/rouge8/neotest-rust)
-- [neovim-ayu](https://github.com/Shatur/neovim-ayu)
-- [noice.nvim](https://github.com/folke/noice.nvim)
-- [nui.nvim](https://github.com/MunifTanjim/nui.nvim)
-- [null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim)
-- [numb.nvim](https://github.com/nacro90/numb.nvim)
-- [nvim-bufferline.lua](https://github.com/akinsho/nvim-bufferline.lua)
-- [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
-- [nvim-colorizer.lua](https://github.com/NvChad/nvim-colorizer.lua)
-- [nvim-dap](https://github.com/mfussenegger/nvim-dap)
-- [nvim-dap-python](https://github.com/mfussenegger/nvim-dap-python)
-- [nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui)
-- [nvim-dap-virtual-text](https://github.com/theHamsta/nvim-dap-virtual-text)
-- [nvim-dap-vscode-js](https://github.com/mxsdev/nvim-dap-vscode-js)
-- [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls)
-- [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
-- [nvim-luapad](https://github.com/rafcamlet/nvim-luapad)
-- [nvim-navic](https://github.com/SmiteshP/nvim-navic)
-- [nvim-notify](https://github.com/rcarriga/nvim-notify)
-- [nvim-regexplainer](https://github.com/bennypowers/nvim-regexplainer)
-- [nvim-scrollbar](https://github.com/petertriho/nvim-scrollbar)
-- [nvim-spectre](https://github.com/windwp/nvim-spectre)
-- [nvim-terminal.lua](https://github.com/norcalli/nvim-terminal.lua)
-- [nvim-toggleterm.lua](https://github.com/akinsho/nvim-toggleterm.lua)
-- [nvim-treehopper](https://github.com/mfussenegger/nvim-treehopper)
-- [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
-- [nvim-treesitter-context](https://github.com/nvim-treesitter/nvim-treesitter-context)
-- [nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)
-- [nvim-ts-context-commentstring](https://github.com/JoosepAlviste/nvim-ts-context-commentstring)
-- [nvim-ts-rainbow2](https://github.com/HiPhish/nvim-ts-rainbow2)
-- [nvim-ufo](https://github.com/kevinhwang91/nvim-ufo)
-- [nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons)
-- [octo.nvim](https://github.com/pwntester/octo.nvim)
-- [onedarkpro.nvim](https://olimorris/onedarkpro.nvim)
-- [one-small-step-for-vimkind](https://github.com/jbyuki/one-small-step-for-vimkind)
-- [oxocarbon.nvim](https://github.com/shaunsingh/oxocarbon.nvim)
-- [package-info.nvim](https://github.com/vuki656/package-info.nvim)
-- [paint.nvim](https://github.com/folke/paint.nvim)
-- [peek.nvim](https://github.com/toppair/peek.nvim)
-- [persistence.nvim](https://github.com/folke/persistence.nvim)
-- [playground](https://github.com/nvim-treesitter/playground)
-- [plenary.nvim](https://github.com/nvim-lua/plenary.nvim)
-- [presence.nvim](https://github.com/andweeb/presence.nvim)
-- [project.nvim](https://github.com/ahmedkhalf/project.nvim)
-- [refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim)
-- [rose-pine](https://github.com/rose-pine/neovim)
-- [rust-tools.nvim](https://github.com/simrat39/rust-tools.nvim)
-- [Sakura.nvim](https://github.com/numToStr/Sakura.nvim)
-- [SchemaStore.nvim](https://github.com/b0o/SchemaStore.nvim)
-- [sqlite.lua](https://github.com/kkharji/sqlite.lua)
-- [ssr.nvim](https://github.com/cshuaimin/ssr.nvim)
-- [styler.nvim](https://github.com/folke/styler.nvim)
-- [symbols-outline.nvim](https://github.com/simrat39/symbols-outline.nvim)
-- [targets.vim](https://github.com/wellle/targets.vim)
-- [telescope-dap](https://github.com/nvim-telescope/telescope-dap.nvim)
-- [telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim)
-- [telescope-project](https://github.com/nvim-telescope/telescope-project.nvim)
-- [telescope-undo](https://github.com/debugloop/telescope-undo.nvim)
-- [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
-- [todo-comments.nvim](https://github.com/folke/todo-comments.nvim)
-- [tokyonight.nvim](https://github.com/folke/tokyonight.nvim)
-- [treesj](https://github.com/Wansmer/treesj)
-- [trouble.nvim](https://github.com/folke/trouble.nvim)
-- [twilight.nvim](https://github.com/folke/twilight.nvim)
-- [typescript.nvim](https://github.com/jose-elias-alvarez/typescript.nvim)
-- [undotree](https://github.com/mbbill/undotree)
-- [vim-dirtytalk](https://github.com/psliwka/vim-dirtytalk)
-- [vim-highlighturl](https://github.com/itchyny/vim-highlighturl)
-- [vim-illuminate](https://github.com/RRethy/vim-illuminate)
-- [vim-matchup](https://github.com/andymass/vim-matchup)
-- [vim-startuptime](https://github.com/dstein64/vim-startuptime)
-- [vim-wakatime](https://github.com/wakatime/vim-wakatime)
-- [virt-column.nvim](https://github.com/lukas-reineke/virt-column.nvim)
-- [which-key.nvim](https://github.com/folke/which-key.nvim)
-- [windows.nvim](https://github.com/anuvyklack/windows.nvim)
-- [yanky.nvim](https://github.com/gbprod/yanky.nvim)
-- [zen-mode.nvim](https://github.com/folke/zen-mode.nvim)
+### bars-and-lines
+
+- [utilyre/barbecue.nvim](https://dotfyle.com/plugins/utilyre/barbecue.nvim)
+- [SmiteshP/nvim-navic](https://dotfyle.com/plugins/SmiteshP/nvim-navic)
+
+### color
+
+- [folke/twilight.nvim](https://dotfyle.com/plugins/folke/twilight.nvim)
+
+### colorscheme
+
+- [projekt0n/github-nvim-theme](https://dotfyle.com/plugins/projekt0n/github-nvim-theme)
+- [marko-cerovac/material.nvim](https://dotfyle.com/plugins/marko-cerovac/material.nvim)
+- [catppuccin/nvim](https://dotfyle.com/plugins/catppuccin/nvim)
+- [olimorris/onedarkpro.nvim](https://dotfyle.com/plugins/olimorris/onedarkpro.nvim)
+- [rebelot/kanagawa.nvim](https://dotfyle.com/plugins/rebelot/kanagawa.nvim)
+- [rose-pine/neovim](https://dotfyle.com/plugins/rose-pine/neovim)
+
+### comment
+
+- [LudoPinelli/comment-box.nvim](https://dotfyle.com/plugins/LudoPinelli/comment-box.nvim)
+
+### completion
+
+- [zbirenbaum/copilot.lua](https://dotfyle.com/plugins/zbirenbaum/copilot.lua)
+- [hrsh7th/nvim-cmp](https://dotfyle.com/plugins/hrsh7th/nvim-cmp)
+
+### cursorline
+
+- [RRethy/vim-illuminate](https://dotfyle.com/plugins/RRethy/vim-illuminate)
+
+### debugging
+
+- [rcarriga/nvim-dap-ui](https://dotfyle.com/plugins/rcarriga/nvim-dap-ui)
+- [mfussenegger/nvim-dap](https://dotfyle.com/plugins/mfussenegger/nvim-dap)
+- [t-troebst/perfanno.nvim](https://dotfyle.com/plugins/t-troebst/perfanno.nvim)
+
+### dependency-management
+
+- [Saecki/crates.nvim](https://dotfyle.com/plugins/Saecki/crates.nvim)
+- [vuki656/package-info.nvim](https://dotfyle.com/plugins/vuki656/package-info.nvim)
+
+### editing-support
+
+- [monaqa/dial.nvim](https://dotfyle.com/plugins/monaqa/dial.nvim)
+- [debugloop/telescope-undo.nvim](https://dotfyle.com/plugins/debugloop/telescope-undo.nvim)
+- [folke/zen-mode.nvim](https://dotfyle.com/plugins/folke/zen-mode.nvim)
+- [haringsrob/nvim_context_vt](https://dotfyle.com/plugins/haringsrob/nvim_context_vt)
+- [nacro90/numb.nvim](https://dotfyle.com/plugins/nacro90/numb.nvim)
+- [windwp/nvim-ts-autotag](https://dotfyle.com/plugins/windwp/nvim-ts-autotag)
+- [bennypowers/nvim-regexplainer](https://dotfyle.com/plugins/bennypowers/nvim-regexplainer)
+- [Wansmer/treesj](https://dotfyle.com/plugins/Wansmer/treesj)
+
+### file-explorer
+
+- [nvim-neo-tree/neo-tree.nvim](https://dotfyle.com/plugins/nvim-neo-tree/neo-tree.nvim)
+
+### formatting
+
+- [stevearc/conform.nvim](https://dotfyle.com/plugins/stevearc/conform.nvim)
+
+### fuzzy-finder
+
+- [nvim-telescope/telescope.nvim](https://dotfyle.com/plugins/nvim-telescope/telescope.nvim)
+
+### git
+
+- [ruifm/gitlinker.nvim](https://dotfyle.com/plugins/ruifm/gitlinker.nvim)
+- [f-person/git-blame.nvim](https://dotfyle.com/plugins/f-person/git-blame.nvim)
+- [akinsho/git-conflict.nvim](https://dotfyle.com/plugins/akinsho/git-conflict.nvim)
+- [sindrets/diffview.nvim](https://dotfyle.com/plugins/sindrets/diffview.nvim)
+
+### github
+
+- [pwntester/octo.nvim](https://dotfyle.com/plugins/pwntester/octo.nvim)
+- [pwntester/codeql.nvim](https://dotfyle.com/plugins/pwntester/codeql.nvim)
+
+### lsp
+
+- [smjonas/inc-rename.nvim](https://dotfyle.com/plugins/smjonas/inc-rename.nvim)
+- [neovim/nvim-lspconfig](https://dotfyle.com/plugins/neovim/nvim-lspconfig)
+- [mfussenegger/nvim-lint](https://dotfyle.com/plugins/mfussenegger/nvim-lint)
+- [scalameta/nvim-metals](https://dotfyle.com/plugins/scalameta/nvim-metals)
+- [mrcjkb/haskell-tools.nvim](https://dotfyle.com/plugins/mrcjkb/haskell-tools.nvim)
+- [SmiteshP/nvim-navbuddy](https://dotfyle.com/plugins/SmiteshP/nvim-navbuddy)
+
+### lsp-installer
+
+- [williamboman/mason.nvim](https://dotfyle.com/plugins/williamboman/mason.nvim)
+
+### lua-colorscheme
+
+- [ellisonleao/gruvbox.nvim](https://dotfyle.com/plugins/ellisonleao/gruvbox.nvim)
+
+### media
+
+- [andweeb/presence.nvim](https://dotfyle.com/plugins/andweeb/presence.nvim)
+
+### motion
+
+- [echasnovski/mini.bracketed](https://dotfyle.com/plugins/echasnovski/mini.bracketed)
+
+### nvim-dev
+
+- [rafcamlet/nvim-luapad](https://dotfyle.com/plugins/rafcamlet/nvim-luapad)
+- [anuvyklack/animation.nvim](https://dotfyle.com/plugins/anuvyklack/animation.nvim)
+- [jbyuki/one-small-step-for-vimkind](https://dotfyle.com/plugins/jbyuki/one-small-step-for-vimkind)
+- [folke/neodev.nvim](https://dotfyle.com/plugins/folke/neodev.nvim)
+- [MunifTanjim/nui.nvim](https://dotfyle.com/plugins/MunifTanjim/nui.nvim)
+- [nvim-lua/plenary.nvim](https://dotfyle.com/plugins/nvim-lua/plenary.nvim)
+
+### plugin-manager
+
+- [folke/lazy.nvim](https://dotfyle.com/plugins/folke/lazy.nvim)
+
+### preconfigured
+
+- [LazyVim/LazyVim](https://dotfyle.com/plugins/LazyVim/LazyVim)
+
+### snippet
+
+- [L3MON4D3/LuaSnip](https://dotfyle.com/plugins/L3MON4D3/LuaSnip)
+
+### split-and-window
+
+- [anuvyklack/windows.nvim](https://dotfyle.com/plugins/anuvyklack/windows.nvim)
+
+### statusline
+
+- [nvim-lualine/lualine.nvim](https://dotfyle.com/plugins/nvim-lualine/lualine.nvim)
+
+### syntax
+
+- [nvim-treesitter/nvim-treesitter](https://dotfyle.com/plugins/nvim-treesitter/nvim-treesitter)
+
+### tabline
+
+- [akinsho/bufferline.nvim](https://dotfyle.com/plugins/akinsho/bufferline.nvim)
+
+### terminal-integration
+
+- [samjwill/nvim-unception](https://dotfyle.com/plugins/samjwill/nvim-unception)
+
+### test
+
+- [nvim-neotest/neotest](https://dotfyle.com/plugins/nvim-neotest/neotest)
+- [andythigpen/nvim-coverage](https://dotfyle.com/plugins/andythigpen/nvim-coverage)
+
+### utility
+
+- [zbirenbaum/neodim](https://dotfyle.com/plugins/zbirenbaum/neodim)
+- [folke/noice.nvim](https://dotfyle.com/plugins/folke/noice.nvim)
+- [rcarriga/nvim-notify](https://dotfyle.com/plugins/rcarriga/nvim-notify)
 
 <!-- plugins:end -->

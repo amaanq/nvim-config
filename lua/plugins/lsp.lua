@@ -118,6 +118,7 @@ return {
         },
       },
       ---@type lspconfig.options
+      ---@diagnostic disable: missing-fields
       servers = {
         ansiblels = {},
         asm_lsp = {},
@@ -142,6 +143,7 @@ return {
                   "--log-level=trace",
                 },
               },
+              hover = { expandAlias = false },
               hint = {
                 enable = true,
                 setType = false,
