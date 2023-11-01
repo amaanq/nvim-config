@@ -298,7 +298,19 @@ return {
   --   end,
   -- },
 
-  { "itchyny/vim-highlighturl", event = "VeryLazy" },
+  {
+    "sontungexpt/url-open",
+    event = "VeryLazy",
+    cmd = "URLOpenUnderCursor",
+    opts = {
+      highlight_url = {
+        all_urls = {
+          enabled = true,
+          fg = "#199eff",
+        },
+      },
+    },
+  },
 
   -- {
   --   "lukas-reineke/headlines.nvim",
