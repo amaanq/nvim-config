@@ -312,21 +312,11 @@ return {
     },
   },
 
-  -- {
-  --   "lukas-reineke/headlines.nvim",
-  --   ft = { "org", "norg", "markdown", "yaml" },
-  --   config = function()
-  --     require("headlines").setup({
-  --       markdown = {
-  --         headline_highlights = { "Headline1", "Headline2", "Headline3" },
-  --       },
-  --       org = {
-  --         headline_highlights = false,
-  --       },
-  --       norg = { codeblock_highlight = false },
-  --     })
-  --   end,
-  -- },
+  {
+    "lukas-reineke/headlines.nvim",
+    enabled = false,
+    ft = { "markdown", "rmd", "org" },
+  },
 
   {
     "utilyre/barbecue.nvim",

@@ -181,7 +181,7 @@ return {
           filetypes = { "markdown", "vimwiki" }, -- markdown extensions (ie. quarto) can go here
         },
         neorg = {
-          enabled = true,
+          enabled = false,
           clear_in_insert_mode = false,
           download_remote_images = true,
           only_render_image_at_cursor = false,
@@ -193,6 +193,45 @@ return {
       max_width_window_percentage = nil,
       max_height_window_percentage = 50,
       kitty_method = "normal",
+    },
+  },
+
+  {
+    "nvim-neorg/neorg",
+    build = ":Neorg sync-parsers",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    cmd = { "Neorg", "NeorgOpen", "NeorgNew", "NeorgDoc" },
+    event = "LazyFile",
+    opts = {
+      load = {
+        ["core.defaults"] = {},
+        ["core.keybinds"] = {
+          config = {
+            default_keybinds = true,
+            neorg_leader = "<leader>o",
+          },
+        },
+        ["core.completion"] = {
+          config = {
+            engine = "nvim-cmp",
+          },
+        },
+        ["core.concealer"] = {
+          config = {
+            icon_preset = "diamond",
+          },
+        },
+        ["core.dirman"] = {
+          config = {
+            workspaces = {
+              notes = "~/notes",
+              school = "~/School/notes",
+            },
+            default_workspace = "notes",
+          },
+        },
+        ["core.summary"] = {},
+      },
     },
   },
 }
