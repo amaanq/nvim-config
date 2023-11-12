@@ -8,7 +8,6 @@
     "lazyvim.plugins.extras.editor.aerial",
     "lazyvim.plugins.extras.editor.mini-files",
     "lazyvim.plugins.extras.editor.navic",
-    "lazyvim.plugins.extras.formatting.black",
     "lazyvim.plugins.extras.lang.clangd",
     "lazyvim.plugins.extras.lang.cmake",
     "lazyvim.plugins.extras.lang.docker",
