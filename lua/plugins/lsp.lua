@@ -253,7 +253,13 @@ return {
         ["javascriptreact"] = { "eslint_d" },
         ["typescript"] = { "eslint_d" },
         ["typescriptreact"] = { "eslint_d" },
-        ["python"] = { "isort", "black" },
+        ["python"] = function(bufnr)
+          if require("conform").get_formatter_info("ruff_format", bufnr).available then
+            return { "ruff_fix", "ruff_format" }
+          else
+            return { "isort", "black" }
+          end
+        end,
         ["sh"] = { "shfmt" },
         ["c"] = { "uncrustify" },
         ["cpp"] = { "uncrustify" },
