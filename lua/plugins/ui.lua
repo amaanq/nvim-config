@@ -398,4 +398,12 @@ return {
     },
     keys = { { "<leader>z", "<cmd>ZenMode<cr>", desc = "Zen Mode" } },
   },
+
+  {
+    "echasnovski/mini.animate",
+    opts = {
+      open = { enable = false },
+      close = { enable = false },
+    },
+  },
 }
