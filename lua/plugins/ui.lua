@@ -329,13 +329,13 @@ return {
     opts = {},
   },
 
-  -- {
-  --   "lukas-reineke/virt-column.nvim",
-  --   event = "VeryLazy",
-  --   config = function()
-  --     require("virt-column").setup({ char = "▕" })
-  --   end,
-  -- },
+  {
+    "lukas-reineke/virt-column.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("virt-column").setup({ char = "▕" })
+    end,
+  },
 
   {
     "sontungexpt/url-open",
@@ -379,7 +379,7 @@ return {
   --     },
   --   },
   -- },
-  --
+
   {
     "LudoPinelli/comment-box.nvim",
     event = "BufReadPre",
