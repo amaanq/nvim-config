@@ -6,7 +6,7 @@
 
 local util = require("util")
 
-util.cowboy()
+-- util.cowboy()
 
 -- Move to window using the movement keys
 vim.keymap.set("n", "<left>", "<C-w>h")
@@ -143,3 +143,69 @@ jq '[.[1], .[0]]' "$compile_commands_file" >"$tmp_file" && mv "$tmp_file" "$comp
 end
 
 vim.keymap.set("n", "<leader>clf", swap_compilecommands2, { desc = "Swap Compile Commands" })
+
+local watch_type = require("vim._watch").FileChangeType
+
+local function handler(res, callback)
+  if not res.files or res.is_fresh_instance then
+    return
+  end
+
+  for _, file in ipairs(res.files) do
+    local path = res.root .. "/" .. file.name
+    local change = watch_type.Changed
+    if file.new then
+      change = watch_type.Created
+    end
+    if not file.exists then
+      change = watch_type.Deleted
+    end
+    callback(path, change)
+  end
+end
+
+function watchman(path, opts, callback)
+  vim.system({ "watchman", "watch", path }):wait()
+
+  local buf = {}
+  local sub = vim.system({
+    "watchman",
+    "-j",
+    "--server-encoding=json",
+    "-p",
+  }, {
+    stdin = vim.json.encode({
+      "subscribe",
+      path,
+      "nvim:" .. path,
+      {
+        expression = { "anyof", { "type", "f" }, { "type", "d" } },
+        fields = { "name", "exists", "new" },
+      },
+    }),
+    stdout = function(_, data)
+      if not data then
+        return
+      end
+      for line in vim.gsplit(data, "\n", { plain = true, trimempty = true }) do
+        table.insert(buf, line)
+        if line == "}" then
+          local res = vim.json.decode(table.concat(buf))
+          handler(res, callback)
+          buf = {}
+        end
+      end
+    end,
+    text = true,
+  })
+
+  return function()
+    sub:kill("sigint")
+  end
+end
+
+if vim.fn.executable("watchman") == 1 then
+  require("vim.lsp._watchfiles")._watchfunc = watchman
+else
+  vim.notify("watchman not found, using default filewatcher")
+end
