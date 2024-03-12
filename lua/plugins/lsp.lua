@@ -198,7 +198,23 @@ return {
         marksman = {},
         omnisharp = {},
         prosemd_lsp = {},
-        pyright = {},
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                diagnosticSeverityOverrides = {
+                  reportWildcardImportFromLibrary = "none",
+                  reportUnusedImport = "information",
+                  reportUnusedClass = "information",
+                  reportUnusedFunction = "information",
+                },
+              },
+            },
+            pyright = {
+              disableTaggedHints = true,
+            },
+          },
+        },
         texlab = {},
         tsserver = {
           -- root_dir = function(...)
