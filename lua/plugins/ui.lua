@@ -189,6 +189,42 @@ return {
           return require("util.dashboard").status()
         end,
       })
+      table.insert(opts.sections.lualine_x, {
+        function()
+          local buf_clients = vim.lsp.get_clients({ bufnr = 0 })
+          if #buf_clients == 0 then
+            return "LSP Inactive"
+          end
+
+          local formatters = require("conform").list_formatters(0)
+
+          local buf_client_names = {}
+          local buf_formatters = {}
+
+          for _, client in pairs(buf_clients) do
+            if client.name ~= "copilot" then
+              table.insert(buf_client_names, client.name)
+            end
+          end
+
+          for _, client in pairs(formatters) do
+            table.insert(buf_formatters, client.name)
+          end
+
+          vim.list_extend(buf_client_names, buf_formatters)
+
+          if #buf_client_names == 0 then
+            return "LSP Inactive"
+          end
+
+          local unique_client_names = table.concat(buf_client_names, ", ")
+          local language_servers = string.format("[%s]", unique_client_names)
+
+          return language_servers
+        end,
+        color = { gui = "bold" },
+        -- cond = conditions.hide_in_width,
+      })
       opts.sections.lualine_z = {
         function()
           return " " .. os.date("%I:%M %p")
