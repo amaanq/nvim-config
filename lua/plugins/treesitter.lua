@@ -69,23 +69,22 @@ return {
         "vue",
         "wgsl",
       })
-      -- autopairs = { enable = true },
-      -- autotag = { enable = true },
-      -- highlight = { enable = true },
-      -- matchup = {
-      --   enable = true,
-      --   disable = { "c", "cpp" },
-      --   enable_quotes = true,
-      -- },
-      -- playground = {
-      --   enable = true,
-      --   persist_queries = true, -- Whether the query persists across vim sessions
-      -- },
-      -- query_linter = {
-      --   enable = true,
-      --   use_virtual_text = true,
-      --   lint_events = { "BufWrite", "CursorHold" },
-      -- },
+      -- opts.autopairs = { enable = true }
+      opts.autotag = { enable = true }
+      opts.matchup = {
+        enable = true,
+        disable = { "c", "cpp" },
+        enable_quotes = true,
+      }
+      opts.playground = {
+        enable = true,
+        persist_queries = true, -- Whether the query persists across vim sessions
+      }
+      opts.query_linter = {
+        enable = true,
+        use_virtual_text = true,
+        lint_events = { "BufWrite", "CursorHold" },
+      }
       -- rainbow = {
       --   enable = true,
       --   disable = { "lua" },
