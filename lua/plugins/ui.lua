@@ -10,6 +10,9 @@ return {
       fps = 144,
       stages = "fade_in_slide_out",
       background_colour = "#000000",
+      time_formats = {
+        notification = "%I:%M:%S %p",
+      },
     },
   },
 
