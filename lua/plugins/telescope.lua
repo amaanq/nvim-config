@@ -83,4 +83,28 @@ return {
       },
     },
   },
+
+  {
+    "nvim-telescope/telescope.nvim",
+    opts = function()
+      local Util = require("lazyvim.util")
+      if Util.has("nvim-notify") then
+        require("telescope").load_extension("notify")
+      end
+    end,
+    dependencies = {
+      {
+        "rcarriga/nvim-notify",
+        keys = {
+          {
+            "<leader>sN",
+            function()
+              require("telescope").extensions.notify.notify()
+            end,
+            desc = "Notifications",
+          },
+        },
+      },
+    },
+  },
 }
