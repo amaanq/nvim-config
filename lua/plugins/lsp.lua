@@ -28,6 +28,9 @@ return {
         "shfmt",
         "stylua",
       },
+      ui = {
+        border = "rounded",
+      },
     },
   },
 
