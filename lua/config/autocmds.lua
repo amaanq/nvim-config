@@ -37,23 +37,36 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 
--- Fix conceallevel for json & help files
-vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = { "json", "jsonc" },
-  callback = function()
-    vim.wo.spell = false
-    vim.wo.conceallevel = 0
-  end,
-})
-
 -- Set indent level for certain filetypes
-vim.api.nvim_create_autocmd({ "FileType", "BufRead" }, {
+vim.api.nvim_create_autocmd({ "FileType", "BufRead", "BufNewFile" }, {
   pattern = { "firrtl", "lua", "javascript", "typescript", "typescriptreact", "text", "query", "systemverilog", "norg" },
-  callback = function()
+  callback = function(args)
+    -- ignore frida scripts
+    if args.filetype == "javascript" and vim.fn.expand("%:e") == "so" then
+      return
+    end
     vim.bo.shiftwidth = 2
     vim.bo.tabstop = 2
     vim.bo.softtabstop = 2
     vim.bo.expandtab = true
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "FileType", "BufRead", "BufNewFile" }, {
+  pattern = { "markdown" },
+  callback = function()
+    vim.bo.shiftwidth = 4
+    vim.bo.tabstop = 4
+    vim.bo.softtabstop = 4
+    vim.bo.expandtab = true
+  end,
+})
+
+-- Set commentstring for certain filetypes
+vim.api.nvim_create_autocmd({ "FileType", "BufRead" }, {
+  pattern = { "cs" },
+  callback = function()
+    vim.bo.commentstring = "// %s"
   end,
 })
 
@@ -67,6 +80,10 @@ vim.filetype.add({
     gn = "gn",
     gni = "gn",
     tv = "testvector",
+    slint = "slint",
+  },
+  pattern = {
+    [".*.js.so"] = "javascript",
   },
 })
 

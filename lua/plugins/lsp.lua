@@ -282,10 +282,11 @@ return {
         ["sh"] = { "shfmt" },
         ["c"] = { "uncrustify" },
         ["cpp"] = { "uncrustify" },
+        ["xml"] = { "xmllint" },
       },
       formatters = {
         eslint_d = {
-          condition = function(ctx)
+          condition = function(_self, ctx)
             return vim.fs.find({ ".eslintrc", ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json" }, {
               path = ctx.filename,
               upward = true,
@@ -293,12 +294,12 @@ return {
           end,
         },
         dprint = {
-          condition = function(ctx)
+          condition = function(_self, ctx)
             return vim.fs.find({ "dprint.json" }, { path = ctx.filename, upward = true })[1]
           end,
         },
         uncrustify = {
-          condition = function(ctx)
+          condition = function(_self, ctx)
             local paths = vim.fs.find({ "uncrustify.cfg", ".uncrustify.cfg" }, {
               path = ctx.filename,
               upward = true,
@@ -344,6 +345,13 @@ return {
     "zeioth/garbage-day.nvim",
     dependencies = "neovim/nvim-lspconfig",
     event = "VeryLazy",
-    opts = {},
+    opts = {
+      excluded_lsp_clients = {
+        "null-ls",
+        "jdtls",
+        "copilot",
+        "rust-analyzer",
+      },
+    },
   },
 }
