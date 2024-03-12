@@ -1,3 +1,5 @@
+vim.env.RUFF_EXPERIMENTAL_FORMATTER = "1"
+
 if vim.env.VSCODE then
   vim.g.vscode = true
 end
