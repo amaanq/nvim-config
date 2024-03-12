@@ -65,4 +65,65 @@ return {
   --   config = true,
   --   event = "VeryLazy",
   -- },
+  {
+    "willothy/flatten.nvim",
+    lazy = false,
+    priority = 1001,
+    opts = function()
+      local saved_terminal ---@type Terminal?
+
+      return {
+        window = {
+          open = "smart",
+        },
+        pipe_path = function()
+          -- If running in a terminal inside Neovim:
+          local nvim = vim.env.NVIM
+          if nvim then
+            return nvim
+          end
+        end,
+        nest_if_no_args = true,
+        callbacks = {
+          should_block = function(argv)
+            return vim.tbl_contains(argv, "-b")
+          end,
+          pre_open = function()
+            local term = require("toggleterm.terminal")
+            local id = term.get_focused_id()
+            saved_terminal = term.get(id)
+          end,
+          post_open = function(bufnr, winnr, ft, is_blocking, is_diff)
+            if is_blocking and saved_terminal then
+              -- Hide the terminal while it's blocking
+              saved_terminal:close()
+            elseif not is_diff then
+              -- If it's a normal file, just switch to its window
+              vim.api.nvim_set_current_win(winnr)
+            end
+
+            -- If the file is a git commit, create one-shot autocmd to delete its buffer on write
+            -- If you just want the toggleable terminal integration, ignore this bit
+            if ft == "gitcommit" or ft == "gitrebase" then
+              vim.api.nvim_create_autocmd("BufWritePost", {
+                buffer = bufnr,
+                once = true,
+                callback = vim.schedule_wrap(function()
+                  require("bufdelete").bufdelete(bufnr, true)
+                end),
+              })
+            end
+          end,
+          -- After blocking ends (for a git commit, etc), reopen the terminal
+          block_end = vim.schedule_wrap(function()
+            if saved_terminal then
+              saved_terminal:open()
+              saved_terminal = nil
+            end
+          end),
+        },
+      }
+    end,
+  },
+
 }
