@@ -6,7 +6,11 @@ return {
     init = function()
       local util = require("util")
 
-      local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
+      local parsers = require("nvim-treesitter.parsers")
+      local ok, configs = pcall(parsers.get_parser_configs)
+      if not ok then
+        configs = parsers.configs
+      end
 
       ---@type table<string, ParserInfo>
       local local_configs = {
@@ -19,7 +23,7 @@ return {
         bicep = {
           install_info = {
             url = "~/projects/treesitter/tree-sitter-bicep",
-            files = { "src/parser.c" },
+            files = { "src/parser.c", "src/scanner.c" },
           },
         },
         capnp = {
@@ -147,24 +151,24 @@ return {
         --   },
         --   experimental = true,
         -- },
-        odin = {
-          install_info = {
-            url = "~/projects/treesitter/tree-sitter-odin",
-            files = { "src/parser.c", "src/scanner.c" },
-          },
-        },
+        -- odin = {
+        --   install_info = {
+        --     url = "~/projects/treesitter/tree-sitter-odin",
+        --     files = { "src/parser.c", "src/scanner.c" },
+        --   },
+        -- },
         objc = {
           install_info = {
             url = "~/projects/treesitter/tree-sitter-objc",
             files = { "src/parser.c" },
           },
         },
-        -- d = {
-        --   install_info = {
-        --     url = "~/projects/treesitter/tree-sitter-d",
-        --     files = { "src/parser.c", "src/scanner.c" },
-        --   },
-        -- },
+        d = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-d",
+            files = { "src/parser.c", "src/scanner.c" },
+          },
+        },
         cairo = {
           install_info = {
             url = "~/projects/treesitter/tree-sitter-cairo",
@@ -219,15 +223,40 @@ return {
             files = { "src/parser.c" },
           },
         },
+        gn = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-gn",
+            files = { "src/parser.c", "src/scanner.c" },
+          },
+        },
+        testvector = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-testvector",
+            files = { "src/parser.c" },
+          },
+        },
+        just = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-just",
+            files = { "src/parser.c", "src/scanner.c" },
+          },
+        },
+        linkerscript = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-linkerscript",
+            files = { "src/parser.c" },
+          },
+          filetype = "ld",
+        },
         objdump = {
           install_info = {
             url = "~/projects/treesitter/tree-sitter-objdump",
             files = { "src/parser.c", "src/scanner.c" },
           },
         },
-        gn = {
+        svelte = {
           install_info = {
-            url = "~/projects/treesitter/tree-sitter-gn",
+            url = "~/projects/treesitter/tree-sitter-svelte",
             files = { "src/parser.c", "src/scanner.c" },
           },
         },
@@ -248,7 +277,7 @@ return {
       for lang, install_info in pairs(local_configs) do
         local expanded_url = string.gsub(install_info.install_info.url, "^~", os.getenv("HOME") or "~")
         if util.exists(expanded_url) or expanded_url:find("https?://") then
-          parser_configs[lang] = install_info
+          configs[lang] = install_info
         elseif dbg then
           dd("Skipping " .. lang .. " because " .. install_info.install_info.url .. " does not exist locally")
         end
