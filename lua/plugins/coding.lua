@@ -119,6 +119,8 @@ return {
       -- "jc-doyle/cmp-pandoc-references",
       "petertriho/cmp-git",
       "rcarriga/cmp-dap",
+      "hrsh7th/cmp-cmdline",
+      { "windwp/nvim-autopairs", opts = {} },
     },
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
@@ -177,6 +179,14 @@ return {
       cmp.setup.filetype({ "dap-repl", "dapui_watches" }, {
         sources = { { name = "dap" } },
       })
+
+      cmp.setup.cmdline("/", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = "buffer" },
+        },
+      })
+
     end,
   },
 
