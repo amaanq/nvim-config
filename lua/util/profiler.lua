@@ -16,7 +16,7 @@ M.stack_names = {}
 function M.stat(name, start)
   M.stats[name] = M.stats[name] or { total = 0, time = 0, self = 0 }
   M.stats[name].total = M.stats[name].total + 1
-  local diff = vim.loop.hrtime() - start
+  local diff = vim.uv.hrtime() - start
   table.remove(M.stack_names)
   if not vim.tbl_contains(M.stack_names, name) then
     M.stats[name].time = M.stats[name].time + diff
@@ -32,7 +32,7 @@ function M.wrap(name, fn)
   end
   M.wrapped[fn] = true
   return function(...)
-    local start = vim.loop.hrtime()
+    local start = vim.uv.hrtime()
     table.insert(M.stack, 0)
     table.insert(M.stack_names, name)
     local ret = pack_len(pcall(fn, ...))
@@ -80,7 +80,7 @@ function M.require(modname)
   if package.loaded[modname] then
     return package.loaded[modname]
   end
-  local start = vim.loop.hrtime()
+  local start = vim.uv.hrtime()
   table.insert(M.stack, 0)
   table.insert(M.stack_names, modname)
   local ret = pack_len(pcall(M._require, modname))
