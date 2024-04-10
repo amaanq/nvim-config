@@ -287,6 +287,17 @@ return {
       formatters = {
         eslint_d = {
           condition = function(_self, ctx)
+            local package_json = vim.fs.find({ "package.json" }, { path = ctx.filename, upward = true })[1]
+            if package_json then
+              local f = io.open(package_json, "r")
+              if f then
+                local data = vim.json.decode(f:read("*all"))
+                f:close()
+                if data and data.eslintConfig then
+                  return true
+                end
+              end
+            end
             return vim.fs.find({ ".eslintrc", ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json" }, {
               path = ctx.filename,
               upward = true,
