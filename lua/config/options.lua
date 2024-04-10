@@ -4,6 +4,8 @@
 --  │ https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua │
 --  ╰─────────────────────────────────────────────────────────────────────────────╯
 
+-- vim.g.__ts_debug = 1
+
 vim.g.mapleader = " "
 
 -- vim.opt.foldmethod = "expr"
@@ -67,3 +69,20 @@ vim.g.lazyvim_python_lsp = "basedpyright"
 if vim.fn.has("win32") == 1 then
   LazyVim.terminal.setup("pwsh")
 end
+
+vim.g.rustaceanvim = {
+  server = {
+    settings = function(project_root_dir, default_settings)
+      local results = vim.fn.glob(project_root_dir .. "/.neoconf.json", true, true)
+      if vim.tbl_isempty(results) then
+        return default_settings
+      end
+      -- load neoconf json, decode with vim.json.decode, and merge
+      -- or override the settings
+
+      local settings = vim.fn.json_decode(vim.fn.readfile(results[1]))
+
+      return vim.tbl_deep_extend("force", default_settings, settings)
+    end,
+  },
+}
