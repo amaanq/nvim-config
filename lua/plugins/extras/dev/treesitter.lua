@@ -286,4 +286,19 @@ return {
       require("nvim-treesitter.install").ensure_installed(vim.tbl_keys(local_configs))
     end,
   },
+
+  {
+    "tree-sitter-grammars/tree-sitter-test",
+    -- compile on your own on Windows
+    build = "make parser/test.so",
+    ft = "test",
+    init = function()
+      -- toggle dynamic language injection
+      vim.g.tstest_dynamic_injection = true
+      -- toggle full-width rules for test separators
+      vim.g.tstest_fullwidth_rules = false
+      -- set the highlight group of the rules
+      vim.g.tstest_rule_hlgroup = "FoldColumn"
+    end,
+  },
 }

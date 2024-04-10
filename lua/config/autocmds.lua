@@ -62,6 +62,17 @@ vim.api.nvim_create_autocmd({ "FileType", "BufRead", "BufNewFile" }, {
   end,
 })
 
+vim.api.nvim_create_autocmd({ "FileType", "BufRead", "BufNewFile" }, {
+  pattern = { "test" },
+  callback = function()
+    vim.bo.shiftwidth = 2
+    vim.bo.tabstop = 2
+    vim.bo.softtabstop = 2
+    vim.bo.expandtab = true
+    vim.wo.conceallevel = 0
+  end,
+})
+
 -- Set commentstring for certain filetypes
 vim.api.nvim_create_autocmd({ "FileType", "BufRead" }, {
   pattern = { "cs" },
