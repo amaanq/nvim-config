@@ -61,3 +61,5 @@ vim.keymap.set = function(mode, lhs, rhs, opts)
   opts.silent = opts.silent ~= false
   return keymap_set(mode, lhs, rhs, opts)
 end
+
+vim.g.lazyvim_python_lsp = "basedpyright"
