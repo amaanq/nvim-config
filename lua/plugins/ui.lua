@@ -19,6 +19,10 @@ return {
   -- bufferline
   {
     "akinsho/bufferline.nvim",
+    keys = {
+      { "[B", "<cmd>BufferLineMovePrev<cr>", desc = "Swap with prev buffer" },
+      { "]B", "<cmd>BufferLineMoveNext<cr>", desc = "Swap with next buffer" },
+    },
     ---@param opts bufferline.UserConfig
     opts = function(_, opts)
       opts.options.show_close_icon = true
@@ -42,7 +46,7 @@ return {
         delay = 200,
         reveal = { "close" },
       }
-      opts.highlights = function(config) ---@param bufferline.Config
+      opts.highlights = function(config) ---@param config bufferline.Config
         local hl = {}
 
         for name, tbl in pairs(config.highlights) do
