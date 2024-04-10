@@ -91,6 +91,17 @@ return {
     end,
   },
 
+  {
+    "NvChad/nvim-colorizer.lua",
+    event = "VeryLazy",
+    opts = {
+      user_default_options = {
+        names = false,
+      },
+    },
+    config = true,
+  },
+
   -- scrollbar
   -- { "lewis6991/satellite.nvim", opts = {}, event = "VeryLazy", enabled = false },
   -- {
@@ -353,12 +364,6 @@ return {
         },
       },
     },
-  },
-
-  {
-    "lukas-reineke/headlines.nvim",
-    enabled = false,
-    ft = { "markdown", "rmd", "org" },
   },
 
   {
