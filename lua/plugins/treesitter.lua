@@ -54,7 +54,6 @@ return {
         "json",
         "json5",
         "kotlin",
-        "latex",
         "make",
         "meson",
         "ninja",
