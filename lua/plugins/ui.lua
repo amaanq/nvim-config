@@ -201,7 +201,13 @@ return {
       }
       table.insert(opts.sections.lualine_x, {
         function()
-          return require("util.dashboard").status()
+          local statusline = {
+            halloween = "🧛👻👺🧟🎃",
+            summer = "🌴🌊",
+            winter = "🏂❄️ ⛷️",
+            xmas = "🎅🎄🌟🎁",
+          }
+          return statusline["summer"]
         end,
       })
       table.insert(opts.sections.lualine_x, {
