@@ -17,9 +17,6 @@ vim.keymap.set("n", "<right>", "<C-w>l")
 -- change word with <c-c>
 vim.keymap.set("n", "<C-c>", "<cmd>normal! ciw<cr>a")
 
--- run lua
-vim.keymap.set("n", "<leader>cR", util.runlua, { desc = "Run Lua" })
-
 -- htop
 if vim.fn.executable("htop") == 1 then
   vim.keymap.set("n", "<leader>xh", function()
@@ -27,63 +24,57 @@ if vim.fn.executable("htop") == 1 then
   end, { desc = "htop" })
 end
 
+local function do_open(uri)
+  local cmd, err = vim.ui.open(uri)
+  local rv = cmd and cmd:wait(1000) or nil
+  if cmd and rv and rv.code ~= 0 then
+    err = ("vim.ui.open: command %s (%d): %s"):format(
+      (rv.code == 124 and "timeout" or "failed"),
+      rv.code,
+      vim.inspect(cmd.cmd)
+    )
+  end
+  return err
+end
+
 --  ╭───────────────────────────────────────────────────────────╮
 --  │ Credit: June Gunn <Leader>?/! | Google it / Feeling lucky │
 --  ╰───────────────────────────────────────────────────────────╯
 ---@param pat string
----@param lucky boolean
-local function google(pat, lucky)
+local function google(pat)
   local query = '"' .. vim.fn.substitute(pat, '["\n]', " ", "g") .. '"'
   query = vim.fn.substitute(query, "[[:punct:] ]", [[\=printf("%%%02X", char2nr(submatch(0)))]], "g")
-  vim.fn.system(
-    vim.fn.printf(vim.g.open_command .. ' "https://www.google.com/search?%sq=%s"', lucky and "btnI&" or "", query)
-  )
+  do_open("https://www.google.com/search?" .. "q=" .. query)
 end
 
 vim.keymap.set("n", "<leader>?", function()
-  google(vim.fn.expand("<cWORD>"), false)
+  google(vim.fn.expand("<cWORD>"))
 end, { desc = "Google" })
 
 vim.keymap.set("x", "<leader>?", function()
-  google(vim.fn.getreg("g"), false)
+  google(vim.fn.getreg("g"))
 end, { desc = "Google" })
-
-vim.keymap.set("n", "<leader>!", function()
-  google(vim.fn.expand("<cWORD>"), true)
-end, { desc = "Google (Lucky)" })
-
-vim.keymap.set("x", "<leader>!", function()
-  google(vim.fn.getreg("g"), true)
-end, { desc = "Google (Lucky)" })
-
----@param path string
-local function open(path)
-  vim.fn.jobstart({ vim.g.open_command, path }, { detach = true })
-  vim.notify(string.format("Opening %s", path))
-end
 
 --  ╭────────────────────────────────────╮
 --  │ GX - replicate netrw functionality │
 --  ╰────────────────────────────────────╯
 local function open_link()
-  local file = vim.fn.expand("<cfile>")
-  if not file or vim.fn.isdirectory(file) > 0 then
-    return vim.cmd.edit(file)
-  end
-
-  if file:match("http[s]?://") then
-    return open(file)
+  local url = vim.ui._get_url()
+  if url:match("%w://") then
+    return do_open(url)
   end
 
   -- consider anything that looks like string/string a github link
   local plugin_url_regex = "[%a%d%-%.%_]*%/[%a%d%-%.%_]*"
-  local link = string.match(file, plugin_url_regex)
+  local link = string.match(url, plugin_url_regex)
   if link then
-    return open(string.format("https://www.github.com/%s", link))
+    return do_open(string.format("https://www.github.com/%s", link))
   end
+
+  vim.notify("No link found under cursor")
 end
 
-vim.keymap.set("n", "gx", open_link, { desc = "Open Link" })
+vim.keymap.set("n", "gx", open_link)
 vim.keymap.set("n", "gf", "<cmd>e <cfile><cr>", { desc = "Open File" })
 
 --  ╭──────────╮
@@ -142,7 +133,7 @@ jq '[.[1], .[0]]' "$compile_commands_file" >"$tmp_file" && mv "$tmp_file" "$comp
   vim.notify("Swapped compile_commands.json!")
 end
 
-vim.keymap.set("n", "<leader>clf", swap_compilecommands2, { desc = "Swap Compile Commands" })
+-- vim.keymap.set("n", "<leader>clf", swap_compilecommands2, { desc = "Swap Compile Commands" })
 
 local watch_type = require("vim._watch").FileChangeType
 

@@ -22,7 +22,6 @@ vim.opt.listchars = "trail:·,nbsp:◇,tab:→ ,extends:▸,precedes:◂"
 vim.opt.pumblend = 10
 
 vim.g.os = vim.uv.os_uname().sysname
-vim.g.open_command = vim.g.os == "Darwin" and "open" or "xdg-open"
 vim.g.dotfiles = vim.env.DOTFILES or vim.fn.expand("~/.dotfiles")
 vim.g.vim_dir = vim.g.dotfiles .. "/.config/nvim"
 
