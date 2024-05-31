@@ -72,6 +72,17 @@ end
 vim.g.rustaceanvim = {
   server = {
     settings = function(project_root_dir, default_settings)
+      default_settings["rust-analyzer"].checkOnSave.extraArgs = {
+        "--target-dir",
+        (function()
+          if project_root_dir then
+            return "/tmp/rust-analyzer/" .. vim.fn.fnamemodify(project_root_dir, ":t")
+          else
+            return "/tmp/rust-analyzer/" .. vim.fn.getpid()
+          end
+        end)(),
+      }
+
       local results = vim.fn.glob(project_root_dir .. "/.neoconf.json", true, true)
       if vim.tbl_isempty(results) then
         return default_settings
