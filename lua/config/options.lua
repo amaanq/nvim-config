@@ -43,11 +43,10 @@ vim.g.loaded_node_provider = 0
 -- Ensure all autocommands are cleared
 vim.api.nvim_create_augroup("vimrc", {})
 
-if vim.fn.has("nvim-0.8") == 1 then
-  vim.opt.backup = true
-  vim.opt.cmdheight = 0
-  vim.opt.backupdir = vim.fn.stdpath("state") .. "/backup"
-end
+vim.opt.backup = true
+vim.opt.cmdheight = 0
+vim.opt.backupdir = vim.fn.stdpath("state") .. "/backup"
+vim.opt.mousescroll = "ver:2,hor:6"
 
 if vim.g.neovide then
   vim.opt.guifont = "Menlo,Symbols Nerd Font Mono:h10"
@@ -64,12 +63,43 @@ vim.keymap.set = function(mode, lhs, rhs, opts)
 end
 
 vim.g.lazyvim_python_lsp = "basedpyright"
+vim.g.lazyvim_python_ruff = "ruff"
 
 if vim.fn.has("win32") == 1 then
   LazyVim.terminal.setup("pwsh")
 end
 
 vim.g.rustaceanvim = {
+  tools = {
+    float_win_config = {
+      border = {
+        { "╭", "FloatBorder" },
+        { "─", "FloatBorder" },
+        { "╮", "FloatBorder" },
+        { "│", "FloatBorder" },
+        { "╯", "FloatBorder" },
+        { "─", "FloatBorder" },
+        { "╰", "FloatBorder" },
+        { "│", "FloatBorder" },
+      },
+
+      --- maximal width of floating windows. Nil means no max.
+      ---@type integer | nil
+      max_width = nil,
+
+      --- maximal height of floating windows. Nil means no max.
+      ---@type integer | nil
+      max_height = nil,
+      --- whether the window gets automatically focused
+      --- default: false
+      ---@type boolean
+      auto_focus = false,
+      --- whether splits opened from floating preview are vertical
+      --- default: false
+      ---@type 'horizontal' | 'vertical'
+      open_split = "horizontal",
+    },
+  },
   server = {
     settings = function(project_root_dir, default_settings)
       default_settings["rust-analyzer"].checkOnSave.extraArgs = {
