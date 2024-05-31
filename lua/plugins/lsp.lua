@@ -5,72 +5,20 @@ return {
   {
     "folke/neodev.nvim",
     opts = {
-      debug = true,
-      experimental = {
-        pathStrict = true,
+      library = {
+        runtime = "~/projects/neovim/runtime/",
       },
     },
   },
 
-  -- tools
   {
     "williamboman/mason.nvim",
     opts = {
-      ensure_installed = {
-        "black",
-        "eslint_d",
-        "luacheck",
-        "prettierd",
-        "prosemd-lsp",
-        "ruff",
-        "selene",
-        "shellcheck",
-        "shfmt",
-        "stylua",
-      },
       ui = {
         border = "rounded",
       },
     },
   },
-
-  -- {
-  --   "jay-babu/mason-null-ls.nvim",
-  --   event = { "BufReadPre", "BufNewFile" },
-  --   dependencies = {
-  --     "williamboman/mason.nvim",
-  --     "nvimtools/none-ls.nvim",
-  --   },
-  --   opts = {
-  --     ensure_installed = {},
-  --     automatic_installation = true,
-  --   },
-  --   config = true,
-  -- },
-
-  {
-    "jay-babu/mason-nvim-dap.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "williamboman/mason.nvim",
-      "mfussenegger/nvim-dap",
-    },
-    opts = {
-      ensure_installed = {},
-      automatic_installation = true,
-    },
-    config = true,
-  },
-
-  -- {
-  --   "DNLHC/glance.nvim",
-  --   event = "BufReadPre",
-  --   config = true,
-  --   keys = {
-  --     { "gM", "<cmd>Glance implementations<cr>", desc = "Goto Implementations (Glance)" },
-  --     { "gY", "<cmd>Glance type_definitions<cr>", desc = "Goto Type Definition (Glance)" },
-  --   },
-  -- },
 
   -- lsp servers
   {
@@ -112,7 +60,6 @@ return {
       })
     end,
     opts = {
-      diagnostics = { virtual_text = { prefix = "icons" } },
       capabilities = {
         workspace = {
           didChangeWatchedFiles = {
@@ -120,44 +67,35 @@ return {
           },
         },
       },
+      diagnostics = { virtual_text = { prefix = "icons" } },
+      inlay_hints = { enabled = false },
       ---@type lspconfig.options
       ---@diagnostic disable: missing-fields
       servers = {
-        ansiblels = {},
-        asm_lsp = {},
-        bashls = {},
-        cmake = {},
         cssls = {},
         html = {},
+        basedpyright = {
+          settings = {
+            basedpyright = {
+              analysis = {
+                diagnosticSeverityOverrides = {
+                  reportWildcardImportFromLibrary = "none",
+                  reportUnusedImport = "information",
+                  reportUnusedClass = "information",
+                  reportUnusedFunction = "information",
+                  reportOptionalMemberAccess = "none",
+                },
+              },
+              disableTaggedHints = true,
+            },
+          },
+        },
         lua_ls = {
           single_file_support = true,
           ---@type lspconfig.settings.lua_ls
           settings = {
             Lua = {
-              workspace = {
-                checkThirdParty = false,
-              },
-              completion = {
-                workspaceWord = true,
-                callSnippet = "Both",
-              },
-              misc = {
-                parameters = {
-                  "--log-level=trace",
-                },
-              },
               hover = { expandAlias = false },
-              hint = {
-                enable = true,
-                setType = false,
-                paramType = true,
-                paramName = "Disable",
-                semicolon = "Disable",
-                arrayIndex = "Disable",
-              },
-              doc = {
-                privateName = { "^_" },
-              },
               type = {
                 castNumberToInteger = true,
               },
@@ -184,80 +122,11 @@ return {
                 },
                 unusedLocalExclude = { "_*" },
               },
-              format = {
-                enable = false,
-                defaultConfig = {
-                  indent_style = "tab",
-                  indent_size = "4",
-                  continuation_indent_size = "4",
-                },
-              },
             },
           },
         },
-        marksman = {},
-        omnisharp = {},
         prosemd_lsp = {},
-        pyright = {
-          settings = {
-            python = {
-              analysis = {
-                diagnosticSeverityOverrides = {
-                  reportWildcardImportFromLibrary = "none",
-                  reportUnusedImport = "information",
-                  reportUnusedClass = "information",
-                  reportUnusedFunction = "information",
-                },
-              },
-            },
-            pyright = {
-              disableTaggedHints = true,
-            },
-          },
-        },
-        texlab = {},
-        tsserver = {
-          -- root_dir = function(...)
-          --   return require("lspconfig.util").root_pattern(".git")(...)
-          -- end,
-          single_file_support = false,
-          settings = {
-            typescript = {
-              inlayHints = {
-                includeInlayParameterNameHints = "literal",
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = false,
-                includeInlayVariableTypeHints = false,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-              },
-            },
-            javascript = {
-              inlayHints = {
-                includeInlayParameterNameHints = "all",
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-              },
-            },
-          },
-        },
-        vimls = {},
-        yamlls = {
-          settings = {
-            yaml = {
-              customTags = {
-                "!reference sequence", -- necessary for gitlab-ci.yaml files
-              },
-            },
-          },
-        },
       },
-      setup = {},
     },
   },
 
@@ -266,8 +135,6 @@ return {
     optional = true,
     opts = {
       formatters_by_ft = {
-        ["markdown"] = { { "prettierd", "prettier" } },
-        ["markdown.mdx"] = { { "prettierd", "prettier" } },
         ["javascript"] = { "eslint_d" },
         ["javascriptreact"] = { "eslint_d" },
         ["typescript"] = { "eslint_d" },
@@ -305,7 +172,7 @@ return {
           end,
         },
         dprint = {
-          condition = function(_self, ctx)
+          condition = function(_, ctx)
             return vim.fs.find({ "dprint.json" }, { path = ctx.filename, upward = true })[1]
           end,
         },
@@ -335,7 +202,6 @@ return {
     opts = {
       linters_by_ft = {
         lua = { "selene", "luacheck" },
-        markdown = { "markdownlint" },
       },
       linters = {
         selene = {

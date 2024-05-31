@@ -25,11 +25,9 @@ require("config.lazy")({
   debug = false,
   profiling = {
     loader = false,
-    require = false,
+    require = true,
   },
 })
-
--- require("util.dashboard").setup()
 
 vim.api.nvim_create_autocmd("User", {
   pattern = "VeryLazy",

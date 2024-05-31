@@ -1,15 +1,15 @@
 return {
-  {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    lazy = false,
-    config = function()
-      require("catppuccin").setup({
-        flavour = "mocha", -- mocha, macchiato, frappe, latte
-      })
-    end,
-  },
-  { "ellisonleao/gruvbox.nvim", lazy = false },
+  -- {
+  --   "catppuccin/nvim",
+  --   name = "catppuccin",
+  --   lazy = false,
+  --   config = function()
+  --     require("catppuccin").setup({
+  --       flavour = "mocha", -- mocha, macchiato, frappe, latte
+  --     })
+  --   end,
+  -- },
+  -- { "ellisonleao/gruvbox.nvim", lazy = false },
   -- {
   --   "marko-cerovac/material.nvim",
   --   lazy = false,
@@ -39,7 +39,7 @@ return {
   --     },
   --   },
   -- },
-  { "numToStr/Sakura.nvim", lazy = false },
+  -- { "numToStr/Sakura.nvim", lazy = false },
   -- {
   --   "olimorris/onedarkpro.nvim",
   --   lazy = false,
@@ -109,14 +109,13 @@ return {
   --   end,
   -- },
   -- { "projekt0n/github-nvim-theme", lazy = false },
-  { "rebelot/kanagawa.nvim", lazy = false, config = true },
+  -- { "rebelot/kanagawa.nvim", lazy = false, config = true },
   -- { "Shatur/neovim-ayu", lazy = false },
-  { "shaunsingh/oxocarbon.nvim", lazy = false },
-  { "LunarVim/horizon.nvim", lazy = false },
-  { "rose-pine/neovim", name = "rose-pine", lazy = false },
+  -- { "shaunsingh/oxocarbon.nvim", lazy = false },
+  -- { "LunarVim/horizon.nvim", lazy = false },
+  -- { "rose-pine/neovim", name = "rose-pine", lazy = false },
   {
     "tokyonight.nvim",
-    priority = 1000,
     opts = function(_, _opts)
       return {
         style = "moon",
@@ -137,12 +136,8 @@ return {
         ---@param hl Highlights
         ---@param c ColorScheme
         on_highlights = function(hl, c)
-          hl.CursorLineNr = { fg = c.orange, bold = true }
-          -- hl.LineNr = { fg = c.orange, bold = true }
-          hl.LineNrAbove = { fg = c.fg_gutter }
-          hl.LineNrBelow = { fg = c.fg_gutter }
           local prompt = "#2d3149"
-          hl.TelescopeNormal = { bg = c.bg_dark, fg = c.fg_dark }
+          hl.TelescopeNormal = { bg = c.bg_dark, fg = c.fg }
           hl.TelescopeBorder = { bg = c.bg_dark, fg = c.bg_dark }
           hl.TelescopePromptNormal = { bg = prompt }
           hl.TelescopePromptBorder = { bg = prompt, fg = prompt }
@@ -195,10 +190,11 @@ return {
           -- why are these so bad?
           hl["@lsp.type.keyword.cs"] = {}
           hl["@lsp.type.keyword.go"] = {}
-          -- hl["@lsp.type.keyword.rust"] = {}
+          hl["@lsp.type.keyword.rust"] = {}
           hl["@lsp.type.generic.rust"] = {}
           hl["@lsp.type.keyword.zig"] = {}
           hl["@lsp.type.type.zig"] = {}
+          hl["@lsp.type.string.zig"] = {}
           hl["@lsp.typemod.keyword.injected"] = { link = "@keyword" }
 
           -- Rust doesn't really need strings
@@ -209,6 +205,27 @@ return {
       }
     end,
   },
+
+  -- {
+  --   "folke/ida-dark.nvim",
+  --   dev = true,
+  --   priority = 1000,
+  --   lazy = false,
+  -- },
+
+  -- {
+  --   "craftzdog/solarized-osaka.nvim",
+  --   lazy = true,
+  --   priority = 1000,
+  --   opts = {
+  --     transparent = true,
+  --     styles = {
+  --       keywords = { italic = false },
+  --       sidebars = "transparent",
+  --       floats = "transparent",
+  --     },
+  --   },
+  -- },
 
   -- {
   --   "LazyVim/LazyVim",

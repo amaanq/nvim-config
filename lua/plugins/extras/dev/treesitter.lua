@@ -151,12 +151,12 @@ return {
         --   },
         --   experimental = true,
         -- },
-        -- odin = {
-        --   install_info = {
-        --     url = "~/projects/treesitter/tree-sitter-odin",
-        --     files = { "src/parser.c", "src/scanner.c" },
-        --   },
-        -- },
+        odin = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-odin",
+            files = { "src/parser.c", "src/scanner.c" },
+          },
+        },
         objc = {
           install_info = {
             url = "~/projects/treesitter/tree-sitter-objc",
@@ -260,6 +260,20 @@ return {
             files = { "src/parser.c", "src/scanner.c" },
           },
         },
+        php = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-php",
+            location = "php",
+            files = { "src/parser.c", "src/scanner.c" },
+          },
+        },
+        php_only = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-php",
+            location = "php_only",
+            files = { "src/parser.c", "src/scanner.c" },
+          },
+        },
       }
 
       vim.api.nvim_create_autocmd("FileType", {
@@ -289,7 +303,6 @@ return {
 
   {
     "tree-sitter-grammars/tree-sitter-test",
-    -- compile on your own on Windows
     build = "make parser/test.so",
     ft = "test",
     init = function()

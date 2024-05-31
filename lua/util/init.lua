@@ -49,46 +49,6 @@ function M.exists(fname)
   return (stat and stat.type) or false
 end
 
----@param fname string
----@return string
-function M.fqn(fname)
-  fname = vim.fn.fnamemodify(fname, ":p")
-  return vim.uv.fs_realpath(fname) or fname
-end
-
-function M.clipman()
-  local file = M.fqn("~/.local/share/clipman.json")
-  if M.exists(file) then
-    local f = io.open(file)
-    if not f then
-      return
-    end
-    local data = f:read("*a")
-    f:close()
-
-    -- allow empty files
-    data = vim.trim(data)
-    if data ~= "" then
-      local ok, json = pcall(vim.fn.json_decode, data)
-      if ok and json then
-        local items = {} ---@type table[]
-        for i = #json, 1, -1 do
-          items[#items + 1] = json[i]
-        end
-        vim.ui.select(items, {
-          prompt = "Clipman",
-        }, function(choice)
-          if choice then
-            vim.api.nvim_paste(choice, true, 1)
-          end
-        end)
-      else
-        vim.notify(("failed to load clipman from %s"):format(file), vim.log.levels.ERROR)
-      end
-    end
-  end
-end
-
 ---@param is_file? boolean
 function M.test(is_file)
   local file = is_file and vim.fn.expand("%:p") or "./tests"
@@ -105,56 +65,6 @@ function M.version()
       { title = "Neovim: not running nightly!" }
     )
   end
-end
-
-function M.runlua()
-  local ns = vim.api.nvim_create_namespace("runlua")
-  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
-    vim.diagnostic.reset(ns, buf)
-  end
-
-  local global = _G
-  ---@type {lnum:number, col:number, message:string}[]
-  local diagnostics = {}
-
-  ---@return integer, integer
-  local function get_source()
-    local info = debug.getinfo(3, "Sl")
-    ---@diagnostic disable-next-line: param-type-mismatch
-    local buf = vim.fn.bufload(info.source:sub(2))
-    local row = info.currentline - 1
-    return buf, row
-  end
-
-  local G = setmetatable({
-    error = function(msg, level)
-      local buf, row = get_source()
-      diagnostics[#diagnostics + 1] = { lnum = row, col = 0, message = msg or "error" }
-      vim.diagnostic.set(ns, buf, diagnostics)
-      global.error(msg, level)
-    end,
-    print = function(...)
-      local buf, row = get_source()
-      local str = table.concat(
-        vim.tbl_map(function(o) ---@param o any
-          if type(o) == "table" then
-            return vim.inspect(o)
-          end
-          return tostring(o)
-        end, { ... }),
-        " "
-      )
-      local indent = #vim.api.nvim_buf_get_lines(buf, row, row + 1, false)[1]:match("^%s+")
-      local lines = vim.split(str, "\n")
-      ---@param line string
-      local virt_lines = vim.tbl_map(function(line)
-        return { { string.rep(" ", indent * 2) .. " ", "DiagnosticInfo" }, { line, "MsgArea" } }
-      end, lines)
-      vim.api.nvim_buf_set_extmark(buf, ns, row, 0, { virt_lines = virt_lines })
-    end,
-  }, { __index = _G })
-  require("lazy.core.util").try(loadfile(vim.api.nvim_buf_get_name(0), "bt", G))
 end
 
 function M.cowboy()

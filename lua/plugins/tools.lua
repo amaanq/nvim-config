@@ -1,13 +1,13 @@
 return {
   { "pwntester/octo.nvim", cmd = "Octo", opts = {} },
 
-  -- better diffing
-  {
-    "sindrets/diffview.nvim",
-    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
-    opts = {},
-    keys = { { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "DiffView" } },
-  },
+  -- -- better diffing
+  -- {
+  --   "sindrets/diffview.nvim",
+  --   cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
+  --   opts = {},
+  --   keys = { { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "DiffView" } },
+  -- },
 
   {
     "nacro90/numb.nvim",
@@ -42,15 +42,18 @@ return {
     cmd = { "Godbolt", "GodboltCompiler" },
   },
 
-  -- {
-  --   "jackMort/ChatGPT.nvim",
-  --   cmd = { "ChatGPTActAs", "ChatGPT" },
-  --   opts = {},
-  -- },
-
   {
     "t-troebst/perfanno.nvim",
-    opts = {},
+    opts = function()
+      local util = require("perfanno.util")
+      local hl = vim.api.nvim_get_hl(0, { name = "Normal" })
+      local bg = string.format("#%06x", hl.bg)
+      local fg = "#dc2626"
+      return {
+        line_highlights = util.make_bg_highlights(bg, fg, 10),
+        vt_highlight = util.make_fg_highlight(fg),
+      }
+    end,
     keys = {
       { "<leader>alf", "<cmd>PerfLoadFlat<cr>", desc = "Load flat profile" },
       { "<leader>alg", "<cmd>PerfLoadCallGraph<cr>", desc = "Load call graph" },
