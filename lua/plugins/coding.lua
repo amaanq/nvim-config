@@ -179,4 +179,11 @@ return {
       vim.g.matchup_matchparen_offscreen = { method = "status_manual" }
     end,
   },
+
+  {
+    "echasnovski/mini.pairs",
+    opts = {
+      modes = { insert = true, command = false, terminal = false },
+    },
+  },
 }
