@@ -120,6 +120,7 @@ return {
       return {
         style = "moon",
         styles = {
+          comments = { italic = false },
           keywords = { italic = false },
           sidebars = "transparent",
           floats = "transparent",
@@ -201,6 +202,7 @@ return {
           hl["@lsp.type.string.rust"] = {}
 
           hl["@lsp.type.operator"] = { link = "@operator" }
+          hl["@lsp.type.const"] = { link = "@constant" }
         end,
       }
     end,
