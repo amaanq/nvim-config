@@ -82,14 +82,12 @@ return {
       -- })
 
       opts.window = {
-        completion = {
-          border = "rounded",
+        completion = vim.tbl_deep_extend("force", cmp.config.window.bordered(), {
           winhighlight = "Normal:Pmenu",
-        },
-        documentation = {
-          border = "rounded",
+        }),
+        documentation = vim.tbl_deep_extend("force", cmp.config.window.bordered(), {
           winhighlight = "Normal:Pmenu",
-        },
+        }),
       }
 
       cmp.setup.filetype({ "dap-repl", "dapui_watches" }, {
