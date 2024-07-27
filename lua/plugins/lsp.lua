@@ -55,8 +55,8 @@ return {
       keys[#keys + 1] = { "<leader>cld", vim.lsp.codelens.refresh, desc = "Refresh Code Lens" }
       keys[#keys + 1] = { "<leader>cls", "<cmd>LspRestart<cr>", desc = "Restart Lsp" }
 
-      require("which-key").register({
-        ["<leader>cl"] = { name = "+lsp" },
+      require("which-key").add({
+        { "<leader>cl", group = "lsp" },
       })
     end,
     opts = {
