@@ -172,41 +172,23 @@ return {
   },
 
   {
-    "nvim-neorg/neorg",
-    build = ":Neorg sync-parsers",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    cmd = { "Neorg", "NeorgOpen", "NeorgNew", "NeorgDoc" },
-    event = "LazyFile",
+    "mistricky/codesnap.nvim",
+    build = "make build_generator",
+    event = "VeryLazy",
+    keys = {
+      { "<leader>cs", "<Esc><cmd>CodeSnap<cr>", mode = "x", desc = "Save selected code snapshot into clipboard" },
+      { "<leader>cS", "<Esc><cmd>CodeSnapSave<cr>", mode = "x", desc = "Save selected code snapshot in ~/Pictures/" },
+    },
+    lazy = true,
     opts = {
-      load = {
-        ["core.defaults"] = {},
-        ["core.keybinds"] = {
-          config = {
-            default_keybinds = true,
-            neorg_leader = "<leader>o",
-          },
-        },
-        ["core.completion"] = {
-          config = {
-            engine = "nvim-cmp",
-          },
-        },
-        ["core.concealer"] = {
-          config = {
-            icon_preset = "diamond",
-          },
-        },
-        ["core.dirman"] = {
-          config = {
-            workspaces = {
-              notes = "~/notes",
-              school = "~/School/notes",
-            },
-            default_workspace = "notes",
-          },
-        },
-        ["core.summary"] = {},
-      },
+      mac_window_bar = false,
+      save_path = "~/Pictures/",
+      has_breadcrumbs = true,
+      show_workspace = true,
+      bg_theme = "sea",
+      watermark = "",
+      code_font_family = "Berkeley Mono",
+      has_line_number = true,
     },
   },
 }
