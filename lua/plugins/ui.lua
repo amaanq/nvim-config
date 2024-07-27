@@ -109,7 +109,7 @@ return {
     "rcarriga/nvim-notify",
     opts = {
       level = vim.log.levels.INFO,
-      fps = 144,
+      fps = 165,
       stages = "fade_in_slide_out",
       background_colour = "#000000",
       time_formats = {
@@ -276,14 +276,13 @@ return {
             hint = icons.diagnostics.Hint,
           },
         },
-        { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-        { "filename", path = 1, symbols = { modified = "  ", readonly = "", unnamed = "" } },
         {
-          -- limit to 180 chars
+          -- limit chars
           function()
             local blame_text = require("gitblame").get_current_blame_text()
-            if blame_text:len() > 180 then
-              blame_text = blame_text:sub(1, 180) .. "..."
+            local blame_chars = vim.g.os == "Darwin" and 100 or 250
+            if blame_text:len() > blame_chars then
+              blame_text = blame_text:sub(1, blame_chars) .. "..."
             end
             return blame_text
           end,
