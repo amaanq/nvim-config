@@ -121,10 +121,6 @@ return {
   -- bufferline
   {
     "akinsho/bufferline.nvim",
-    keys = {
-      { "[B", "<cmd>BufferLineMovePrev<cr>", desc = "Swap with prev buffer" },
-      { "]B", "<cmd>BufferLineMoveNext<cr>", desc = "Swap with next buffer" },
-    },
     ---@param opts bufferline.UserConfig
     opts = function(_, opts)
       opts.options.show_close_icon = true
