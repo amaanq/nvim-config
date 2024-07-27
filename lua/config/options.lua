@@ -46,7 +46,6 @@ vim.api.nvim_create_augroup("vimrc", {})
 vim.opt.backup = true
 vim.opt.cmdheight = 0
 vim.opt.backupdir = vim.fn.stdpath("state") .. "/backup"
-vim.opt.mousescroll = "ver:2,hor:6"
 
 if vim.g.neovide then
   vim.opt.guifont = "Menlo,Symbols Nerd Font Mono:h10"
@@ -102,15 +101,17 @@ vim.g.rustaceanvim = {
   },
   server = {
     settings = function(project_root_dir, default_settings)
-      default_settings["rust-analyzer"].checkOnSave.extraArgs = {
-        "--target-dir",
-        (function()
-          if project_root_dir then
-            return "/tmp/rust-analyzer/" .. vim.fn.fnamemodify(project_root_dir, ":t")
-          else
-            return "/tmp/rust-analyzer/" .. vim.fn.getpid()
-          end
-        end)(),
+      default_settings["rust-analyzer"].check = {
+        extraArgs = {
+          "--target-dir",
+          (function()
+            if project_root_dir then
+              return "/tmp/rust-analyzer/" .. vim.fn.fnamemodify(project_root_dir, ":t")
+            else
+              return "/tmp/rust-analyzer/" .. vim.fn.getpid()
+            end
+          end)(),
+        },
       }
 
       local results = vim.fn.glob(project_root_dir .. "/.neoconf.json", true, true)
