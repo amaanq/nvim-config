@@ -7,12 +7,6 @@ return {
     },
   },
 
-  {
-    "smjonas/inc-rename.nvim",
-    cmd = "IncRename",
-    config = true,
-  },
-
   -- Supertab
   -- {
   --   "L3MON4D3/LuaSnip",
