@@ -52,6 +52,9 @@ if vim.g.neovide then
   vim.g.neovide_scale_factor = 0.3
 end
 
+vim.o.title = true
+vim.o.titlestring = LazyVim.root.cwd():match("([^/]+)$")
+
 -- make all keymaps silent by default
 local keymap_set = vim.keymap.set
 ---@diagnostic disable-next-line: duplicate-set-field
