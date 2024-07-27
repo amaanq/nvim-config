@@ -451,11 +451,10 @@ return {
 
   {
     "utilyre/barbecue.nvim",
+    dev = true,
     event = "VeryLazy",
     dependencies = {
-      "neovim/nvim-lspconfig",
       "SmiteshP/nvim-navic",
-      "nvim-tree/nvim-web-devicons", -- optional dependency
     },
     config = true,
   },
