@@ -97,45 +97,7 @@ return {
         ".*ToggleTerm.*",
         ".*toggleterm.*",
       },
-      buttons = function(_, repo_url)
-        if repo_url then
-          if repo_url:match("amaanq") then
-            return nil
-          end
-          -- Check if repo url uses short ssh syntax
-          local domain, project = repo_url:match("^git@(.+):(.+)$")
-          if domain and project then
-            repo_url = string.format("https://%s/%s", domain, project)
-          end
-
-          -- Check if repo url uses a valid protocol
-          local protocols = {
-            "ftp",
-            "git",
-            "http",
-            "https",
-            "ssh",
-          }
-          local protocol, relative = repo_url:match("^(.+)://(.+)$")
-          if not vim.tbl_contains(protocols, protocol) or not relative then
-            return nil
-          end
-
-          -- Check if repo url has the user specified
-          local user, path = relative:match("^(.+)@(.+)$")
-          if user and path then
-            repo_url = string.format("https://%s", path)
-          else
-            repo_url = string.format("https://%s", relative)
-          end
-
-          return {
-            { label = "View Repository", url = repo_url },
-          }
-        end
-
-        return nil
-      end,
+      buttons = false,
       ---@param filename string
       editing_text = function(filename)
         -- if in .config/nvim, return "Editing dotfiles"
