@@ -59,7 +59,7 @@ end, { desc = "Google" })
 --  │ GX - replicate netrw functionality │
 --  ╰────────────────────────────────────╯
 local function open_link()
-  local url = vim.ui._get_url()
+  local url = vim.ui._get_urls()[1]
   if url:match("%w://") then
     return do_open(url)
   end
