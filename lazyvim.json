@@ -35,6 +35,7 @@
     "lazyvim.plugins.extras.util.octo",
     "lazyvim.plugins.extras.util.project",
     "lazyvim.plugins.extras.vscode",
+    "plugins.extras.dev.avante",
     "plugins.extras.dev.treesitter",
     "plugins.extras.lang.bash",
     "plugins.extras.lang.nix",
