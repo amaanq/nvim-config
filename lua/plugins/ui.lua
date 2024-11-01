@@ -167,6 +167,7 @@ return {
 
         return hl
       end
+      opts.options.diagnostics = false
     end,
   },
 
@@ -487,9 +488,12 @@ return {
 
   {
     "echasnovski/mini.animate",
-    opts = {
-      open = { enable = false },
-      close = { enable = false },
-    },
+    opts = function(_, opts)
+      local animate = require("mini.animate")
+      opts.open = { enable = false }
+      opts.close = { enable = false }
+      opts.scroll.timing = animate.gen_timing.linear({ duration = 80, unit = "total" })
+      return opts
+    end,
   },
 }
