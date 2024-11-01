@@ -102,31 +102,4 @@ vim.g.rustaceanvim = {
       open_split = "horizontal",
     },
   },
-  server = {
-    settings = function(project_root_dir, default_settings)
-      default_settings["rust-analyzer"].check = {
-        extraArgs = {
-          "--target-dir",
-          (function()
-            if project_root_dir then
-              return "/tmp/rust-analyzer/" .. vim.fn.fnamemodify(project_root_dir, ":t")
-            else
-              return "/tmp/rust-analyzer/" .. vim.fn.getpid()
-            end
-          end)(),
-        },
-      }
-
-      local results = vim.fn.glob(project_root_dir .. "/.neoconf.json", true, true)
-      if vim.tbl_isempty(results) then
-        return default_settings
-      end
-      -- load neoconf json, decode with vim.json.decode, and merge
-      -- or override the settings
-
-      local settings = vim.fn.json_decode(vim.fn.readfile(results[1]))
-
-      return vim.tbl_deep_extend("force", default_settings, settings)
-    end,
-  },
 }
