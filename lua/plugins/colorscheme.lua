@@ -186,6 +186,7 @@ return {
           hl["@lsp.typemod.keyword.async"] = { link = "@keyword.coroutine" }
           hl["@lsp.typemod.method.defaultLibrary.rust"] = { link = "@function.builtin" }
           hl["@lsp.typemod.method.trait"] = { link = "@lsp.type.interface" }
+          hl["@lsp.typemod.parameter.callable"] = { link = "@function" }
           hl["@lsp.typemod.variable.constant.rust"] = { link = "@constant" }
 
           -- why are these so bad?
@@ -195,11 +196,12 @@ return {
           hl["@lsp.type.generic.rust"] = {}
           hl["@lsp.type.keyword.zig"] = {}
           hl["@lsp.type.type.zig"] = {}
-          hl["@lsp.type.string.zig"] = {}
           hl["@lsp.typemod.keyword.injected"] = { link = "@keyword" }
 
-          -- Rust doesn't really need strings
+          -- These doesn't really need strings highlighted by LSP
+          hl["@lsp.type.string.go"] = {}
           hl["@lsp.type.string.rust"] = {}
+          hl["@lsp.type.string.zig"] = {}
 
           hl["@lsp.type.operator"] = { link = "@operator" }
           hl["@lsp.type.const"] = { link = "@constant" }
