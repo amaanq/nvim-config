@@ -20,11 +20,21 @@ return {
         },
       },
     },
-    opts = function(_, opts)
-      opts.close_if_last_window = true -- Close Neo-tree if it is the last window left in the tab
-      opts.group_empty_dirs = true -- When true, empty folders will be grouped together
-      opts.hijack_netrw_behavior = "open_default" -- netrw disabled, opening a directory opens neo-tree
-    end,
+    opts = {
+      close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
+      group_empty_dirs = true, -- When true, empty folders will be grouped together
+      hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
+      filesystem = {
+        filtered_items = {
+          hide_dotfiles = false,
+        },
+      },
+      default_component_configs = {
+        container = {
+          enable_character_fade = false,
+        },
+      },
+    },
   },
 
   {
