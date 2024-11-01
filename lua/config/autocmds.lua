@@ -95,6 +95,7 @@ vim.filetype.add({
   },
   pattern = {
     [".*.js.so"] = "javascript",
+    [".*/%.cache/go%-build/.*"] = "go",
   },
 })
 
