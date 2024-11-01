@@ -152,10 +152,13 @@ return {
                 end
               end
             end
-            return vim.fs.find({ ".eslintrc", ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json" }, {
-              path = ctx.filename,
-              upward = true,
-            })[1]
+            return vim.fs.find(
+              { ".eslintrc", ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json", "eslint.config.mjs" },
+              {
+                path = ctx.filename,
+                upward = true,
+              }
+            )[1]
           end,
         },
         dprint = {
