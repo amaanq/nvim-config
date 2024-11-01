@@ -274,6 +274,12 @@ return {
             files = { "src/parser.c", "src/scanner.c" },
           },
         },
+        zig = {
+          install_info = {
+            url = "~/projects/treesitter/tree-sitter-zig",
+            files = { "src/parser.c" },
+          },
+        },
       }
 
       vim.api.nvim_create_autocmd("FileType", {
