@@ -33,6 +33,9 @@ return {
         container = {
           enable_character_fade = false,
         },
+        symlink_target = {
+          enabled = true,
+        },
       },
     },
   },

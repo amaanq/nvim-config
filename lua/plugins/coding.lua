@@ -7,6 +7,15 @@ return {
     },
   },
 
+  {
+    "echasnovski/mini.align",
+    opts = {},
+    keys = {
+      { "ga", mode = { "n", "v" } },
+      { "gA", mode = { "n", "v" } },
+    },
+  },
+
   -- Supertab
   -- {
   --   "L3MON4D3/LuaSnip",

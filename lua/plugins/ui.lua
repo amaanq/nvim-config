@@ -109,7 +109,7 @@ return {
     "rcarriga/nvim-notify",
     opts = {
       level = vim.log.levels.INFO,
-      fps = 165,
+      fps = 160,
       stages = "fade_in_slide_out",
       background_colour = "#000000",
       time_formats = {
@@ -169,6 +169,17 @@ return {
       end
       opts.options.diagnostics = false
     end,
+  },
+
+  {
+    "folke/which-key.nvim",
+    enabled = true,
+    opts = {
+      preset = "helix",
+      debug = vim.uv.cwd():find("which%-key"),
+      win = {},
+      spec = {},
+    },
   },
 
   -- -- auto-resize windows

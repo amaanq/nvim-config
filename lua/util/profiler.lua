@@ -1,99 +1,84 @@
 local M = {}
 
----@type table<fun(), true>
-M.wrapped = {}
-
----@type {total:number, time:number, self:number}[]
+---@type {count:number, time:number}[]
 M.stats = {}
-M._require = _G.require
+---@type table<string, true>
+M.tracked = {}
+---@type table<function, true>
+M.active = {}
+M.mods = {} ---@type table<string, true>
 local pack_len = vim.F.pack_len
----@type number[]
-M.stack = { 0 }
-M.stack_names = {}
 
 ---@param name string
----@param start integer
-function M.stat(name, start)
-  M.stats[name] = M.stats[name] or { total = 0, time = 0, self = 0 }
-  M.stats[name].total = M.stats[name].total + 1
-  local diff = vim.uv.hrtime() - start
-  table.remove(M.stack_names)
-  if not vim.tbl_contains(M.stack_names, name) then
-    M.stats[name].time = M.stats[name].time + diff
-  end
-  local other = table.remove(M.stack)
-  M.stats[name].self = M.stats[name].self + diff - other
-  M.stack[#M.stack] = M.stack[#M.stack] + diff
-end
-
-function M.wrap(name, fn)
-  if M.wrapped[fn] then
-    return fn
-  end
-  M.wrapped[fn] = true
+---@param fn function
+function M.track(name, fn)
   return function(...)
-    local start = vim.uv.hrtime()
-    table.insert(M.stack, 0)
-    table.insert(M.stack_names, name)
-    local ret = pack_len(pcall(fn, ...))
-    M.stat(name, start)
-    if not ret[1] then
-      error(ret[2])
+    if M.active[fn] then
+      return fn(...)
     end
-    return unpack(ret, 2, ret.n)
-    -- error(ret[2])
+    M.active[fn] = true
+    local start = vim.uv.hrtime()
+    local result = vim.F.pack_len(pcall(fn, ...))
+    local stop = vim.uv.hrtime()
+    M.active[fn] = nil
+    M.stats[name] = M.stats[name] or { count = 0, time = 0 }
+    M.stats[name].count = M.stats[name].count + 1
+    M.stats[name].time = M.stats[name].time + (stop - start)
+    if result[1] then
+      return unpack(result, 2, result.n)
+    end
+    error(result[2], 2)
   end
 end
 
----@param name string
----@param value table
----@param done? table<any, boolean>
----@return nil
-function M.hook(name, value, done)
-  if value == nil then
-    return nil
+function M.wrap(name, obj)
+  if M.tracked[obj] then
+    return obj
   end
-  done = done or {}
-  if done[value] then
-    return value
+  M.tracked[obj] = true
+  if type(obj) == "function" then
+    return M.track(name, obj)
+  elseif type(obj) == "table" then
+    for k, v in pairs(obj) do
+      obj[k] = M.wrap(name .. "." .. tostring(k), v)
+    end
   end
-  done[value] = true
-  if type(value) == "function" then
-    return M.wrap(name, value)
-  elseif type(value) == "table" and getmetatable(value) == nil then
-    ---@param k string
-    ---@param v any
-    for k, v in pairs(value) do
-      if type(v) == "function" then
-        rawset(value, k, M.wrap(name .. "." .. k .. "()", v))
-      elseif type(v) == "table" then
-        rawset(value, k, M.hook(name .. "." .. k, v, done))
+  return obj
+end
+
+function M.loader(modname)
+  local chunk ---@type function?
+  for _, loader in ipairs(package.loaders) do
+    if loader ~= M.loader then
+      local c = loader(modname)
+      if type(c) == "function" then
+        chunk = c
+        break
       end
     end
   end
-  return value
-end
-
----@param modname string
----@return table
-function M.require(modname)
-  if package.loaded[modname] then
-    return package.loaded[modname]
+  if not chunk then
+    return
   end
-  local start = vim.uv.hrtime()
-  table.insert(M.stack, 0)
-  table.insert(M.stack_names, modname)
-  local ret = pack_len(pcall(M._require, modname))
-  M.stat(modname, start)
-  if ret[1] then
-    ret[2] = M.hook(modname, ret[2])
-    return unpack(ret, 2, ret.n)
+  if modname:sub(1, 4) == "vim." then
+    return chunk
   end
-  error(ret[2])
+  return function()
+    if type(package.loaded[modname]) == "table" then
+      return package.loaded[modname]
+    end
+    local mod = pack_len(pcall(chunk))
+    if mod[1] then
+      for i = 2, mod.n do
+        mod[i] = M.wrap(modname, mod[i])
+      end
+      return unpack(mod, 2, mod.n)
+    end
+    error(mod[2])
+  end
 end
 
 function M.stop()
-  _G.require = M._require
   local s = {}
   for name, stat in pairs(M.stats) do
     stat.name = name
@@ -102,33 +87,94 @@ function M.stop()
   table.sort(s, function(a, b)
     return a.time > b.time
   end)
-  for _, stat in ipairs(s) do
-    if stat.time / 1e6 > 0.5 or stat.self / 1e6 > 0.5 then
-      local time = math.floor(stat.time / 1e6 * 100 + 0.5) / 100
-      local time_self = math.floor(stat.time / stat.total / 1e6 * 100 + 0.5) / 100
-      local line = {
-        { time .. "ms", "Number" },
-        { time_self .. "ms", "Number" },
-        { stat.total .. "", "Number" },
-        { stat.name },
-      }
-      line[1][1] = line[1][1] .. string.rep(" ", 10 - #line[1][1])
-      line[2][1] = line[2][1] .. string.rep(" ", 10 - #line[2][1])
-      line[3][1] = line[3][1] .. string.rep(" ", 10 - #line[3][1])
-      vim.api.nvim_echo(line, true, {})
+  debug.sethook(nil)
+  vim.defer_fn(function()
+    for _, stat in ipairs(s) do
+      if stat.time / 1e6 > 0.5 then
+        local time = math.floor(stat.time / 1e6 * 100 + 0.5) / 100
+        local line = {
+          { time .. "ms", "Number" },
+          { stat.count .. "", "Number" },
+          { stat.name },
+        }
+        line[1][1] = line[1][1] .. string.rep(" ", 10 - #line[1][1])
+        line[2][1] = line[2][1] .. string.rep(" ", 10 - #line[2][1])
+        line[3][1] = line[3][1] .. string.rep(" ", 10 - #line[3][1])
+        vim.api.nvim_echo(line, true, {})
+      end
     end
+  end, 1000)
+end
+
+---@param method? "loader" | "hook" | "perfanno"
+function M.start(method)
+  method = method or "perfanno"
+  if method == "loader" then
+    table.insert(package.loaders, 1, M.loader)
+  elseif method == "hook" then
+    M.start_hook()
+  else
+    M.start_perfanno()
   end
 end
 
-function M.start()
-  _G.require = M.require
+function M.start_hook()
+  local starts = {}
+  local names = {}
+  debug.sethook(function(what)
+    local info = debug.getinfo(2, "Sf")
+    if type(package.loaded["lazy.core.util"]) == "table" and info.func == package.loaded["lazy.core.util"].try then
+      info = debug.getinfo(3, "Sf")
+    end
+    if what == "call" then
+      starts[info.func] = vim.loop.hrtime()
+      return
+    end
+    names[info.func] = names[info.func] or vim.fn.fnamemodify(info.source:sub(2), ":~:.") .. ":" .. info.linedefined
+    local name = names[info.func]
+    M.stats[name] = M.stats[name] or { count = 0, time = 0, source = info.source, line = info.linedefined }
+    M.stats[name].count = M.stats[name].count + 1
+    if starts[info.func] then
+      M.stats[name].time = M.stats[name].time + (vim.loop.hrtime() - starts[info.func])
+    end
+  end, "cr")
 end
 
-function M.startup()
-  M.start()
+function M.start_perfanno()
+  vim.opt.rtp:append("/home/amaanq/.local/share/nvim/lazy/perfanno.nvim/")
+  vim.opt.rtp:append("/home/amaanq/.local/share/nvim/lazy/telescope.nvim//")
+  local util = require("perfanno.util")
+  local bg = "#000000"
+  local fg = "#dc2626"
+  local opts = {
+    line_highlights = util.make_bg_highlights(bg, fg, 10),
+    vt_highlight = util.make_fg_highlight(fg),
+  }
+  require("perfanno").setup(opts)
+  require("perfanno.lua_profile").start(1)
+  -- vim.api.nvim_create_autocmd("UIEnter", {
+  --   callback = function()
+  --     vim.defer_fn(function()
+  --       vim.cmd("PerfLuaProfileStop")
+  --       vim.defer_fn(function()
+  --         vim.cmd("PerfHottestLines")
+  --         -- vim.cmd("PerfHottestSymbols")
+  --       end, 1000)
+  --     end, 5000)
+  --   end,
+  -- })
+end
+
+---@param method? "loader" | "hook" | "perfanno"
+function M.startup(method)
+  M.start(method)
   vim.api.nvim_create_autocmd("User", {
     pattern = "LazyVimStarted",
-    callback = M.stop,
+    callback = function()
+      vim.defer_fn(function()
+        M.stop()
+      end, 5000)
+    end,
   })
 end
 
