@@ -109,7 +109,7 @@ return {
     "rcarriga/nvim-notify",
     opts = {
       level = vim.log.levels.INFO,
-      fps = 160,
+      fps = vim.g.os == "Darwin" and 120 or 160,
       stages = "fade_in_slide_out",
       background_colour = "#000000",
       time_formats = {
