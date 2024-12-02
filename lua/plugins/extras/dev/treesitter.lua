@@ -229,12 +229,12 @@ return {
             files = { "src/parser.c", "src/scanner.c" },
           },
         },
-        testvector = {
-          install_info = {
-            url = "~/projects/treesitter/tree-sitter-testvector",
-            files = { "src/parser.c" },
-          },
-        },
+        -- testvector = {
+        --   install_info = {
+        --     url = "~/projects/treesitter/tree-sitter-testvector",
+        --     files = { "src/parser.c" },
+        --   },
+        -- },
         just = {
           install_info = {
             url = "~/projects/treesitter/tree-sitter-just",
