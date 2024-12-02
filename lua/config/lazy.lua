@@ -8,12 +8,15 @@ vim.opt.rtp:prepend(lazypath)
 package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua;"
 package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?.lua;"
 
+local M = {}
+
 ---@param opts LazyConfig
-return function(opts)
+function M.load(opts)
   opts = vim.tbl_deep_extend("force", {
     spec = {
       {
         "LazyVim/LazyVim",
+        version = false,
         import = "lazyvim.plugins",
         news = {
           colorscheme = "rose-pine",
@@ -69,3 +72,5 @@ return function(opts)
   }, opts or {})
   require("lazy").setup(opts)
 end
+
+return M

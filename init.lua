@@ -16,16 +16,21 @@ _G.bt = function(...)
 end
 vim.print = _G.dd
 
--- require("util.profiler").startup()
+if vim.env.PROF then
+  vim.opt.rtp:append("/home/amaanq/projects/snacks.nvim/")
+  require("snacks.profiler").startup({
+    startup = {
+      event = "UIEnter",
+    },
+    runtime = "~/projects/neovim/runtime",
+  })
+end
 
--- vim.loader._profile({ loaders = true })
-
--- vim.g.profile_loaders = true
-require("config.lazy")({
+require("config.lazy").load({
   debug = false,
   profiling = {
     loader = false,
-    require = true,
+    require = false,
   },
 })
 

@@ -1,18 +1,3 @@
--- selene: allow(global_usage)
-
--- selene: allow(global_usage)
-_G.profile = function(cmd, times, flush)
-  times = times or 100
-  local start = vim.uv.hrtime()
-  for _ = 1, times, 1 do
-    if flush then
-      jit.flush(cmd, true)
-    end
-    cmd()
-  end
-  print(((vim.uv.hrtime() - start) / 1e6 / times) .. "ms")
-end
-
 local M = {}
 
 ---@param cmd string command to execute
@@ -69,7 +54,6 @@ end
 
 function M.cowboy()
   ---@type table?
-  local id
   local ok = true
   for _, key in ipairs({ "h", "j", "k", "l", "+", "-" }) do
     local count = 0
@@ -80,15 +64,14 @@ function M.cowboy()
         count = 0
       end
       if count >= 10 and vim.bo.buftype ~= "nofile" and vim.bo.buftype ~= "terminal" then
-        ok, id = pcall(vim.notify, "Hold it Cowboy!", vim.log.levels.WARN, {
+        ok = pcall(vim.notify, "Hold it Cowboy!", vim.log.levels.WARN, {
           icon = "🤠",
-          replace = id,
+          id = "cowboy",
           keep = function()
             return count >= 10
           end,
         })
         if not ok then
-          id = nil
           return map
         end
       else
