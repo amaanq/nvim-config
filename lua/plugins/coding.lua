@@ -1,6 +1,7 @@
 return {
   {
     "zbirenbaum/copilot.lua",
+    optional = true,
     opts = {
       filetypes = { ["*"] = true },
       suggestion = { enabled = true, auto_trigger = true },

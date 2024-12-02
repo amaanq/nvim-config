@@ -1,8 +1,8 @@
 {
   "extras": [
-    "lazyvim.plugins.extras.coding.blink",
     "lazyvim.plugins.extras.ai.copilot",
     "lazyvim.plugins.extras.ai.copilot-chat",
+    "lazyvim.plugins.extras.coding.blink",
     "lazyvim.plugins.extras.coding.mini-surround",
     "lazyvim.plugins.extras.coding.yanky",
     "lazyvim.plugins.extras.dap.core",
@@ -27,14 +27,12 @@
     "lazyvim.plugins.extras.lang.typescript",
     "lazyvim.plugins.extras.lang.yaml",
     "lazyvim.plugins.extras.linting.eslint",
-    "lazyvim.plugins.extras.test.core",
     "lazyvim.plugins.extras.ui.edgy",
     "lazyvim.plugins.extras.ui.mini-animate",
     "lazyvim.plugins.extras.ui.mini-indentscope",
     "lazyvim.plugins.extras.ui.treesitter-context",
     "lazyvim.plugins.extras.util.mini-hipatterns",
     "lazyvim.plugins.extras.util.octo",
-    "lazyvim.plugins.extras.util.project",
     "lazyvim.plugins.extras.vscode",
     "plugins.extras.dev.avante",
     "plugins.extras.dev.treesitter",
@@ -42,13 +40,12 @@
     "plugins.extras.lang.nix",
     "plugins.extras.lang.nodejs",
     "plugins.extras.lang.omnisharp",
-    "plugins.extras.lang.scala",
     "plugins.extras.lang.svelte",
     "plugins.extras.lang.verilog",
     "plugins.extras.lang.zig"
   ],
   "news": {
-    "NEWS.md": "7107"
+    "NEWS.md": "7429"
   },
   "version": 7
 }
