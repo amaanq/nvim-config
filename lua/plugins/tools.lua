@@ -47,42 +47,6 @@ return {
     cmd = { "Godbolt", "GodboltCompiler" },
   },
 
-  {
-    "t-troebst/perfanno.nvim",
-    opts = function()
-      local util = require("perfanno.util")
-      local fg = "#dc2626"
-      return {
-        line_highlights = util.make_bg_highlights("#000000", fg, 10),
-        vt_highlight = util.make_fg_highlight(fg),
-      }
-    end,
-    keys = {
-      { "<leader>alf", "<cmd>PerfLoadFlat<cr>", desc = "Load flat profile" },
-      { "<leader>alg", "<cmd>PerfLoadCallGraph<cr>", desc = "Load call graph" },
-      { "<leader>alo", "<cmd>PerfLoadFlameGraph<cr>", desc = "Load flame graph" },
-      { "<leader>ale", "<cmd>PerfPickEvent<cr>", desc = "Pick event" },
-      { "<leader>ala", "<cmd>PerfAnnotate<cr>", desc = "Annotate" },
-      { "<leader>alu", "<cmd>PerfAnnotateFunction<cr>", desc = "Annotate function" },
-      { "<leader>alt", "<cmd>PerfToggleAnnotations<cr>", desc = "Toggle annotations" },
-      { "<leader>ali", "<cmd>PerfHottestLines<cr>", desc = "Hottest lines" },
-      { "<leader>als", "<cmd>PerfHottestSymbols<cr>", desc = "Hottest symbols" },
-      { "<leader>alc", "<cmd>PerfHottestCallersFunction<cr>", desc = "Hottest callers function" },
-      { "<leader>all", "<cmd>PerfLuaProfileStart<cr>", desc = "Start Lua Profiler" },
-      { "<leader>alq", "<cmd>PerfLuaProfileStop<cr>", desc = "Stop Lua Profiler" },
-    },
-    cmd = {
-      "PerfLuaProfileStart",
-      "PerfLuaProfileStop",
-      "PerfLoadFlat",
-      "PerfLoadCallGraph",
-      "PerfLoadFlameGraph",
-      "PerfCacheLoad",
-      "PerfCacheSave",
-      "PerfCacheDelete",
-      "PerfCycleFormat",
-    },
-  },
 
   {
     "andweeb/presence.nvim",
