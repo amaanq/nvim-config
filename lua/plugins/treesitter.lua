@@ -68,8 +68,6 @@ return {
         "vue",
         "wgsl",
       })
-      -- opts.autopairs = { enable = true }
-      opts.autotag = { enable = true }
       opts.matchup = {
         enable = true,
         disable = { "c", "cpp" },
