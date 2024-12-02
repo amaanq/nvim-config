@@ -54,6 +54,9 @@ return {
           },
         },
       },
+      codelens = {
+        enabled = true,
+      },
       diagnostics = { virtual_text = { prefix = "icons" } },
       inlay_hints = { enabled = false },
       ---@type lspconfig.options
