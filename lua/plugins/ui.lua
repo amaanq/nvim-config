@@ -504,7 +504,8 @@ return {
       local animate = require("mini.animate")
       opts.open = { enable = false }
       opts.close = { enable = false }
-      opts.scroll.timing = animate.gen_timing.linear({ duration = 80, unit = "total" })
+      opts.cursor = { enable = false }
+      opts.scroll.timing = animate.gen_timing.exponential({ duration = 50, easing = "out", unit = "total" })
       return opts
     end,
   },
