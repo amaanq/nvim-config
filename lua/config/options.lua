@@ -52,6 +52,8 @@ if vim.g.neovide then
   vim.g.neovide_scale_factor = 0.3
 end
 
+-- vim.opt.mousescroll = "ver:8,hor:6"
+
 vim.o.title = true
 vim.o.titlestring = LazyVim.root.cwd():match("([^/]+)$")
 
@@ -66,6 +68,9 @@ end
 
 vim.g.lazyvim_python_lsp = "basedpyright"
 vim.g.lazyvim_python_ruff = "ruff"
+vim.g.deprecation_warnings = true
+vim.g.ai_cmp = false
+vim.g.lazyvim_blink_main = true
 
 if vim.fn.has("win32") == 1 then
   LazyVim.terminal.setup("pwsh")
