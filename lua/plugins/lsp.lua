@@ -71,6 +71,8 @@ return {
                   reportUnusedClass = "information",
                   reportUnusedFunction = "information",
                   reportOptionalMemberAccess = "none",
+                  reportUnknownVariableType = "none",
+                  reportUnusedCallResult = "none",
                 },
               },
               disableTaggedHints = true,
@@ -85,6 +87,7 @@ return {
               hover = { expandAlias = false },
               type = {
                 castNumberToInteger = true,
+                inferParamType = true,
               },
               diagnostics = {
                 disable = { "incomplete-signature-doc", "trailing-space" },
