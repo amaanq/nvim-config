@@ -309,7 +309,7 @@ return {
 
   {
     "tree-sitter-grammars/tree-sitter-test",
-    build = "make parser/test.so",
+    build = "mkdir parser && tree-sitter build -o parser/test.so",
     ft = "test",
     init = function()
       -- toggle dynamic language injection
