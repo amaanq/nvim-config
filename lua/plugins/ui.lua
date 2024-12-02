@@ -308,6 +308,7 @@ return {
           return statusline["summer"]
         end,
       })
+      table.insert(opts.sections.lualine_x, Snacks.profiler.status())
       table.insert(opts.sections.lualine_x, {
         function()
           local buf_clients = vim.lsp.get_clients({ bufnr = 0 })
