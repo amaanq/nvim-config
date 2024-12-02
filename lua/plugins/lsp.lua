@@ -1,16 +1,6 @@
 local util = require("util")
 
 return {
-  -- neodev
-  {
-    "folke/neodev.nvim",
-    opts = {
-      library = {
-        runtime = "~/projects/neovim/runtime/",
-      },
-    },
-  },
-
   {
     "williamboman/mason.nvim",
     opts = {
