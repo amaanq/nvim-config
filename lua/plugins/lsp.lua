@@ -109,6 +109,16 @@ return {
           },
         },
         prosemd_lsp = {},
+        gopls = {
+          settings = {
+            gopls = {
+              analyses = {
+                fieldalignment = false,
+              },
+            },
+          },
+        },
+        nushell = {},
       },
     },
   },
