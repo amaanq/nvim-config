@@ -27,12 +27,9 @@
     "lazyvim.plugins.extras.lang.yaml",
     "lazyvim.plugins.extras.linting.eslint",
     "lazyvim.plugins.extras.ui.edgy",
-    "lazyvim.plugins.extras.ui.mini-animate",
-    "lazyvim.plugins.extras.ui.mini-indentscope",
     "lazyvim.plugins.extras.ui.treesitter-context",
     "lazyvim.plugins.extras.util.mini-hipatterns",
     "lazyvim.plugins.extras.util.octo",
-    "lazyvim.plugins.extras.vscode",
     "plugins.extras.dev.avante",
     "plugins.extras.dev.treesitter",
     "plugins.extras.lang.bash",
@@ -43,7 +40,7 @@
     "plugins.extras.lang.zig"
   ],
   "news": {
-    "NEWS.md": "7429"
+    "NEWS.md": "10948"
   },
   "version": 7
 }

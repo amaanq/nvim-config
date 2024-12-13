@@ -31,11 +31,11 @@ return {
           event = "msg_show",
           find = "%d+L, %d+B",
           cond = function()
-            return not focused
+            return not focused and false
           end,
         },
         view = "mini",
-        opts = { stop = false },
+        opts = { stop = false, replace = true },
       })
 
       opts.commands = {
