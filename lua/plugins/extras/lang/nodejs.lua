@@ -1,27 +1,33 @@
 return {
 
-  -- Extend auto completion
   {
-    "hrsh7th/nvim-cmp",
+    "vuki656/package-info.nvim",
+    event = "BufRead package.json",
+    opts = {},
+  },
+
+  {
+    "saghen/blink.cmp",
+    optional = true,
     dependencies = {
-      {
-        "vuki656/package-info.nvim",
-        event = { "BufRead package.json" },
-        config = true,
-      },
+      "saghen/blink.compat",
       {
         "David-Kunz/cmp-npm",
-        event = { "BufRead package.json" },
-        config = true,
+        event = "BufRead package.json",
+        opts = {},
       },
     },
-    ---@param opts cmp.ConfigSchema
-    opts = function(_, opts)
-      local cmp = require("cmp")
-      opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
-        { name = "npm", keyword_length = 3, priority = 750 },
-      }))
-    end,
+    opts = {
+      sources = {
+        default = { "npm" },
+        providers = {
+          npm = {
+            name = "npm",
+            module = "blink.compat.source",
+          },
+        },
+      },
+    },
   },
 
   -- Add JavaScript & friends to treesitter
