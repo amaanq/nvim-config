@@ -109,7 +109,7 @@ return {
     "rcarriga/nvim-notify",
     opts = {
       level = vim.log.levels.INFO,
-      fps = vim.g.os == "Darwin" and 120 or 160,
+      fps = vim.g.fps,
       stages = "fade_in_slide_out",
       background_colour = "#000000",
       time_formats = {
@@ -484,29 +484,12 @@ return {
     event = "BufReadPre",
   },
 
-  "folke/twilight.nvim",
   {
-    "folke/zen-mode.nvim",
-    cmd = "ZenMode",
+    "edgy.nvim",
     opts = {
-      plugins = {
-        gitsigns = true,
-        tmux = true,
-        kitty = { enabled = false, font = "+2" },
+      animate = {
+        fps = vim.g.fps,
       },
     },
-    keys = { { "<leader>z", "<cmd>ZenMode<cr>", desc = "Zen Mode" } },
-  },
-
-  {
-    "echasnovski/mini.animate",
-    opts = function(_, opts)
-      local animate = require("mini.animate")
-      opts.open = { enable = false }
-      opts.close = { enable = false }
-      opts.cursor = { enable = false }
-      opts.scroll.timing = animate.gen_timing.exponential({ duration = 50, easing = "out", unit = "total" })
-      return opts
-    end,
   },
 }

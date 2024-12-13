@@ -22,6 +22,7 @@ vim.opt.listchars = "trail:·,nbsp:◇,tab:→ ,extends:▸,precedes:◂"
 vim.opt.pumblend = 10
 
 vim.g.os = vim.uv.os_uname().sysname
+vim.g.fps = vim.g.os == "Darwin" and 120 or 160
 vim.g.dotfiles = vim.env.DOTFILES or vim.fn.expand("~/.dotfiles")
 vim.g.vim_dir = vim.g.dotfiles .. "/.config/nvim"
 
@@ -51,8 +52,6 @@ if vim.g.neovide then
   vim.opt.guifont = "Menlo,Symbols Nerd Font Mono:h10"
   vim.g.neovide_scale_factor = 0.3
 end
-
--- vim.opt.mousescroll = "ver:8,hor:6"
 
 vim.o.title = true
 vim.o.titlestring = LazyVim.root.cwd():match("([^/]+)$")
