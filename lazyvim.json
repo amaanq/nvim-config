@@ -4,8 +4,6 @@
     "lazyvim.plugins.extras.coding.blink",
     "lazyvim.plugins.extras.coding.mini-surround",
     "lazyvim.plugins.extras.coding.yanky",
-    "lazyvim.plugins.extras.dap.core",
-    "lazyvim.plugins.extras.dap.nlua",
     "lazyvim.plugins.extras.editor.dial",
     "lazyvim.plugins.extras.editor.fzf",
     "lazyvim.plugins.extras.editor.inc-rename",
@@ -40,7 +38,7 @@
     "plugins.extras.lang.zig"
   ],
   "news": {
-    "NEWS.md": "10948"
+    "NEWS.md": "10960"
   },
   "version": 7
 }

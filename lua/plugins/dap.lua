@@ -2,7 +2,11 @@ return {
   "mfussenegger/nvim-dap",
   event = "VeryLazy",
   dependencies = {
-    { "rcarriga/nvim-dap-ui", config = true },
+    {
+      "rcarriga/nvim-dap-ui",
+      dependencies = { "nvim-neotest/nvim-nio" },
+      config = true,
+    },
     { "theHamsta/nvim-dap-virtual-text", config = true },
     { "mfussenegger/nvim-dap-python" },
     { "Pocco81/dap-buddy.nvim" },

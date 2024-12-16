@@ -127,12 +127,20 @@ return {
   { "fei6409/log-highlight.nvim", event = "BufRead *.log", opts = {} },
 
   {
-    "blink.cmp",
+    "ibhagwan/fzf-lua",
     optional = true,
     opts = {
-      sources = {
-        cmdline = {},
+      grep = {
+        rg_glob = true,
       },
     },
+  },
+
+  {
+    "psliwka/vim-dirtytalk",
+    build = ":DirtytalkUpdate",
+    config = function()
+      vim.opt.spelllang:append("programming")
+    end,
   },
 }

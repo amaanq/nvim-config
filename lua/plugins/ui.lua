@@ -1,6 +1,70 @@
 local Util = require("lazyvim.util")
 
 return {
+  -- bufferline
+  {
+    "akinsho/bufferline.nvim",
+    ---@param opts bufferline.UserConfig
+    opts = function(_, opts)
+      opts.options.show_close_icon = true
+      -- opts.options.separator_style = "slant"
+      opts.options.offsets = {
+        {
+          filetype = "neo-tree",
+          text = "Neo-tree",
+          highlight = "Directory",
+          text_align = "left",
+        },
+        {
+          filetype = "Outline",
+          text = "Symbols Outline",
+          highlight = "TSType",
+          text_align = "left",
+        },
+      }
+      opts.options.hover = {
+        enabled = true,
+        delay = 200,
+        reveal = { "close" },
+      }
+      opts.highlights = function(config) ---@param config bufferline.Config
+        local hl = {}
+
+        for name, tbl in pairs(config.highlights) do
+          local tbl_copy = {}
+          for k, v in pairs(tbl) do
+            -- Modify gui to remove italic
+            if k == "gui" then
+              local parts = vim.split(v, ",")
+              for _, part in pairs(parts) do
+                if part ~= "italic" then
+                  tbl_copy["gui"] = part
+                end
+              end
+            else
+              tbl_copy[k] = v
+            end
+          end
+          hl[name] = tbl_copy
+        end
+
+        return hl
+      end
+      opts.options.diagnostics = false
+    end,
+  },
+
+  {
+    "folke/which-key.nvim",
+    enabled = true,
+    opts = {
+      preset = "helix",
+      debug = vim.uv.cwd():find("which%-key"),
+      win = {},
+      spec = {},
+    },
+  },
+
   {
     "folke/noice.nvim",
     opts = function(_, opts)
@@ -104,169 +168,6 @@ return {
     end,
   },
 
-  -- Better `vim.notify()`
-  {
-    "rcarriga/nvim-notify",
-    opts = {
-      level = vim.log.levels.INFO,
-      fps = vim.g.fps,
-      stages = "fade_in_slide_out",
-      background_colour = "#000000",
-      time_formats = {
-        notification = "%I:%M:%S %p",
-      },
-    },
-  },
-
-  -- bufferline
-  {
-    "akinsho/bufferline.nvim",
-    ---@param opts bufferline.UserConfig
-    opts = function(_, opts)
-      opts.options.show_close_icon = true
-      -- opts.options.separator_style = "slant"
-      opts.options.offsets = {
-        {
-          filetype = "neo-tree",
-          text = "Neo-tree",
-          highlight = "Directory",
-          text_align = "left",
-        },
-        {
-          filetype = "Outline",
-          text = "Symbols Outline",
-          highlight = "TSType",
-          text_align = "left",
-        },
-      }
-      opts.options.hover = {
-        enabled = true,
-        delay = 200,
-        reveal = { "close" },
-      }
-      opts.highlights = function(config) ---@param config bufferline.Config
-        local hl = {}
-
-        for name, tbl in pairs(config.highlights) do
-          local tbl_copy = {}
-          for k, v in pairs(tbl) do
-            -- Modify gui to remove italic
-            if k == "gui" then
-              local parts = vim.split(v, ",")
-              for _, part in pairs(parts) do
-                if part ~= "italic" then
-                  tbl_copy["gui"] = part
-                end
-              end
-            else
-              tbl_copy[k] = v
-            end
-          end
-          hl[name] = tbl_copy
-        end
-
-        return hl
-      end
-      opts.options.diagnostics = false
-    end,
-  },
-
-  {
-    "folke/which-key.nvim",
-    enabled = true,
-    opts = {
-      preset = "helix",
-      debug = vim.uv.cwd():find("which%-key"),
-      win = {},
-      spec = {},
-    },
-  },
-
-  -- -- auto-resize windows
-  -- {
-  --   "anuvyklack/windows.nvim",
-  --   event = "WinNew",
-  --   dependencies = {
-  --     { "anuvyklack/middleclass" },
-  --     { "anuvyklack/animation.nvim", enabled = false },
-  --   },
-  --   keys = { { "<leader>Z", "<cmd>WindowsMaximize<cr>", desc = "Zoom" } },
-  --   config = function()
-  --     vim.o.winminwidth = 5
-  --     vim.o.winminwidth = 5
-  --     vim.o.equalalways = false
-  --     require("windows").setup({
-  --       animation = { enable = false, duration = 150 },
-  --     })
-  --   end,
-  -- },
-
-  -- scrollbar
-  -- { "lewis6991/satellite.nvim", opts = {}, event = "VeryLazy", enabled = false },
-  -- {
-  --   "echasnovski/mini.map",
-  --   main = "mini.map",
-  --   event = "VeryLazy",
-  --   enabled = false,
-  --   config = function()
-  --     local map = require("mini.map")
-  --     map.setup({
-  --       integrations = {
-  --         map.gen_integration.builtin_search(),
-  --         map.gen_integration.gitsigns(),
-  --         map.gen_integration.diagnostic(),
-  --       },
-  --     })
-  --     map.open()
-  --   end,
-  -- },
-  -- {
-  --   "petertriho/nvim-scrollbar",
-  --   event = "BufReadPost",
-  --   enabled = false,
-  --   config = function()
-  --     local scrollbar = require("scrollbar")
-  --     local colors = require("tokyonight.colors").setup()
-  --     scrollbar.setup({
-  --       handle = { color = colors.bg_highlight },
-  --       excluded_filetypes = { "prompt", "TelescopePrompt", "noice", "notify" },
-  --       marks = {
-  --         Search = { color = colors.orange },
-  --         Error = { color = colors.error },
-  --         Warn = { color = colors.warning },
-  --         Info = { color = colors.info },
-  --         Hint = { color = colors.hint },
-  --         Misc = { color = colors.purple },
-  --       },
-  --     })
-  --   end,
-  -- },
-
-  -- style windows with different colorschemes
-  -- {
-  --   "folke/styler.nvim",
-  --   event = "VeryLazy",
-  --   opts = {
-  --     themes = {
-  --       -- markdown = { colorscheme = "rose-pine" },
-  --       help = { colorscheme = "rose-pine", background = "dark" },
-  --       -- toggleterm = { colorscheme = "rose-pine" },
-  --     },
-  --   },
-  -- },
-  --
-  -- silly drops
-  -- {
-  --   "folke/drop.nvim",
-  --   enabled = false,
-  --   event = "VeryLazy",
-  --   config = function()
-  --     math.randomseed(os.time())
-  --     -- local theme = ({ "stars", "snow" })[math.random(1, 3)]
-  --     require("drop").setup({ theme = "spring", max = 60, interval = 100 })
-  --   end,
-  -- },
-
   -- lualine
   {
     "nvim-lualine/lualine.nvim",
@@ -297,6 +198,77 @@ return {
           cond = require("gitblame").is_blame_text_available,
         },
       }
+
+      ---@type table<string, {updated:number, total:number, enabled: boolean, status:string[]}>
+      local mutagen = {}
+
+      local function mutagen_status()
+        local cwd = vim.uv.cwd() or "."
+        mutagen[cwd] = mutagen[cwd]
+          or {
+            updated = 0,
+            total = 0,
+            enabled = vim.fs.find("mutagen.yml", { path = cwd, upward = true })[1] ~= nil,
+            status = {},
+          }
+        local now = vim.uv.now() -- timestamp in milliseconds
+        local refresh = mutagen[cwd].updated + 10000 < now
+        if #mutagen[cwd].status > 0 then
+          refresh = mutagen[cwd].updated + 1000 < now
+        end
+        if mutagen[cwd].enabled and refresh then
+          ---@type {name:string, status:string, idle:boolean}[]
+          local sessions = {}
+          local lines = vim.fn.systemlist("mutagen project list")
+          local status = {}
+          local name = nil
+          for _, line in ipairs(lines) do
+            local n = line:match("^Name: (.*)")
+            if n then
+              name = n
+            end
+            local s = line:match("^Status: (.*)")
+            if s then
+              table.insert(sessions, {
+                name = name,
+                status = s,
+                idle = s == "Watching for changes",
+              })
+            end
+          end
+          for _, session in ipairs(sessions) do
+            if not session.idle then
+              table.insert(status, session.name .. ": " .. session.status)
+            end
+          end
+          mutagen[cwd].updated = now
+          mutagen[cwd].total = #sessions
+          mutagen[cwd].status = status
+          if #sessions == 0 then
+            vim.notify("Mutagen is not running", vim.log.levels.ERROR, { title = "Mutagen" })
+          end
+        end
+        return mutagen[cwd]
+      end
+
+      local error_color = { fg = Snacks.util.color("DiagnosticError") }
+      local ok_color = { fg = Snacks.util.color("DiagnosticInfo") }
+      table.insert(opts.sections.lualine_x, {
+        cond = function()
+          return mutagen_status().enabled
+        end,
+        color = function()
+          return (mutagen_status().total == 0 or mutagen_status().status[1]) and error_color or ok_color
+        end,
+        function()
+          local s = mutagen_status()
+          local msg = s.total
+          if #s.status > 0 then
+            msg = msg .. " | " .. table.concat(s.status, " | ")
+          end
+          return (s.total == 0 and "󰋘 " or "󰋙 ") .. msg
+        end,
+      })
       table.insert(opts.sections.lualine_x, {
         function()
           local statusline = {
@@ -345,6 +317,7 @@ return {
         color = { gui = "bold" },
         -- cond = conditions.hide_in_width,
       })
+
       opts.sections.lualine_z = {
         function()
           return " " .. os.date("%I:%M %p")
@@ -428,12 +401,7 @@ return {
     event = "VeryLazy",
     config = true,
   },
-  {
-    "rhysd/git-messenger.vim",
-    event = "VeryLazy",
-    keys = { { "<leader>gm", "<cmd>GitMessenger<cr>", desc = "Git Messenger" } },
-  },
-  -- { "rhysd/committia.vim", event = "BufRead" },
+
   {
     "ruifm/gitlinker.nvim",
     event = "VeryLazy",
@@ -450,36 +418,6 @@ return {
   },
 
   {
-    "lukas-reineke/virt-column.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("virt-column").setup({ char = "▕" })
-    end,
-  },
-
-  {
-    "utilyre/barbecue.nvim",
-    dev = true,
-    event = "VeryLazy",
-    dependencies = {
-      "SmiteshP/nvim-navic",
-    },
-    config = true,
-  },
-
-  -- {
-  --   "zbirenbaum/neodim",
-  --   event = "LspAttach",
-  --   opts = {
-  --     hide = {
-  --       virtual_text = false,
-  --       signs = false,
-  --       underline = false,
-  --     },
-  --   },
-  -- },
-
-  {
     "LudoPinelli/comment-box.nvim",
     event = "BufReadPre",
   },
@@ -490,6 +428,78 @@ return {
       animate = {
         fps = vim.g.fps,
       },
+    },
+  },
+
+  {
+    "nacro90/numb.nvim",
+    event = "CmdlineEnter",
+    config = function()
+      require("numb").setup()
+    end,
+  },
+
+  {
+    "Bekaboo/dropbar.nvim",
+    event = "LazyFile",
+    opts = function()
+      local menu_utils = require("dropbar.utils.menu")
+
+      -- Closes all the windows in the current dropbar.
+      local function close()
+        local menu = menu_utils.get_current()
+        while menu and menu.prev_menu do
+          menu = menu.prev_menu
+        end
+        if menu then
+          menu:close()
+        end
+      end
+
+      return {
+        menu = {
+          preview = false,
+          keymaps = {
+            -- Navigate back to the parent menu.
+            ["h"] = "<C-w>q",
+            -- Expands the entry if possible.
+            ["l"] = function()
+              local menu = menu_utils.get_current()
+              if not menu then
+                return
+              end
+              local row = vim.api.nvim_win_get_cursor(menu.win)[1]
+              local component = menu.entries[row]:first_clickable()
+              if component then
+                menu:click_on(component, nil, 1, "l")
+              end
+            end,
+            ["q"] = close,
+            ["<esc>"] = close,
+          },
+        },
+      }
+    end,
+  },
+
+  {
+    "mistricky/codesnap.nvim",
+    build = "make build_generator",
+    event = "VeryLazy",
+    keys = {
+      { "<leader>cs", "<Esc><cmd>CodeSnap<cr>", mode = "x", desc = "Save selected code snapshot into clipboard" },
+      { "<leader>cS", "<Esc><cmd>CodeSnapSave<cr>", mode = "x", desc = "Save selected code snapshot in ~/Pictures/" },
+    },
+    lazy = true,
+    opts = {
+      mac_window_bar = false,
+      save_path = "~/Pictures/",
+      has_breadcrumbs = true,
+      show_workspace = true,
+      bg_theme = "sea",
+      watermark = "",
+      code_font_family = "Berkeley Mono",
+      has_line_number = true,
     },
   },
 }

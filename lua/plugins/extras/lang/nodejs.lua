@@ -7,7 +7,7 @@ return {
   },
 
   {
-    "saghen/blink.cmp",
+    "Saghen/blink.cmp",
     optional = true,
     dependencies = {
       "saghen/blink.compat",
@@ -24,6 +24,17 @@ return {
           npm = {
             name = "npm",
             module = "blink.compat.source",
+          },
+        },
+      },
+      completion = {
+        menu = {
+          border = "rounded",
+          winhighlight = "Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,CursorLine:BlinkCmpDocCursorLine,Search:None",
+        },
+        documentation = {
+          window = {
+            border = "rounded",
           },
         },
       },
@@ -51,38 +62,38 @@ return {
   },
 
   -- Add debug plugin for JavaScript
-  {
-    "mxsdev/nvim-dap-vscode-js",
-    event = "VeryLazy",
-    config = function()
-      local dap = require("dap")
-      local dap_js = require("dap-vscode-js")
-      local mason_registry = require("mason-registry")
-      local js_debug_pkg = mason_registry.get_package("js-debug-adapter")
-      local js_debug_path = js_debug_pkg:get_install_path()
-      ---@diagnostic disable-next-line: missing-fields
-      dap_js.setup({
-        debugger_path = js_debug_path,
-        adapters = { "pwa-node", "node-terminal" }, -- which adapters to register in nvim-dap
-      })
-      for _, language in ipairs({ "typescript", "javascript" }) do
-        dap.configurations[language] = {
-          {
-            type = "pwa-node",
-            request = "launch",
-            name = "Launch file (" .. language .. ")",
-            program = "${file}",
-            cwd = "${workspaceFolder}",
-          },
-          {
-            type = "pwa-node",
-            request = "attach",
-            name = "Attach (" .. language .. ")",
-            processId = require("dap.utils").pick_process,
-            cwd = "${workspaceFolder}",
-          },
-        }
-      end
-    end,
-  },
+  -- {
+  --   "mxsdev/nvim-dap-vscode-js",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     local dap = require("dap")
+  --     local dap_js = require("dap-vscode-js")
+  --     local mason_registry = require("mason-registry")
+  --     local js_debug_pkg = mason_registry.get_package("js-debug-adapter")
+  --     local js_debug_path = js_debug_pkg:get_install_path()
+  --     ---@diagnostic disable-next-line: missing-fields
+  --     dap_js.setup({
+  --       debugger_path = js_debug_path,
+  --       adapters = { "pwa-node", "node-terminal" }, -- which adapters to register in nvim-dap
+  --     })
+  --     for _, language in ipairs({ "typescript", "javascript" }) do
+  --       dap.configurations[language] = {
+  --         {
+  --           type = "pwa-node",
+  --           request = "launch",
+  --           name = "Launch file (" .. language .. ")",
+  --           program = "${file}",
+  --           cwd = "${workspaceFolder}",
+  --         },
+  --         {
+  --           type = "pwa-node",
+  --           request = "attach",
+  --           name = "Attach (" .. language .. ")",
+  --           processId = require("dap.utils").pick_process,
+  --           cwd = "${workspaceFolder}",
+  --         },
+  --       }
+  --     end
+  --   end,
+  -- },
 }
