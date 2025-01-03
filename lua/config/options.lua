@@ -55,6 +55,9 @@ end
 
 vim.o.title = true
 vim.o.titlestring = LazyVim.root.cwd():match("([^/]+)$")
+if vim.fn.executable("nu") == 1 then
+  vim.o.shell = "nu"
+end
 
 -- make all keymaps silent by default
 local keymap_set = vim.keymap.set
