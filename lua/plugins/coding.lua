@@ -75,6 +75,13 @@ return {
   },
 
   {
+    "echasnovski/mini.pairs",
+    opts = {
+      modes = { command = false },
+    },
+  },
+
+  {
     "bennypowers/nvim-regexplainer",
     event = "BufRead",
     dependencies = { "nvim-treesitter/nvim-treesitter", "MunifTanjim/nui.nvim" },
