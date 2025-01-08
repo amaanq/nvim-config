@@ -65,39 +65,44 @@ return {
   -- },
   {
     "willothy/flatten.nvim",
-    lazy = false,
-    priority = 1001,
     opts = function()
-      local saved_terminal ---@type Terminal?
+      ---@type Terminal?
+      local saved_terminal
 
       return {
         window = {
-          open = "smart",
+          open = "alternate",
         },
-        pipe_path = function()
-          -- If running in a terminal inside Neovim:
-          local nvim = vim.env.NVIM
-          if nvim then
-            return nvim
-          end
-        end,
-        nest_if_no_args = true,
-        callbacks = {
+        hooks = {
           should_block = function(argv)
+            -- Note that argv contains all the parts of the CLI command, including
+            -- Neovim's path, commands, options and files.
+            -- See: :help v:argv
+
+            -- In this case, we would block if we find the `-b` flag
+            -- This allows you to use `nvim -b file1` instead of
+            -- `nvim --cmd 'let g:flatten_wait=1' file1`
             return vim.tbl_contains(argv, "-b")
+
+            -- Alternatively, we can block if we find the diff-mode option
+            -- return vim.tbl_contains(argv, "-d")
           end,
           pre_open = function()
             local term = require("toggleterm.terminal")
-            local id = term.get_focused_id()
-            saved_terminal = term.get(id)
+            local termid = term.get_focused_id()
+            saved_terminal = term.get(termid)
           end,
-          post_open = function(bufnr, winnr, ft, is_blocking, is_diff)
+          post_open = function(bufnr, winnr, ft, is_blocking)
             if is_blocking and saved_terminal then
               -- Hide the terminal while it's blocking
               saved_terminal:close()
-            elseif not is_diff then
+            else
               -- If it's a normal file, just switch to its window
               vim.api.nvim_set_current_win(winnr)
+
+              -- If we're in a different wezterm pane/tab, switch to the current one
+              -- Requires willothy/wezterm.nvim
+              require("wezterm").switch_pane.id(tonumber(os.getenv("WEZTERM_PANE")))
             end
 
             -- If the file is a git commit, create one-shot autocmd to delete its buffer on write
@@ -107,18 +112,20 @@ return {
                 buffer = bufnr,
                 once = true,
                 callback = vim.schedule_wrap(function()
-                  require("bufdelete").bufdelete(bufnr, true)
+                  vim.api.nvim_buf_delete(bufnr, {})
                 end),
               })
             end
           end,
-          -- After blocking ends (for a git commit, etc), reopen the terminal
-          block_end = vim.schedule_wrap(function()
-            if saved_terminal then
-              saved_terminal:open()
-              saved_terminal = nil
-            end
-          end),
+          block_end = function()
+            -- After blocking ends (for a git commit, etc), reopen the terminal
+            vim.schedule(function()
+              if saved_terminal then
+                saved_terminal:open()
+                saved_terminal = nil
+              end
+            end)
+          end,
         },
       }
     end,
