@@ -64,6 +64,7 @@ return {
 
   {
     "andymass/vim-matchup",
+    enabled = false,
     event = "BufReadPost",
     init = function()
       vim.o.mps = vim.o.mps .. ',<:>,":"'
@@ -76,9 +77,23 @@ return {
 
   {
     "echasnovski/mini.pairs",
+    enabled = false,
     opts = {
       modes = { command = false },
     },
+  },
+
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    opts = {
+      disable_filetype = {
+        "TelescopePrompt",
+        "spectre_panel",
+        "snacks_picker_input",
+      },
+    },
+    config = true,
   },
 
   {
