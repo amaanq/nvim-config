@@ -133,15 +133,15 @@ return {
 
   { "fei6409/log-highlight.nvim", event = "BufRead *.log", opts = {} },
 
-  {
-    "ibhagwan/fzf-lua",
-    optional = true,
-    opts = {
-      grep = {
-        rg_glob = true,
-      },
-    },
-  },
+  -- {
+  --   "ibhagwan/fzf-lua",
+  --   optional = true,
+  --   opts = {
+  --     grep = {
+  --       rg_glob = true,
+  --     },
+  --   },
+  -- },
 
   {
     "psliwka/vim-dirtytalk",
