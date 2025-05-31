@@ -223,6 +223,7 @@ return {
         "jdtls",
         "copilot",
         "rust-analyzer",
+        "clangd",
       },
     },
   },
