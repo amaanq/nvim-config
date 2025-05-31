@@ -68,11 +68,11 @@ return {
         "vue",
         "wgsl",
       })
-      opts.matchup = {
-        enable = true,
-        disable = { "c", "cpp" },
-        enable_quotes = true,
-      }
+      -- opts.matchup = {
+      --   enable = true,
+      --   disable = { "c", "cpp" },
+      --   enable_quotes = true,
+      -- }
       opts.playground = {
         enable = true,
         persist_queries = true, -- Whether the query persists across vim sessions
