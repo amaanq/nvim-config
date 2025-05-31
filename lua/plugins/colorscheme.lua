@@ -1,6 +1,7 @@
 return {
   {
     "tokyonight.nvim",
+    commit = "c8ea87cd34b0267c44a67e90ff8f6e7d6af46ff9",
     opts = function(_, _opts)
       return {
         style = "moon",
@@ -47,6 +48,9 @@ return {
           -- Smali
           hl["@parameter.builtin"] = { fg = "#efc890" }
 
+          -- C
+          hl["@lsp.typemod.variable.fileScope.c"] = { link = "@constant" }
+
           -- C#
           hl["@lsp.type.fieldName.cs"] = { link = "@field" }
 
@@ -71,7 +75,9 @@ return {
           hl["@lsp.typemod.keyword.async"] = { link = "@keyword.coroutine" }
           hl["@lsp.typemod.method.defaultLibrary.rust"] = { link = "@function.builtin" }
           hl["@lsp.typemod.method.trait"] = { link = "@lsp.type.interface" }
+          hl["@lsp.typemod.function.trait.rust"] = { link = "@lsp.type.interface" }
           hl["@lsp.typemod.parameter.callable"] = { link = "@function" }
+          hl["@lsp.typemod.keyword.controlFlow.rust"] = { link = "@keyword.conditional" }
           hl["@lsp.typemod.variable.constant.rust"] = { link = "@constant" }
 
           -- why are these so bad?
