@@ -39,7 +39,18 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 -- Set indent level for certain filetypes
 vim.api.nvim_create_autocmd({ "FileType", "BufRead", "BufNewFile" }, {
-  pattern = { "firrtl", "lua", "javascript", "typescript", "typescriptreact", "text", "query", "systemverilog", "norg" },
+  pattern = {
+    "firrtl",
+    "lua",
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "text",
+    "query",
+    "systemverilog",
+    "norg",
+    "nix",
+  },
   callback = function(args)
     -- ignore frida scripts
     if args.filetype == "javascript" and vim.fn.expand("%:e") == "so" then
