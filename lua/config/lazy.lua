@@ -1,8 +1,8 @@
+require("nixCatsUtils").setup({
+  non_nix_value = true,
+})
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.uv.fs_stat(lazypath) then
-  vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", lazypath })
-  vim.fn.system({ "git", "-C", lazypath, "checkout", "tags/stable" }) -- last stable release
-end
 vim.opt.rtp:prepend(lazypath)
 
 package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua;"
@@ -10,9 +10,20 @@ package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/shar
 
 local M = {}
 
+-- Helper function to get lockfile path for nixCats compatibility
+local function getlockfilepath()
+  local has_nixcats, nixCatsUtils = pcall(require, "nixCatsUtils")
+  if has_nixcats and nixCatsUtils.isNixCats and type(nixCats.settings.unwrappedCfgPath) == "string" then
+    return nixCats.settings.unwrappedCfgPath .. "/lazy-lock.json"
+  else
+    return vim.fn.stdpath("config") .. "/lazy-lock.json"
+  end
+end
+
 ---@param opts LazyConfig
 function M.load(opts)
-  opts = vim.tbl_deep_extend("force", {
+  local base_config = {
+    lockfile = getlockfilepath(),
     spec = {
       {
         "LazyVim/LazyVim",
@@ -23,6 +34,18 @@ function M.load(opts)
           lazyvim = true,
           neovim = true,
         },
+      },
+      -- Add nixCats-specific plugin configurations
+      {
+        "folke/lazydev.nvim",
+        opts = function(_, opts)
+          local has_nixcats = pcall(require, "nixCatsUtils")
+          if has_nixcats and nixCats and nixCats.nixCatsPath then
+            opts.library = opts.library or {}
+            table.insert(opts.library, { path = nixCats.nixCatsPath .. "/lua", words = { "nixCats" } })
+          end
+          return opts
+        end,
       },
       { import = "plugins" },
     },
@@ -68,8 +91,22 @@ function M.load(opts)
       },
     },
     debug = false,
-  }, opts or {})
-  require("lazy").setup(opts)
+  }
+
+  opts = vim.tbl_deep_extend("force", base_config, opts or {})
+
+  -- Use nixCats lazy wrapper if available, otherwise use regular lazy
+  local has_nixcats, nixCatsUtils = pcall(require, "nixCatsUtils")
+  if has_nixcats and nixCatsUtils.lazyCat then
+    -- Get the lazy.nvim path from nixCats if available
+    local lazy_path = nil
+    if nixCats and nixCats.pawsible then
+      lazy_path = nixCats.pawsible({ "allPlugins", "start", "lazy.nvim" })
+    end
+    nixCatsUtils.lazyCat.setup(lazy_path, opts.spec, { lockfile = opts.lockfile })
+  else
+    require("lazy").setup(opts)
+  end
 end
 
 return M
