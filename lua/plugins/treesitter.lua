@@ -46,68 +46,6 @@ return {
     },
   },
 
-  -- {
-  --   "nvim-treesitter/nvim-treesitter",
-  --   dependencies = {},
-  --   build = require("nixCatsUtils").lazyAdd(":TSUpdate"),
-  --   --- @type TSConfig
-  --   opts = function(_, opts)
-  --     local parsers = {
-  --       "cmake",
-  --       -- "comment",
-  --       "diff",
-  --       "dockerfile",
-  --       "gitattributes",
-  --       "gitcommit",
-  --       "gitignore",
-  --       "git_rebase",
-  --       "glsl",
-  --       "graphql",
-  --       "haskell",
-  --       "http",
-  --       "kconfig",
-  --       "json",
-  --       "json5",
-  --       "kotlin",
-  --       "make",
-  --       "meson",
-  --       "ninja",
-  --       "nix",
-  --       "php",
-  --       "proto",
-  --       "scss",
-  --       "sql",
-  --       "svelte",
-  --       "vala",
-  --       "vue",
-  --       "wgsl",
-  --     }
-  --
-  --     -- When using nix, parsers are installed via nix, so disable ensure_installed
-  --     local ensure_installed = require("nixCatsUtils").lazyAdd(parsers, false)
-  --     if ensure_installed then
-  --       vim.list_extend(opts.ensure_installed or {}, ensure_installed)
-  --     end
-  --
-  --     -- Disable auto_install when using nix
-  --     opts.auto_install = require("nixCatsUtils").lazyAdd(true, false)
-  --
-  --     -- opts.matchup = {
-  --     --   enable = true,
-  --     --   disable = { "c", "cpp" },
-  --     --   enable_quotes = true,
-  --     -- }
-  --     opts.playground = {
-  --       enable = true,
-  --       persist_queries = true, -- Whether the query persists across vim sessions
-  --     }
-  --     opts.query_linter = {
-  --       enable = true,
-  --       use_virtual_text = true,
-  --       lint_events = { "BufWrite", "CursorHold" },
-  --     }
-  --   end,
-  -- },
 
   { "windwp/nvim-ts-autotag", opts = {}, event = "InsertEnter" },
 }
