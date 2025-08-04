@@ -122,7 +122,7 @@ return {
             },
           },
         },
-        prosemd_lsp = {},
+        -- prosemd_lsp = {},
         gopls = {
           settings = {
             gopls = {
