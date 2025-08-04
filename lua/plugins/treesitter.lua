@@ -34,45 +34,14 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
-    dependencies = {},
     --- @type TSConfig
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
-        "cmake",
-        -- "comment",
-        "diff",
-        "dockerfile",
-        "gitattributes",
-        "gitcommit",
-        "gitignore",
-        "git_rebase",
-        "glsl",
-        "graphql",
-        "haskell",
-        "http",
-        "kconfig",
-        "json",
-        "json5",
-        "kotlin",
-        "make",
-        "meson",
-        "ninja",
-        "nix",
-        "org",
-        "php",
-        "proto",
-        "scss",
-        "sql",
-        "svelte",
-        "vala",
-        "vue",
-        "wgsl",
-      })
-      -- opts.matchup = {
-      --   enable = true,
-      --   disable = { "c", "cpp" },
-      --   enable_quotes = true,
-      -- }
+      opts.ensure_installed = require("nixCatsUtils").lazyAdd(
+        { "bash", "c", "diff", "html", "lua", "luadoc", "markdown", "vim", "vimdoc" },
+        false
+      )
+      opts.auto_install = require("nixCatsUtils").lazyAdd(true, false)
+
       opts.playground = {
         enable = true,
         persist_queries = true, -- Whether the query persists across vim sessions

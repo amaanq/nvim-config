@@ -1,18 +1,24 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.uv.fs_stat(lazypath) then
-  vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", lazypath })
-  vim.fn.system({ "git", "-C", lazypath, "checkout", "tags/stable" }) -- last stable release
-end
-vim.opt.rtp:prepend(lazypath)
-
-package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua;"
-package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?.lua;"
-
 local M = {}
+
+local function getlockfilepath()
+  if require("nixCatsUtils").isNixCats and type(nixCats.settings.unwrappedCfgPath) == "string" then
+    return nixCats.settings.unwrappedCfgPath .. "/lazy-lock.json"
+  else
+    return vim.fn.stdpath("config") .. "/lazy-lock.json"
+  end
+end
 
 ---@param opts LazyConfig
 function M.load(opts)
+  require("nixCatsUtils").setup({
+    non_nix_value = true,
+  })
+
   opts = vim.tbl_deep_extend("force", {
+    defaults = {
+      lazy = true,
+      version = false, -- always use the latest git commit
+    },
     spec = {
       {
         "LazyVim/LazyVim",
@@ -26,14 +32,7 @@ function M.load(opts)
       },
       { import = "plugins" },
     },
-    defaults = {
-      lazy = true,
-      version = false, -- always use the latest git commit
-    },
-    dev = {
-      patterns = jit.os:find("Windows") and {} or { "amaanq" },
-      fallback = jit.os:find("Windows"),
-    },
+    lockfile = getlockfilepath(),
     install = { colorscheme = { "tokyonight", "habamax" } },
     checker = {
       enabled = true,
@@ -60,6 +59,9 @@ function M.load(opts)
         },
       },
     },
+    readme = {
+      enabled = false,
+    },
     ui = {
       custom_keys = {
         ["<localleader>d"] = function(plugin)
@@ -69,7 +71,7 @@ function M.load(opts)
     },
     debug = false,
   }, opts or {})
-  require("lazy").setup(opts)
+  require("nixCatsUtils.lazyCat").setup(nixCats.pawsible({ "allPlugins", "start", "lazy.nvim" }), opts)
 end
 
 return M

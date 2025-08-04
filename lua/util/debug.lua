@@ -6,7 +6,7 @@ function M.get_loc()
   local me = debug.getinfo(1, "S")
   local level = 2
   local info = debug.getinfo(level, "S")
-  while info and (info.source == me.source or info.source == "@" .. vim.env.MYVIMRC or info.what ~= "Lua") do
+  while info and (info.source == me.source or info.source == "@" .. (vim.env.MYVIMRC or "") or info.what ~= "Lua") do
     level = level + 1
     info = debug.getinfo(level, "S")
   end
