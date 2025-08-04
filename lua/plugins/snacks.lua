@@ -12,6 +12,7 @@ return {
           end,
         },
       },
+      image = { enabled = true },
       input = {},
       indent = {
         scope = {
