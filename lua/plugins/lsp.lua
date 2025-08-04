@@ -51,6 +51,20 @@ return {
       inlay_hints = { enabled = false },
       ---@type lspconfig.options
       ---@diagnostic disable: missing-fields
+      setup = {
+        ty = function(_, opts)
+          require("lspconfig.configs").ty = {
+            default_config = {
+              cmd = { "ty", "server" },
+              filetypes = { "python" },
+              root_dir = require("lspconfig.util").root_pattern("ty.toml", "pyproject.toml", ".git"),
+              single_file_support = true,
+            },
+          }
+          require("lspconfig").ty.setup(opts)
+          return true
+        end,
+      },
       servers = {
         cssls = {},
         html = {},
