@@ -24,9 +24,7 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        svls = {
-          mason = false,
-        },
+        svls = {},
         verible = {
           cmd = { "verible-verilog-ls", "--rules=line-length=length:120" },
         },

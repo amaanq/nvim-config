@@ -4,9 +4,8 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        nixd = {
-          mason = false,
-        },
+        nil_ls = false,
+        nixd = {},
       },
     },
   },

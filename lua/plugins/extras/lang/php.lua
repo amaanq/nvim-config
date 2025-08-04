@@ -14,7 +14,6 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        -- Ensure mason installs the server
         intelephense = {
           root_dir = require("lspconfig").util.root_pattern("composer.json", ".git", "*.php"),
         },
