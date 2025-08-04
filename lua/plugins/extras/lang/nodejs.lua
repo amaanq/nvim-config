@@ -10,11 +10,9 @@ return {
     "Saghen/blink.cmp",
     optional = true,
     dependencies = {
-      "saghen/blink.compat",
       {
-        "David-Kunz/cmp-npm",
+        "alexandre-abrioux/blink-cmp-npm.nvim",
         event = "BufRead package.json",
-        opts = {},
       },
     },
     opts = {
@@ -23,7 +21,9 @@ return {
         providers = {
           npm = {
             name = "npm",
-            module = "blink.compat.source",
+            module = "blink-cmp-npm",
+            async = true,
+            score_offset = 100,
           },
         },
       },
