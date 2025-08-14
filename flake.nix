@@ -123,7 +123,6 @@
 
           optionalPlugins = {
             general = [
-              pkgs.vimPlugins.avante-nvim
               pkgs.vimPlugins.blink-cmp
               pkgs.vimPlugins.blink-cmp-npm-nvim
               pkgs.vimPlugins.bufferline-nvim
