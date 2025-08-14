@@ -28,13 +28,7 @@
             general = [
               pkgs.curlHTTP3
               pkgs.fd
-              pkgs.fzf
-              pkgs.ghostscript
-              pkgs.libxml2 # xmllint
-              pkgs.mermaid-cli
               pkgs.ripgrep
-              pkgs.tectonic
-              pkgs.vscode-langservers-extracted
             ];
 
             c = [
@@ -55,6 +49,14 @@
 
             elixir = [
               pkgs.beam28Packages.elixir-ls
+            ];
+
+            extra = [
+              pkgs.ghostscript
+              pkgs.libxml2 # xmllint
+              pkgs.mermaid-cli
+              pkgs.tectonic
+              pkgs.vscode-langservers-extracted
             ];
 
             go = [
@@ -255,6 +257,7 @@
               csharp = true;
               dot = true;
               elixir = true;
+              extra = true;
               go = true;
               java = true;
               lua = true;
@@ -267,6 +270,25 @@
               typescript = true;
               yaml = true;
               zig = true;
+            };
+          };
+
+        server =
+          { pkgs, ... }:
+          {
+            settings = {
+              suffix-path = true;
+              suffix-LD = true;
+              wrapRc = true;
+              aliases = [
+                "nv"
+                "vi"
+              ];
+              neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.system}.neovim;
+            };
+            categories = {
+              general = true;
+              nix = true;
             };
           };
 
@@ -286,6 +308,7 @@
               csharp = true;
               dot = true;
               elixir = true;
+              extra = true;
               go = true;
               java = true;
               lua = true;
