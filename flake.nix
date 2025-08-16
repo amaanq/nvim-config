@@ -91,6 +91,10 @@
               pkgs.ty
             ];
 
+            qml = [
+              pkgs.kdePackages.qtdeclarative
+            ];
+
             rust = [
               pkgs.taplo
             ];
@@ -236,93 +240,80 @@
           };
         };
 
-      packageDefinitions = {
-        nvim =
-          { pkgs, ... }:
-          {
-            settings = {
-              suffix-path = true;
-              suffix-LD = true;
-              wrapRc = true;
-              aliases = [
-                "nv"
-                "vi"
-              ];
-              neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.system}.neovim;
-            };
-            categories = {
-              general = true;
-              c = true;
-              csharp = true;
-              dot = true;
-              elixir = true;
-              extra = true;
-              go = true;
-              java = true;
-              lua = true;
-              markdown = true;
-              neotest = true;
-              nix = true;
-              python = true;
-              rust = true;
-              svelte = true;
-              typescript = true;
-              yaml = true;
-              zig = true;
-            };
-          };
+      packageDefinitions =
 
-        server =
-          { pkgs, ... }:
-          {
-            settings = {
-              suffix-path = true;
-              suffix-LD = true;
-              wrapRc = true;
-              aliases = [
-                "nv"
-                "vi"
-              ];
-              neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.system}.neovim;
-            };
-            categories = {
-              general = true;
-              nix = true;
-            };
+        let
+          defaultCategories = {
+            general = true;
+            c = true;
+            csharp = true;
+            dot = true;
+            elixir = true;
+            extra = true;
+            go = true;
+            java = true;
+            lua = true;
+            markdown = true;
+            neotest = true;
+            nix = true;
+            python = true;
+            qml = true;
+            rust = true;
+            svelte = true;
+            typescript = true;
+            yaml = true;
+            zig = true;
           };
+        in
+        {
+          nvim =
+            { pkgs, ... }:
+            {
+              settings = {
+                suffix-path = true;
+                suffix-LD = true;
+                wrapRc = true;
+                aliases = [
+                  "nv"
+                  "vi"
+                ];
+                neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.system}.neovim;
+              };
+              categories = defaultCategories;
+            };
 
-        testnvim =
-          { pkgs, ... }:
-          {
-            settings = {
-              suffix-path = true;
-              suffix-LD = true;
-              wrapRc = false;
-              neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.system}.neovim;
-              unwrappedCfgPath = utils.mkLuaInline "os.getenv('HOME') .. '/.config/nvim'";
+          server =
+            { pkgs, ... }:
+            {
+              settings = {
+                suffix-path = true;
+                suffix-LD = true;
+                wrapRc = true;
+                aliases = [
+                  "nv"
+                  "vi"
+                ];
+                neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.system}.neovim;
+              };
+              categories = {
+                general = true;
+                nix = true;
+              };
             };
-            categories = {
-              general = true;
-              c = true;
-              csharp = true;
-              dot = true;
-              elixir = true;
-              extra = true;
-              go = true;
-              java = true;
-              lua = true;
-              markdown = true;
-              neotest = true;
-              nix = true;
-              python = true;
-              rust = true;
-              svelte = true;
-              typescript = true;
-              yaml = true;
-              zig = true;
+
+          testnvim =
+            { pkgs, ... }:
+            {
+              settings = {
+                suffix-path = true;
+                suffix-LD = true;
+                wrapRc = false;
+                neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.system}.neovim;
+                unwrappedCfgPath = utils.mkLuaInline "os.getenv('HOME') .. '/.config/nvim'";
+              };
+              categories = defaultCategories;
             };
-          };
-      };
+        };
       defaultPackageName = "nvim";
     in
 
