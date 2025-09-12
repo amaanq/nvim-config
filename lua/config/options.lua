@@ -109,6 +109,18 @@ vim.g.rustaceanvim = {
       open_split = "horizontal",
     },
   },
+  server = {
+    default_settings = {
+      ["rust-analyzer"] = {
+        cargo = {
+          targetDir = true,
+        },
+        check = {
+          targetDir = true,
+        },
+      },
+    },
+  },
 }
 
 for _, method in ipairs({ "textDocument/diagnostic", "workspace/diagnostic" }) do
