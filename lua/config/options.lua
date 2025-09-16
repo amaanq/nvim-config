@@ -78,6 +78,8 @@ if vim.fn.has("win32") == 1 then
   LazyVim.terminal.setup("pwsh")
 end
 
+local diagnostics = vim.g.lazyvim_rust_diagnostics or "rust-analyzer"
+
 vim.g.rustaceanvim = {
   tools = {
     float_win_config = {
