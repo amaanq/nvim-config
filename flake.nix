@@ -125,119 +125,162 @@
             ];
           };
 
-          optionalPlugins = {
-            general = [
-              pkgs.vimPlugins.blink-cmp
-              pkgs.vimPlugins.blink-cmp-npm-nvim
-              pkgs.vimPlugins.bufferline-nvim
-              pkgs.vimPlugins.codesnap-nvim
-              pkgs.vimPlugins.comment-box-nvim
-              pkgs.vimPlugins.conform-nvim
-              pkgs.vimPlugins.copilot-lua
-              pkgs.vimPlugins.dial-nvim
-              pkgs.vimPlugins.dropbar-nvim
-              pkgs.vimPlugins.edgy-nvim
-              pkgs.vimPlugins.flash-nvim
-              pkgs.vimPlugins.flatten-nvim
-              pkgs.vimPlugins.friendly-snippets
-              pkgs.vimPlugins.git-blame-nvim
-              pkgs.vimPlugins.git-conflict-nvim
-              pkgs.vimPlugins.gitlinker-nvim
-              pkgs.vimPlugins.gitsigns-nvim
-              pkgs.vimPlugins.godbolt-nvim
-              pkgs.vimPlugins.grug-far-nvim
-              pkgs.vimPlugins.inc-rename-nvim
-              pkgs.vimPlugins.lazydev-nvim
-              pkgs.vimPlugins.LazyVim
-              pkgs.vimPlugins.lualine-nvim
-              pkgs.vimPlugins.markdown-preview-nvim
-              pkgs.vimPlugins.mini-ai
-              pkgs.vimPlugins.mini-files
-              pkgs.vimPlugins.mini-hipatterns
-              pkgs.vimPlugins.mini-icons
-              pkgs.vimPlugins.mini-pairs
-              pkgs.vimPlugins.mini-surround
-              pkgs.vimPlugins.neo-tree-nvim
-              pkgs.vimPlugins.noice-nvim
-              pkgs.vimPlugins.nui-nvim
-              pkgs.vimPlugins.numb-nvim
-              pkgs.vimPlugins.nvim-autopairs
-              pkgs.vimPlugins.nvim-lint
-              pkgs.vimPlugins.nvim-lspconfig
-              pkgs.vimPlugins.nvim-treesitter-context
-              pkgs.vimPlugins.nvim-treesitter-textobjects
-              pkgs.vimPlugins.nvim-treesitter.withAllGrammars
-              pkgs.vimPlugins.nvim-ts-autotag
-              pkgs.vimPlugins.nvim-web-devicons
-              pkgs.vimPlugins.nvim_context_vt
-              pkgs.vimPlugins.octo-nvim
-              pkgs.vimPlugins.persistence-nvim
-              pkgs.vimPlugins.plenary-nvim
-              pkgs.vimPlugins.playground
-              pkgs.vimPlugins.render-markdown-nvim
-              pkgs.vimPlugins.SchemaStore-nvim
-              pkgs.vimPlugins.snacks-nvim
-              pkgs.vimPlugins.todo-comments-nvim
-              pkgs.vimPlugins.toggleterm-nvim
-              pkgs.vimPlugins.tokyonight-nvim
-              pkgs.vimPlugins.treesj
-              pkgs.vimPlugins.ts-comments-nvim
-              pkgs.vimPlugins.trouble-nvim
-              pkgs.vimPlugins.vim-illuminate
-              pkgs.vimPlugins.vim-startuptime
-              pkgs.vimPlugins.vim-wakatime
-              pkgs.vimPlugins.which-key-nvim
-              pkgs.vimPlugins.yanky-nvim
-              {
-                plugin = pkgs.vimPlugins.catppuccin-nvim;
-                name = "catppuccin";
-              }
-            ];
+          optionalPlugins =
+            let
+              latexGrammarOverride = pkgs.tree-sitter-grammars.tree-sitter-latex.overrideAttrs (old: {
+                src = pkgs.fetchFromGitHub {
+                  owner = "latex-lsp";
+                  repo = "tree-sitter-latex";
+                  rev = "7af2bf3addcab5ada8843cf08b857daf1799dbd4";
+                  hash = "sha256-B+cGBTZb7zMoTj1oysPmMp/W62DII0AYFDOwtJYlC3k=";
+                };
+              });
 
-            c = [
-              pkgs.vimPlugins.cmake-tools-nvim
-              pkgs.vimPlugins.clangd_extensions-nvim
-            ];
+              swiftGrammarOverride = pkgs.tree-sitter.buildGrammar {
+                language = "swift";
+                version = "0.0.0+rev=78d84ef";
+                src = pkgs.fetchFromGitHub {
+                  owner = "alex-pinkus";
+                  repo = "tree-sitter-swift";
+                  rev = "78d84ef82c387fceeb6094038da28717ea052e39";
+                  hash = "sha256-ApR65kRt1j1K5yngBEH1SxDDXzZaUF4gqVieducvkHU=";
+                };
+                generate = true;
+              };
 
-            csharp = [
-              pkgs.vimPlugins.neotest-dotnet
-              pkgs.vimPlugins.omnisharp-extended-lsp-nvim
-            ];
+              testGrammarOverride = pkgs.tree-sitter.buildGrammar {
+                language = "test";
+                version = "0.0.0+rev=HEAD";
+                src = pkgs.fetchFromGitHub {
+                  owner = "tree-sitter-grammars";
+                  repo = "tree-sitter-test";
+                  rev = "76b419f178da018c29d3004fcbf14f755649eb58";
+                  hash = "sha256-A1h9HwojG06gTMRNxXQlJghBb7fc12q0/cLcpfAemJY=";
+                };
+                generate = true;
+              };
+            in
+            {
+              general = [
+                pkgs.vimPlugins.blink-cmp
+                pkgs.vimPlugins.blink-cmp-npm-nvim
+                pkgs.vimPlugins.bufferline-nvim
+                pkgs.vimPlugins.codesnap-nvim
+                pkgs.vimPlugins.comment-box-nvim
+                pkgs.vimPlugins.conform-nvim
+                pkgs.vimPlugins.copilot-lua
+                pkgs.vimPlugins.dial-nvim
+                pkgs.vimPlugins.dropbar-nvim
+                pkgs.vimPlugins.edgy-nvim
+                pkgs.vimPlugins.flash-nvim
+                pkgs.vimPlugins.flatten-nvim
+                pkgs.vimPlugins.friendly-snippets
+                pkgs.vimPlugins.git-blame-nvim
+                pkgs.vimPlugins.git-conflict-nvim
+                pkgs.vimPlugins.gitlinker-nvim
+                pkgs.vimPlugins.gitsigns-nvim
+                pkgs.vimPlugins.godbolt-nvim
+                pkgs.vimPlugins.grug-far-nvim
+                pkgs.vimPlugins.inc-rename-nvim
+                pkgs.vimPlugins.lazydev-nvim
+                pkgs.vimPlugins.LazyVim
+                pkgs.vimPlugins.lualine-nvim
+                pkgs.vimPlugins.markdown-preview-nvim
+                pkgs.vimPlugins.mini-ai
+                pkgs.vimPlugins.mini-files
+                pkgs.vimPlugins.mini-hipatterns
+                pkgs.vimPlugins.mini-icons
+                pkgs.vimPlugins.mini-pairs
+                pkgs.vimPlugins.mini-surround
+                pkgs.vimPlugins.neo-tree-nvim
+                pkgs.vimPlugins.noice-nvim
+                pkgs.vimPlugins.nui-nvim
+                pkgs.vimPlugins.numb-nvim
+                pkgs.vimPlugins.nvim-autopairs
+                pkgs.vimPlugins.nvim-lint
+                pkgs.vimPlugins.nvim-lspconfig
+                pkgs.vimPlugins.nvim-treesitter-context
+                pkgs.vimPlugins.nvim-treesitter-textobjects
+                (pkgs.vimPlugins.nvim-treesitter.withPlugins (
+                  p:
+                  pkgs.vimPlugins.nvim-treesitter.allGrammars
+                  ++ [
+                    latexGrammarOverride
+                    swiftGrammarOverride
+                    testGrammarOverride
+                  ]
+                ))
+                pkgs.vimPlugins.nvim-ts-autotag
+                pkgs.vimPlugins.nvim-web-devicons
+                pkgs.vimPlugins.nvim_context_vt
+                pkgs.vimPlugins.octo-nvim
+                pkgs.vimPlugins.persistence-nvim
+                pkgs.vimPlugins.plenary-nvim
+                pkgs.vimPlugins.playground
+                pkgs.vimPlugins.render-markdown-nvim
+                pkgs.vimPlugins.SchemaStore-nvim
+                pkgs.vimPlugins.snacks-nvim
+                pkgs.vimPlugins.todo-comments-nvim
+                pkgs.vimPlugins.toggleterm-nvim
+                pkgs.vimPlugins.tokyonight-nvim
+                pkgs.vimPlugins.treesj
+                pkgs.vimPlugins.ts-comments-nvim
+                pkgs.vimPlugins.trouble-nvim
+                pkgs.vimPlugins.vim-illuminate
+                pkgs.vimPlugins.vim-startuptime
+                pkgs.vimPlugins.vim-wakatime
+                pkgs.vimPlugins.which-key-nvim
+                pkgs.vimPlugins.yanky-nvim
+                {
+                  plugin = pkgs.vimPlugins.catppuccin-nvim;
+                  name = "catppuccin";
+                }
+              ];
 
-            elixir = [
-              pkgs.vimPlugins.neotest-elixir
-            ];
+              c = [
+                pkgs.vimPlugins.cmake-tools-nvim
+                pkgs.vimPlugins.clangd_extensions-nvim
+              ];
 
-            go = [
-              pkgs.vimPlugins.neotest-golang
-            ];
+              csharp = [
+                pkgs.vimPlugins.neotest-dotnet
+                pkgs.vimPlugins.omnisharp-extended-lsp-nvim
+              ];
 
-            java = [
-              pkgs.vimPlugins.nvim-jdtls
-            ];
+              elixir = [
+                pkgs.vimPlugins.neotest-elixir
+              ];
 
-            neotest = [
-              pkgs.vimPlugins.nvim-nio
-              pkgs.vimPlugins.neotest
-            ];
+              go = [
+                pkgs.vimPlugins.neotest-golang
+              ];
 
-            python = [
-              pkgs.vimPlugins.neotest-python
-            ];
+              java = [
+                pkgs.vimPlugins.nvim-jdtls
+              ];
 
-            rust = [
-              pkgs.vimPlugins.crates-nvim
-              pkgs.vimPlugins.rustaceanvim
-            ];
+              neotest = [
+                pkgs.vimPlugins.nvim-nio
+                pkgs.vimPlugins.neotest
+              ];
 
-            typescript = [
-              pkgs.vimPlugins.package-info-nvim
-            ];
+              python = [
+                pkgs.vimPlugins.neotest-python
+              ];
 
-            zig = [
-              pkgs.vimPlugins.neotest-zig
-            ];
-          };
+              rust = [
+                pkgs.vimPlugins.crates-nvim
+                pkgs.vimPlugins.rustaceanvim
+              ];
+
+              typescript = [
+                pkgs.vimPlugins.package-info-nvim
+              ];
+
+              zig = [
+                pkgs.vimPlugins.neotest-zig
+              ];
+            };
         };
 
       packageDefinitions =
