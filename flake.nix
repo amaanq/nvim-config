@@ -19,6 +19,43 @@
       extra_pkg_config = { };
       dependencyOverlays = [
         (utils.standardPluginOverlay inputs)
+        (
+          final: prev:
+          let
+            latexGrammarOverride = prev.tree-sitter-grammars.tree-sitter-latex.overrideAttrs (old: {
+              src = prev.fetchFromGitHub {
+                owner = "latex-lsp";
+                repo = "tree-sitter-latex";
+                rev = "7af2bf3addcab5ada8843cf08b857daf1799dbd4";
+                hash = "sha256-B+cGBTZb7zMoTj1oysPmMp/W62DII0AYFDOwtJYlC3k=";
+              };
+            });
+
+            swiftGrammarOverride = prev.tree-sitter.buildGrammar {
+              language = "swift";
+              version = "0.0.0+rev=78d84ef";
+              src = prev.fetchFromGitHub {
+                owner = "alex-pinkus";
+                repo = "tree-sitter-swift";
+                rev = "78d84ef82c387fceeb6094038da28717ea052e39";
+                hash = "sha256-ApR65kRt1j1K5yngBEH1SxDDXzZaUF4gqVieducvkHU=";
+              };
+              generate = true;
+            };
+          in
+          {
+            vimPlugins = prev.vimPlugins // {
+              nvim-treesitter = prev.vimPlugins.nvim-treesitter.overrideAttrs (old: {
+                passthru = old.passthru // {
+                  builtGrammars = old.passthru.builtGrammars // {
+                    latex = latexGrammarOverride;
+                    swift = swiftGrammarOverride;
+                  };
+                };
+              });
+            };
+          }
+        )
       ];
 
       categoryDefinitions =
@@ -148,7 +185,7 @@
                 generate = true;
               };
 
-              testGrammarOverride = pkgs.tree-sitter.buildGrammar {
+              testGrammar = pkgs.tree-sitter.buildGrammar {
                 language = "test";
                 version = "0.0.0+rev=HEAD";
                 src = pkgs.fetchFromGitHub {
@@ -202,13 +239,7 @@
                 pkgs.vimPlugins.nvim-treesitter-context
                 pkgs.vimPlugins.nvim-treesitter-textobjects
                 (pkgs.vimPlugins.nvim-treesitter.withPlugins (
-                  p:
-                  pkgs.vimPlugins.nvim-treesitter.allGrammars
-                  ++ [
-                    latexGrammarOverride
-                    swiftGrammarOverride
-                    testGrammarOverride
-                  ]
+                  p: pkgs.vimPlugins.nvim-treesitter.allGrammars ++ [ testGrammar ]
                 ))
                 pkgs.vimPlugins.nvim-ts-autotag
                 pkgs.vimPlugins.nvim-web-devicons
