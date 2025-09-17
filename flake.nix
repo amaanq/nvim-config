@@ -220,7 +220,7 @@
                 pkgs.vimPlugins.grug-far-nvim
                 pkgs.vimPlugins.inc-rename-nvim
                 pkgs.vimPlugins.lazydev-nvim
-                pkgs.vimPlugins.LazyVim
+                # pkgs.vimPlugins.LazyVim
                 pkgs.vimPlugins.lualine-nvim
                 pkgs.vimPlugins.markdown-preview-nvim
                 pkgs.vimPlugins.mini-ai
