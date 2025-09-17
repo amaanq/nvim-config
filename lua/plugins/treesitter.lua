@@ -36,10 +36,6 @@ return {
     "nvim-treesitter/nvim-treesitter",
     --- @type TSConfig
     opts = function(_, opts)
-      opts.ensure_installed = require("nixCatsUtils").lazyAdd(
-        { "bash", "c", "diff", "html", "lua", "luadoc", "markdown", "vim", "vimdoc" },
-        false
-      )
       opts.auto_install = require("nixCatsUtils").lazyAdd(true, false)
 
       opts.playground = {
