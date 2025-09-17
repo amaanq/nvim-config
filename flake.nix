@@ -19,43 +19,43 @@
       extra_pkg_config = { };
       dependencyOverlays = [
         (utils.standardPluginOverlay inputs)
-        (
-          final: prev:
-          let
-            latexGrammarOverride = prev.tree-sitter-grammars.tree-sitter-latex.overrideAttrs (old: {
-              src = prev.fetchFromGitHub {
-                owner = "latex-lsp";
-                repo = "tree-sitter-latex";
-                rev = "7af2bf3addcab5ada8843cf08b857daf1799dbd4";
-                hash = "sha256-B+cGBTZb7zMoTj1oysPmMp/W62DII0AYFDOwtJYlC3k=";
-              };
-            });
-
-            swiftGrammarOverride = prev.tree-sitter.buildGrammar {
-              language = "swift";
-              version = "0.0.0+rev=78d84ef";
-              src = prev.fetchFromGitHub {
-                owner = "alex-pinkus";
-                repo = "tree-sitter-swift";
-                rev = "78d84ef82c387fceeb6094038da28717ea052e39";
-                hash = "sha256-ApR65kRt1j1K5yngBEH1SxDDXzZaUF4gqVieducvkHU=";
-              };
-              generate = true;
-            };
-          in
-          {
-            vimPlugins = prev.vimPlugins // {
-              nvim-treesitter = prev.vimPlugins.nvim-treesitter.overrideAttrs (old: {
-                passthru = old.passthru // {
-                  builtGrammars = old.passthru.builtGrammars // {
-                    latex = latexGrammarOverride;
-                    swift = swiftGrammarOverride;
-                  };
-                };
-              });
-            };
-          }
-        )
+        # (
+        #   final: prev:
+        #   let
+        #     latexGrammarOverride = prev.tree-sitter-grammars.tree-sitter-latex.overrideAttrs (old: {
+        #       src = prev.fetchFromGitHub {
+        #         owner = "latex-lsp";
+        #         repo = "tree-sitter-latex";
+        #         rev = "7af2bf3addcab5ada8843cf08b857daf1799dbd4";
+        #         hash = "sha256-B+cGBTZb7zMoTj1oysPmMp/W62DII0AYFDOwtJYlC3k=";
+        #       };
+        #     });
+        #
+        #     swiftGrammarOverride = prev.tree-sitter.buildGrammar {
+        #       language = "swift";
+        #       version = "0.0.0+rev=78d84ef";
+        #       src = prev.fetchFromGitHub {
+        #         owner = "alex-pinkus";
+        #         repo = "tree-sitter-swift";
+        #         rev = "78d84ef82c387fceeb6094038da28717ea052e39";
+        #         hash = "sha256-ApR65kRt1j1K5yngBEH1SxDDXzZaUF4gqVieducvkHU=";
+        #       };
+        #       generate = true;
+        #     };
+        #   in
+        #   {
+        #     vimPlugins = prev.vimPlugins // {
+        #       nvim-treesitter = prev.vimPlugins.nvim-treesitter.overrideAttrs (old: {
+        #         passthru = old.passthru // {
+        #           builtGrammars = old.passthru.builtGrammars // {
+        #             latex = latexGrammarOverride;
+        #             swift = swiftGrammarOverride;
+        #           };
+        #         };
+        #       });
+        #     };
+        #   }
+        # )
       ];
 
       categoryDefinitions =
@@ -163,40 +163,40 @@
           };
 
           optionalPlugins =
-            let
-              latexGrammarOverride = pkgs.tree-sitter-grammars.tree-sitter-latex.overrideAttrs (old: {
-                src = pkgs.fetchFromGitHub {
-                  owner = "latex-lsp";
-                  repo = "tree-sitter-latex";
-                  rev = "7af2bf3addcab5ada8843cf08b857daf1799dbd4";
-                  hash = "sha256-B+cGBTZb7zMoTj1oysPmMp/W62DII0AYFDOwtJYlC3k=";
-                };
-              });
-
-              swiftGrammarOverride = pkgs.tree-sitter.buildGrammar {
-                language = "swift";
-                version = "0.0.0+rev=78d84ef";
-                src = pkgs.fetchFromGitHub {
-                  owner = "alex-pinkus";
-                  repo = "tree-sitter-swift";
-                  rev = "78d84ef82c387fceeb6094038da28717ea052e39";
-                  hash = "sha256-ApR65kRt1j1K5yngBEH1SxDDXzZaUF4gqVieducvkHU=";
-                };
-                generate = true;
-              };
-
-              testGrammar = pkgs.tree-sitter.buildGrammar {
-                language = "test";
-                version = "0.0.0+rev=HEAD";
-                src = pkgs.fetchFromGitHub {
-                  owner = "tree-sitter-grammars";
-                  repo = "tree-sitter-test";
-                  rev = "76b419f178da018c29d3004fcbf14f755649eb58";
-                  hash = "sha256-A1h9HwojG06gTMRNxXQlJghBb7fc12q0/cLcpfAemJY=";
-                };
-                generate = true;
-              };
-            in
+            # let
+            #   latexGrammarOverride = pkgs.tree-sitter-grammars.tree-sitter-latex.overrideAttrs (old: {
+            #     src = pkgs.fetchFromGitHub {
+            #       owner = "latex-lsp";
+            #       repo = "tree-sitter-latex";
+            #       rev = "7af2bf3addcab5ada8843cf08b857daf1799dbd4";
+            #       hash = "sha256-B+cGBTZb7zMoTj1oysPmMp/W62DII0AYFDOwtJYlC3k=";
+            #     };
+            #   });
+            #
+            #   swiftGrammarOverride = pkgs.tree-sitter.buildGrammar {
+            #     language = "swift";
+            #     version = "0.0.0+rev=78d84ef";
+            #     src = pkgs.fetchFromGitHub {
+            #       owner = "alex-pinkus";
+            #       repo = "tree-sitter-swift";
+            #       rev = "78d84ef82c387fceeb6094038da28717ea052e39";
+            #       hash = "sha256-ApR65kRt1j1K5yngBEH1SxDDXzZaUF4gqVieducvkHU=";
+            #     };
+            #     generate = true;
+            #   };
+            #
+            #   testGrammar = pkgs.tree-sitter.buildGrammar {
+            #     language = "test";
+            #     version = "0.0.0+rev=HEAD";
+            #     src = pkgs.fetchFromGitHub {
+            #       owner = "tree-sitter-grammars";
+            #       repo = "tree-sitter-test";
+            #       rev = "76b419f178da018c29d3004fcbf14f755649eb58";
+            #       hash = "sha256-A1h9HwojG06gTMRNxXQlJghBb7fc12q0/cLcpfAemJY=";
+            #     };
+            #     generate = true;
+            #   };
+            # in
             {
               general = [
                 pkgs.vimPlugins.blink-cmp
@@ -236,11 +236,11 @@
                 pkgs.vimPlugins.nvim-autopairs
                 pkgs.vimPlugins.nvim-lint
                 pkgs.vimPlugins.nvim-lspconfig
-                pkgs.vimPlugins.nvim-treesitter-context
-                pkgs.vimPlugins.nvim-treesitter-textobjects
-                (pkgs.vimPlugins.nvim-treesitter.withPlugins (
-                  p: pkgs.vimPlugins.nvim-treesitter.allGrammars ++ [ testGrammar ]
-                ))
+                # pkgs.vimPlugins.nvim-treesitter-context
+                # pkgs.vimPlugins.nvim-treesitter-textobjects
+                # (pkgs.vimPlugins.nvim-treesitter.withPlugins (
+                #   p: pkgs.vimPlugins.nvim-treesitter.allGrammars ++ [ testGrammar ]
+                # ))
                 pkgs.vimPlugins.nvim-ts-autotag
                 pkgs.vimPlugins.nvim-web-devicons
                 pkgs.vimPlugins.nvim_context_vt
@@ -347,6 +347,7 @@
                 suffix-path = true;
                 suffix-LD = true;
                 wrapRc = true;
+                autoPluginDeps = false;
                 aliases = [
                   "nv"
                   "vi"
@@ -363,6 +364,7 @@
                 suffix-path = true;
                 suffix-LD = true;
                 wrapRc = true;
+                autoPluginDeps = false;
                 aliases = [
                   "nv"
                   "vi"
