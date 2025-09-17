@@ -38,7 +38,7 @@ return {
   },
 
   {
-    "echasnovski/mini.pairs",
+    "nvim-mini/mini.pairs",
     enabled = false,
     opts = {
       modes = { command = false },
