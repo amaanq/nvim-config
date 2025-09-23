@@ -55,7 +55,6 @@
               pkgs.ghostscript
               pkgs.libxml2 # xmllint
               pkgs.mermaid-cli
-              pkgs.tectonic
               pkgs.vscode-langservers-extracted
             ];
 
