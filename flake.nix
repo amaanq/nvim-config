@@ -29,6 +29,7 @@
               pkgs.curlHTTP3
               pkgs.fd
               pkgs.ripgrep
+              pkgs.copilot-language-server
             ];
 
             c = [
@@ -328,8 +329,14 @@
             nixpkgs
             system
             dependencyOverlays
-            extra_pkg_config
             ;
+          extra_pkg_config = {
+            allowUnfreePredicate =
+              pkg:
+              builtins.elem (nixpkgs.lib.getName pkg) [
+                "copilot-language-server"
+              ];
+          };
         } categoryDefinitions packageDefinitions;
         defaultPackage = nixCatsBuilder defaultPackageName;
         pkgs = import nixpkgs { inherit system; };
