@@ -111,6 +111,7 @@ vim.filetype.add({
     [".*.h.inc"] = "c",
   },
 })
+vim.treesitter.language.register("fasm", { "asm" })
 
 -- close dap-float with <q>
 vim.api.nvim_create_autocmd("FileType", {
@@ -160,5 +161,28 @@ vim.api.nvim_create_autocmd("BufRead", {
     if size > 500000 then
       -- vim.treesitter.stop()
     end
+  end,
+})
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "TSUpdate",
+  callback = function()
+    local parsers = require("nvim-treesitter.parsers")
+    ---@diagnostic disable-next-line: missing-fields
+    parsers.test = {
+      ---@diagnostic disable-next-line: missing-fields
+      install_info = {
+        url = "https://github.com/tree-sitter-grammars/tree-sitter-test",
+        revision = "76b419f178da018c29d3004fcbf14f755649eb58",
+      },
+    }
+    ---@diagnostic disable-next-line: missing-fields
+    parsers.fasm = {
+      ---@diagnostic disable-next-line: missing-fields
+      install_info = {
+        path = "~/projects/treesitter/tree-sitter-fasm",
+        queries = "queries",
+      },
+    }
   end,
 })
