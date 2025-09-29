@@ -181,7 +181,7 @@
               pkgs.vimPlugins.snacks-nvim
               pkgs.vimPlugins.todo-comments-nvim
               pkgs.vimPlugins.toggleterm-nvim
-              pkgs.vimPlugins.tokyonight-nvim
+              # pkgs.vimPlugins.tokyonight-nvim
               pkgs.vimPlugins.treesj
               pkgs.vimPlugins.ts-comments-nvim
               pkgs.vimPlugins.trouble-nvim

@@ -6,7 +6,7 @@
   "mason.nvim": { "branch": "main", "commit": "fc98833b6da5de5a9c5b1446ac541577059555be" },
   "mini.pairs": { "branch": "main", "commit": "1a3e73649c0eaef2f6c48ce1e761c6f0a7c11918" },
   "nvim-regexplainer": { "branch": "main", "commit": "b7ab2e383ec8859bb8364872d517bfef8872b12c" },
-  "sidekick.nvim": { "branch": "main", "commit": "242b2bd216191c151d24f665cc8f596cb63288ea" },
+  "sidekick.nvim": { "branch": "main", "commit": "20273e7010cd18418b773d904b0e9fd68221f3c0" },
   "venv-selector.nvim": { "branch": "main", "commit": "2b49d1f8b8fcf5cfbd0913136f48f118225cca5d" },
   "vim-matchup": { "branch": "master", "commit": "ea2ff43e09e68b63fc6d9268fc5d82d82d433cb3" }
 }
