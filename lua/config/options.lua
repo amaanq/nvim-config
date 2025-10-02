@@ -135,7 +135,9 @@ vim.g.rustaceanvim = {
           targetDir = true,
         },
         -- Add clippy lints for Rust if using rust-analyzer
-        checkOnSave = diagnostics == "rust-analyzer",
+        checkOnSave = {
+          command = "clippy",
+        },
         -- Enable diagnostics if using rust-analyzer
         diagnostics = {
           enable = diagnostics == "rust-analyzer",
