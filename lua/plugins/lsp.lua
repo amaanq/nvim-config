@@ -220,19 +220,4 @@ return {
       },
     },
   },
-
-  {
-    "zeioth/garbage-day.nvim",
-    dependencies = "neovim/nvim-lspconfig",
-    event = "VeryLazy",
-    opts = {
-      excluded_lsp_clients = {
-        "null-ls",
-        "jdtls",
-        "copilot",
-        "rust-analyzer",
-        "clangd",
-      },
-    },
-  },
 }

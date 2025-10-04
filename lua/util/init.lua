@@ -34,13 +34,6 @@ function M.exists(fname)
   return (stat and stat.type) or false
 end
 
----@param is_file? boolean
-function M.test(is_file)
-  local file = is_file and vim.fn.expand("%:p") or "./tests"
-  local init = vim.fn.glob("tests/*init*")
-  require("plenary.test_harness").test_directory(file, { minimal_init = init, sequential = true })
-end
-
 function M.version()
   local v = vim.version() ---@type table
   if v and not v.prerelease then

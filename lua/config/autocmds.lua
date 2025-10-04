@@ -113,38 +113,6 @@ vim.filetype.add({
 })
 vim.treesitter.language.register("fasm", { "asm" })
 
--- close dap-float with <q>
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = {
-    "dap-float",
-    "httpResult",
-  },
-  callback = function(event)
-    vim.bo[event.buf].buflisted = false
-    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true, desc = "Close Window" })
-  end,
-})
-
--- close dap-terminal with <q>
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = {
-    "dap-terminal",
-  },
-  callback = function(event)
-    vim.keymap.set("n", "q", "<cmd>bdelete!<cr>", { buffer = event.buf, silent = true, desc = "Close Dap Terminal" })
-  end,
-})
-
--- vim.api.nvim_create_autocmd("FileType", {
---   callback = function()
---     local lang = vim.treesitter.language.get_lang(vim.bo.filetype)
---     if lang and pcall(vim.treesitter.language.add, lang) then
---       -- vim.treesitter.start()  -- sync
---       vim.treesitter.start(nil, nil, { timeout = 1 }) -- async
---     end
---   end,
--- })
-
 -- Disable diagnostics in a .env file
 vim.api.nvim_create_autocmd("BufRead", {
   pattern = ".env",

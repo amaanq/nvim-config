@@ -9,8 +9,4 @@ return {
     enabled = require("nixCatsUtils").lazyAdd(true, false),
     version = "1.32.0",
   },
-  {
-    "jay-babu/mason-nvim-dap.nvim",
-    enabled = require("nixCatsUtils").lazyAdd(true, false),
-  },
 }
