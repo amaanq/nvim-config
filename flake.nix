@@ -26,7 +26,7 @@
         {
           lspsAndRuntimeDeps = {
             general = [
-              pkgs.curlHTTP3
+              pkgs.curl
               pkgs.fd
               pkgs.ripgrep
               pkgs.copilot-language-server
