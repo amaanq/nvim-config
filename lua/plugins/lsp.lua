@@ -73,13 +73,14 @@ return {
             basedpyright = {
               analysis = {
                 diagnosticSeverityOverrides = {
-                  reportWildcardImportFromLibrary = "none",
+                  reportMissingTypeStubs = "none",
                   reportUnusedImport = "information",
                   reportUnusedClass = "information",
                   reportUnusedFunction = "information",
                   reportOptionalMemberAccess = "none",
                   reportUnknownVariableType = "none",
                   reportUnusedCallResult = "none",
+                  reportWildcardImportFromLibrary = "none",
                 },
               },
               disableTaggedHints = true,
