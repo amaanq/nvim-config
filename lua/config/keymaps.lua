@@ -13,11 +13,11 @@ vim.keymap.set("n", "<right>", "<C-w>l")
 -- change word with <c-c>
 vim.keymap.set("n", "<C-c>", "<cmd>normal! ciw<cr>a")
 
--- htop
-if vim.fn.executable("htop") == 1 then
+-- btop
+if vim.n.executable("btop") == 1 then
   vim.keymap.set("n", "<leader>xh", function()
-    require("lazyvim.util").float_term({ "htop" })
-  end, { desc = "htop" })
+    Snacks.terminal.get("btop")
+  end, { desc = "btop" })
 end
 
 local function do_open(uri)
