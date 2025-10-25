@@ -14,7 +14,7 @@ vim.keymap.set("n", "<right>", "<C-w>l")
 vim.keymap.set("n", "<C-c>", "<cmd>normal! ciw<cr>a")
 
 -- btop
-if vim.n.executable("btop") == 1 then
+if vim.fn.executable("btop") == 1 then
   vim.keymap.set("n", "<leader>xh", function()
     Snacks.terminal.get("btop")
   end, { desc = "btop" })
