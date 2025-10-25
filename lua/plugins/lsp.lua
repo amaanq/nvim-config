@@ -13,29 +13,6 @@ return {
   -- lsp servers
   {
     "neovim/nvim-lspconfig",
-    init = function()
-      local keys = require("lazyvim.plugins.lsp.keymaps").get()
-
-      -- move cl to cli
-      keys[#keys + 1] = { "<leader>cl", false }
-      keys[#keys + 1] = { "<leader>cli", "<cmd>LspInfo<cr>", desc = "LspInfo" }
-
-      -- add more lsp keymaps
-      keys[#keys + 1] = { "<leader>cla", vim.lsp.buf.add_workspace_folder, desc = "Add Folder" }
-      keys[#keys + 1] = { "<leader>clr", vim.lsp.buf.remove_workspace_folder, desc = "Remove Folder" }
-      keys[#keys + 1] = {
-        "<leader>cll",
-        "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<cr>",
-        desc = "List Folders",
-      }
-      keys[#keys + 1] = { "<leader>clh", vim.lsp.codelens.run, desc = "Run Code Lens" }
-      keys[#keys + 1] = { "<leader>cld", vim.lsp.codelens.refresh, desc = "Refresh Code Lens" }
-      keys[#keys + 1] = { "<leader>cls", "<cmd>LspRestart<cr>", desc = "Restart Lsp" }
-
-      require("which-key").add({
-        { "<leader>cl", group = "lsp" },
-      })
-    end,
     opts = {
       capabilities = {
         workspace = {
@@ -66,6 +43,24 @@ return {
         -- end,
       },
       servers = {
+        ["*"] = {
+          keys = {
+            -- disable default <leader>cl
+            { "<leader>cl", false },
+            -- add your custom keymaps
+            { "<leader>cli", "<cmd>LspInfo<cr>", desc = "LspInfo" },
+            { "<leader>cla", vim.lsp.buf.add_workspace_folder, desc = "Add Folder" },
+            { "<leader>clr", vim.lsp.buf.remove_workspace_folder, desc = "Remove Folder" },
+            {
+              "<leader>cll",
+              "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<cr>",
+              desc = "List Folders",
+            },
+            { "<leader>clh", vim.lsp.codelens.run, desc = "Run Code Lens" },
+            { "<leader>cld", vim.lsp.codelens.refresh, desc = "Refresh Code Lens" },
+            { "<leader>cls", "<cmd>LspRestart<cr>", desc = "Restart Lsp" },
+          },
+        },
         cssls = {},
         html = {},
         basedpyright = {
