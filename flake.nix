@@ -145,7 +145,7 @@
               pkgs.vimPlugins.octo-nvim
               pkgs.vimPlugins.persistence-nvim
               pkgs.vimPlugins.SchemaStore-nvim
-              pkgs.vimPlugins.snacks-nvim
+              # pkgs.vimPlugins.snacks-nvim
               pkgs.vimPlugins.toggleterm-nvim
               # pkgs.vimPlugins.tokyonight-nvim
               pkgs.vimPlugins.treesj
