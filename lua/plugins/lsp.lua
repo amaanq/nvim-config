@@ -14,13 +14,6 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = {
-      capabilities = {
-        workspace = {
-          didChangeWatchedFiles = {
-            dynamicRegistration = false,
-          },
-        },
-      },
       codelens = {
         enabled = true,
       },
@@ -44,6 +37,13 @@ return {
       },
       servers = {
         ["*"] = {
+          capabilities = {
+            workspace = {
+              didChangeWatchedFiles = {
+                dynamicRegistration = false,
+              },
+            },
+          },
           keys = {
             -- disable default <leader>cl
             { "<leader>cl", false },
