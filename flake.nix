@@ -183,7 +183,7 @@
             markdown = true;
             nix = true;
             python = true;
-            qml = true;
+            # qml = true;
             rust = true;
             svelte = true;
             typescript = true;
