@@ -1,7 +1,6 @@
 return {
   {
     "tokyonight.nvim",
-    commit = "c8ea87cd34b0267c44a67e90ff8f6e7d6af46ff9",
     opts = function(_, _opts)
       return {
         style = "moon",
