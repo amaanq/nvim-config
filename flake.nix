@@ -142,7 +142,6 @@
               #   p: pkgs.vimPlugins.nvim-treesitter.allGrammars ++ [ testGrammar ]
               # ))
               pkgs.vimPlugins.nvim-ts-autotag
-              pkgs.vimPlugins.octo-nvim
               pkgs.vimPlugins.persistence-nvim
               pkgs.vimPlugins.SchemaStore-nvim
               # pkgs.vimPlugins.snacks-nvim
