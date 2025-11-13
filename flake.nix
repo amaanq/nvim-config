@@ -65,22 +65,42 @@
               pkgs.marksman
             ];
 
-            nix = [
-              pkgs.nixd
-              pkgs.nixfmt-rfc-style
-              (pkgs.statix.overrideAttrs (_o: rec {
-                src = pkgs.fetchFromGitHub {
-                  owner = "oppiliappan";
-                  repo = "statix";
-                  rev = "43681f0da4bf1cc6ecd487ef0a5c6ad72e3397c7";
-                  hash = "sha256-LXvbkO/H+xscQsyHIo/QbNPw2EKqheuNjphdLfIZUv4=";
-                };
-                cargoDeps = pkgs.rustPlatform.importCargoLock {
-                  lockFile = src + "/Cargo.lock";
-                  allowBuiltinFetchGit = true;
-                };
-              }))
-            ];
+            nix =
+              let
+                statixLatest = pkgs.statix.overrideAttrs (
+                  _o:
+                  let
+                    src = pkgs.fetchFromGitHub {
+                      owner = "oppiliappan";
+                      repo = "statix";
+                      rev = "43681f0da4bf1cc6ecd487ef0a5c6ad72e3397c7";
+                      hash = "sha256-LXvbkO/H+xscQsyHIo/QbNPw2EKqheuNjphdLfIZUv4=";
+                    };
+                  in
+                  {
+                    inherit src;
+                    cargoDeps = pkgs.rustPlatform.importCargoLock {
+                      lockFile = src + "/Cargo.lock";
+                      allowBuiltinFetchGit = true;
+                    };
+                  }
+                );
+
+                statixConfig = pkgs.writeText "statix.toml" ''disabled = ["repeated_keys"]'';
+
+                statixWrapped = pkgs.writeShellScriptBin "statix" ''
+                  if [ "$1" = "check" ]; then
+                    exec ${statixLatest}/bin/statix check --config ${statixConfig} "''${@:2}"
+                  else
+                    exec ${statixLatest}/bin/statix "$@"
+                  fi
+                '';
+              in
+              [
+                pkgs.nixd
+                pkgs.nixfmt-rfc-style
+                statixWrapped
+              ];
 
             python = [
               pkgs.basedpyright
