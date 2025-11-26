@@ -53,6 +53,15 @@
               pkgs.gotools
             ];
 
+            java = [
+              pkgs.jdt-language-server
+            ];
+
+            kotlin = [
+              pkgs.kotlin-language-server
+              pkgs.ktlint
+            ];
+
             lua = [
               pkgs.lua-language-server
               pkgs.luajitPackages.luacheck
@@ -210,6 +219,8 @@
             dot = true;
             extra = true;
             go = true;
+            java = true;
+            kotlin = true;
             lua = true;
             markdown = true;
             nix = true;
