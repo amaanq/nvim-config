@@ -15,12 +15,12 @@ end
 vim.print = _G.dd
 
 if vim.env.PROF then
-  vim.opt.rtp:append("/home/amaanq/projects/snacks.nvim/")
+  vim.opt.rtp:append("/home/amaanq/projects/neovim/snacks.nvim/")
   require("snacks.profiler").startup({
     startup = {
       event = "UIEnter",
     },
-    runtime = "~/projects/neovim/runtime",
+    runtime = "~/projects/neovim/neovim/runtime",
   })
 end
 
