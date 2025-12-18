@@ -338,53 +338,31 @@ return {
       persist_mode = false,
       auto_scroll = false,
     },
-    keys = {
-      {
-        "<leader>1",
-        function()
-          require("toggleterm").toggle(1, 0, Util.root.get(), "float")
-        end,
-        desc = "Terminal 1",
-      },
-      {
-        "<leader>2",
-        function()
-          require("toggleterm").toggle(2, 0, Util.root.get(), "float")
-        end,
-        desc = "Terminal 2",
-      },
-      {
-        "<leader>3",
-        function()
-          require("toggleterm").toggle(3, 0, Util.root.get(), "float")
-        end,
-        desc = "Terminal 3",
-      },
-      {
-        "<leader>4",
-        function()
-          require("toggleterm").toggle(4, 0, Util.root.get(), "float")
-        end,
-        desc = "Terminal 4",
-      },
-      {
-        "<leader>5",
-        function()
-          require("toggleterm").toggle(5, 0, Util.root.get(), "float")
-        end,
-        desc = "Terminal 5",
-      },
-      {
-        "<leader>Tn",
-        "<cmd>ToggleTermSetName<cr>",
-        desc = "Set Terminal Name",
-      },
-      {
-        "<leader>Ts",
-        "<cmd>TermSelect<cr>",
-        desc = "Select Terminal",
-      },
-    },
+    keys = (function()
+      local keys = {
+        {
+          "<leader>Tn",
+          "<cmd>ToggleTermSetName<cr>",
+          desc = "Set Terminal Name",
+        },
+        {
+          "<leader>Ts",
+          "<cmd>TermSelect<cr>",
+          desc = "Select Terminal",
+        },
+      }
+      for i = 1, 10 do
+        local key = i == 10 and "0" or tostring(i)
+        table.insert(keys, {
+          "<leader>" .. key,
+          function()
+            require("toggleterm").toggle(i, 0, Util.root.get(), "float")
+          end,
+          desc = "Terminal " .. i,
+        })
+      end
+      return keys
+    end)(),
   },
 
   -- git blame
