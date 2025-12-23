@@ -330,6 +330,7 @@ return {
     "akinsho/toggleterm.nvim",
     init = function()
       vim.keymap.set("t", "<ESC>", "<C-\\><C-n>", { noremap = true, silent = true })
+      vim.keymap.set("t", "<C-]>", "\027", { noremap = true, silent = true }) -- send literal ESC
     end,
     ---@type ToggleTermConfig
     opts = {
