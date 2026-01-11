@@ -246,7 +246,7 @@
                   "nv"
                   "vi"
                 ];
-                neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.system}.neovim;
+                neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
               };
               categories = defaultCategories;
             };
@@ -263,7 +263,7 @@
                   "nv"
                   "vi"
                 ];
-                neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.system}.neovim;
+                neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
               };
               categories = {
                 general = true;
@@ -278,7 +278,7 @@
                 suffix-path = true;
                 suffix-LD = true;
                 wrapRc = false;
-                neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.system}.neovim;
+                neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
                 unwrappedCfgPath = utils.mkLuaInline "os.getenv('HOME') .. '/.config/nvim'";
               };
               categories = defaultCategories;
