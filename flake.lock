@@ -21,6 +21,26 @@
         "type": "github"
       }
     },
+    "kotlin-lsp": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1768762088,
+        "narHash": "sha256-Suy7r6BjaRtbmbMtnuR7xk3cv95PadphuvGnmbi7NbU=",
+        "owner": "amaanq",
+        "repo": "kotlin-lsp-nix",
+        "rev": "e39414b5318957e47cd94139e48c7b8ddb2f4d24",
+        "type": "github"
+      },
+      "original": {
+        "owner": "amaanq",
+        "repo": "kotlin-lsp-nix",
+        "type": "github"
+      }
+    },
     "neovim-nightly-overlay": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -106,6 +126,7 @@
     },
     "root": {
       "inputs": {
+        "kotlin-lsp": "kotlin-lsp",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nixCats": "nixCats",
         "nixpkgs": "nixpkgs_2"

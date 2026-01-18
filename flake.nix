@@ -8,6 +8,11 @@
     neovim-nightly-overlay = {
       url = "github:nix-community/neovim-nightly-overlay";
     };
+
+    kotlin-lsp = {
+      url = "github:amaanq/kotlin-lsp-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -58,7 +63,7 @@
             ];
 
             kotlin = [
-              pkgs.kotlin-language-server
+              inputs.kotlin-lsp.packages.${pkgs.stdenv.hostPlatform.system}.kotlin-lsp
               pkgs.ktlint
             ];
 
