@@ -107,7 +107,7 @@
               in
               [
                 pkgs.nixd
-                pkgs.nixfmt-rfc-style
+                pkgs.nixfmt
                 statixWrapped
               ];
 
@@ -315,7 +315,7 @@
             name = defaultPackageName;
             packages = [ defaultPackage ];
             inputsFrom = [ ];
-            shellHook = '''';
+            shellHook = "";
           };
         };
 
