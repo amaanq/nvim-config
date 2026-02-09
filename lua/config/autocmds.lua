@@ -113,6 +113,106 @@ vim.filetype.add({
 })
 vim.treesitter.language.register("fasm", { "asm" })
 
+-- Respond to OSC 4 (palette color queries) and OSC 10/11 (fg/bg queries)
+-- in :terminal so apps like OpenCode can detect the actual colorscheme.
+--
+-- Neovim's default TermRequest handler (in nvim.terminal augroup) returns
+-- white/black for OSC 10/11 and ignores OSC 4 entirely. We delete the
+-- default OSC handler and replace it with one that returns real colors.
+--
+-- NOTE: returning true from an autocmd callback *deletes the autocmd* (oneshot),
+-- it does NOT stop other callbacks from running. So we must never return true.
+do
+  -- Delete the default OSC 10/11 handler from nvim.terminal augroup so it
+  -- doesn't send wrong (white/black) responses before our handler runs.
+  local ok, aus = pcall(vim.api.nvim_get_autocmds, {
+    group = "nvim.terminal",
+    event = "TermRequest",
+  })
+  if ok then
+    for _, au in ipairs(aus) do
+      if au.desc and au.desc:match("OSC foreground/background") then
+        vim.api.nvim_del_autocmd(au.id)
+      end
+    end
+  end
+
+  local function hex_to_osc_rgb(hex)
+    if not hex then
+      return nil
+    end
+    local r, g, b = hex:match("^#(%x%x)(%x%x)(%x%x)$")
+    if not r then
+      return nil
+    end
+    -- Scale 8-bit (00-ff) to 16-bit (0000-ffff) by repeating: 0xAB -> 0xABAB
+    return string.format(
+      "rgb:%02x%02x/%02x%02x/%02x%02x",
+      tonumber(r, 16),
+      tonumber(r, 16),
+      tonumber(g, 16),
+      tonumber(g, 16),
+      tonumber(b, 16),
+      tonumber(b, 16)
+    )
+  end
+
+  -- Get the actual Normal highlight bg/fg colors from the colorscheme
+  local function get_hl_hex(group, attr)
+    local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+    local val = hl[attr]
+    if val then
+      return string.format("#%06x", val)
+    end
+    return nil
+  end
+
+  vim.api.nvim_create_autocmd("TermRequest", {
+    desc = "Handle OSC 4/10/11 color queries with actual colorscheme colors",
+    callback = function(args)
+      local channel = vim.bo[args.buf].channel
+      if channel == 0 then
+        return
+      end
+
+      local seq = args.data.sequence
+      local term = args.data.terminator
+
+      -- OSC 4;<index>;? — palette color query
+      local idx = seq:match("^\027%]4;(%d+);%?$")
+      if idx then
+        idx = tonumber(idx)
+        if idx and idx >= 0 and idx <= 15 then
+          local color = vim.g["terminal_color_" .. idx]
+          local rgb = hex_to_osc_rgb(color)
+          if rgb then
+            vim.api.nvim_chan_send(channel, string.format("\027]4;%d;%s%s", idx, rgb, term))
+          end
+        end
+        return
+      end
+
+      -- OSC 10;? / OSC 11;? — fg/bg color query
+      local fg_request = seq == "\027]10;?"
+      local bg_request = seq == "\027]11;?"
+      if fg_request or bg_request then
+        local hex
+        if fg_request then
+          hex = get_hl_hex("Normal", "fg")
+        else
+          hex = get_hl_hex("Normal", "bg")
+        end
+        local rgb = hex_to_osc_rgb(hex)
+        if rgb then
+          local cmd = fg_request and 10 or 11
+          vim.api.nvim_chan_send(channel, string.format("\027]%d;%s%s", cmd, rgb, term))
+        end
+        return
+      end
+    end,
+  })
+end
+
 -- Disable diagnostics in a .env file
 vim.api.nvim_create_autocmd("BufRead", {
   pattern = ".env",
