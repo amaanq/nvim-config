@@ -114,10 +114,7 @@
             ];
 
             zig = [
-              (pkgs.zls.overrideAttrs (old: {
-                postPatch = "";
-                postConfigure = (old.postConfigure or "") + old.postPatch;
-              }))
+              pkgs.zls
             ];
           };
 
