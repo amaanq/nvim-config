@@ -28,11 +28,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1768762088,
-        "narHash": "sha256-Suy7r6BjaRtbmbMtnuR7xk3cv95PadphuvGnmbi7NbU=",
+        "lastModified": 1771297210,
+        "narHash": "sha256-VsnxROchtCVX4Dg8E3q2SB61PTk4hF1j9AwV+QGinRk=",
         "owner": "amaanq",
         "repo": "kotlin-lsp-nix",
-        "rev": "e39414b5318957e47cd94139e48c7b8ddb2f4d24",
+        "rev": "e8f044c78422244a422fb4245c30c0cbd0cd0253",
         "type": "github"
       },
       "original": {
