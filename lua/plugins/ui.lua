@@ -188,6 +188,7 @@ return {
         {
           -- limit chars
           function()
+            if not package.loaded["gitblame"] then return "" end
             local blame_text = require("gitblame").get_current_blame_text()
             local blame_chars = vim.g.os == "Darwin" and 100 or 250
             if blame_text:len() > blame_chars then
@@ -195,7 +196,7 @@ return {
             end
             return blame_text
           end,
-          cond = require("gitblame").is_blame_text_available,
+          cond = function() return package.loaded["gitblame"] and require("gitblame").is_blame_text_available() end,
         },
       }
 
