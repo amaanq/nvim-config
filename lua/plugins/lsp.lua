@@ -1,15 +1,6 @@
 local util = require("util")
 
 return {
-  {
-    "mason-org/mason.nvim",
-    opts = {
-      ui = {
-        border = "rounded",
-      },
-    },
-  },
-
   -- lsp servers
   {
     "neovim/nvim-lspconfig",
