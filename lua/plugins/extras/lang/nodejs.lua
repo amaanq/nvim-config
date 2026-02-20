@@ -34,13 +34,4 @@ return {
     end,
   },
 
-  -- Ensure CSS LSP and HTML LSP are installed
-  {
-    "mason-org/mason.nvim",
-    opts = function(_, opts)
-      if type(opts.ensure_installed) == "table" then
-        vim.list_extend(opts.ensure_installed, { "css-lsp", "html-lsp" })
-      end
-    end,
-  },
 }

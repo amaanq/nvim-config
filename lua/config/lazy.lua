@@ -21,7 +21,7 @@ function M.load(opts)
     },
     spec = {
       {
-        "LazyVim/LazyVim",
+        "amaanq/LazyVim",
         version = false,
         import = "lazyvim.plugins",
         news = {
