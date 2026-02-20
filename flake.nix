@@ -138,7 +138,6 @@
               pkgs.vimPlugins.grug-far-nvim
               pkgs.vimPlugins.inc-rename-nvim
               pkgs.vimPlugins.lazydev-nvim
-              # pkgs.vimPlugins.LazyVim
               pkgs.vimPlugins.lualine-nvim
               pkgs.vimPlugins.mini-ai
               pkgs.vimPlugins.mini-hipatterns
@@ -147,25 +146,22 @@
               pkgs.vimPlugins.noice-nvim
               pkgs.vimPlugins.nui-nvim
               pkgs.vimPlugins.numb-nvim
-              # pkgs.vimPlugins.nvim-autopairs
               pkgs.vimPlugins.nvim-lint
               pkgs.vimPlugins.nvim-lspconfig
-              # pkgs.vimPlugins.nvim-treesitter-context
-              # pkgs.vimPlugins.nvim-treesitter-textobjects
-              # (pkgs.vimPlugins.nvim-treesitter.withPlugins (
-              #   p: pkgs.vimPlugins.nvim-treesitter.allGrammars ++ [ testGrammar ]
-              # ))
+              pkgs.vimPlugins.nvim-treesitter-context
+              pkgs.vimPlugins.nvim-treesitter-textobjects
               pkgs.vimPlugins.nvim-ts-autotag
               pkgs.vimPlugins.persistence-nvim
               pkgs.vimPlugins.SchemaStore-nvim
               # pkgs.vimPlugins.snacks-nvim
               pkgs.vimPlugins.toggleterm-nvim
-              # pkgs.vimPlugins.tokyonight-nvim
+              pkgs.vimPlugins.tokyonight-nvim
               pkgs.vimPlugins.treesj
               pkgs.vimPlugins.ts-comments-nvim
               pkgs.vimPlugins.trouble-nvim
               pkgs.vimPlugins.which-key-nvim
               pkgs.vimPlugins.yanky-nvim
+              pkgs.vimPlugins.octo-nvim
             ];
 
             c = [
