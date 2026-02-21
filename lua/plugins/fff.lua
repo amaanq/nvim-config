@@ -42,9 +42,9 @@ return {
       {
         "<leader>ff",
         function()
-          require("fff").find_files()
+          require("fff").find_files({ cwd = require("util.workspace").detect() })
         end,
-        desc = "Find Files (fff)",
+        desc = "Find Files (workspace)",
       },
       {
         "<leader>fF",
@@ -56,9 +56,9 @@ return {
       {
         "<leader>fg",
         function()
-          require("fff").live_grep()
+          require("fff").live_grep({ cwd = require("util.workspace").detect() })
         end,
-        desc = "Live Grep (fff)",
+        desc = "Live Grep (workspace)",
       },
     },
   },

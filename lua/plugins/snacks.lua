@@ -26,6 +26,40 @@ return {
           opts.sources.explorer.hidden = true
         end,
         debug = { scores = false, leaks = false, explorer = true, files = true },
+        ---@type table<string, snacks.picker.Action.spec>
+        actions = {
+          toggle_lua = function(p)
+            local opts = p.opts --[[@as snacks.picker.grep.Config]]
+            opts.ft = not opts.ft and "lua" or nil
+            p:find()
+          end,
+          ---Pick a workspace and rescope the current picker to it.
+          pick_workspace = function(p)
+            local ws = require("util.workspace")
+            local workspaces = ws.list()
+            if #workspaces == 0 then
+              vim.notify("No workspaces found", vim.log.levels.WARN)
+              return
+            end
+            -- Remember current picker state
+            local source = p.opts.source or "files"
+            local pattern = p.input.filter and p.input.filter.pattern or ""
+            p:close()
+            vim.schedule(function()
+              vim.ui.select(workspaces, {
+                prompt = "Switch to workspace:",
+                format_item = function(item)
+                  return item.text
+                end,
+              }, function(choice)
+                if choice then
+                  local fn = Snacks.picker[source] or Snacks.picker.files
+                  fn({ cwd = choice.file, pattern = pattern, title = source .. " (" .. choice.text .. ")" })
+                end
+              end)
+            end)
+          end,
+        },
         -- Threading + AOSP exclusions for GrapheneOS
         sources = {
           files = {
@@ -111,6 +145,7 @@ return {
           input = {
             keys = {
               ["<c-l>"] = { "toggle_lua", mode = { "n", "i" } },
+              ["<a-w>"] = { "pick_workspace", mode = { "n", "i" } },
               -- ["<c-t>"] = { "edit_tab", mode = { "n", "i" } },
               -- ["<Esc>"] = { "close", mode = { "n", "i" } },
             },
@@ -118,13 +153,6 @@ return {
           list = {
             keys = {},
           },
-        },
-        actions = {
-          toggle_lua = function(p)
-            local opts = p.opts --[[@as snacks.picker.grep.Config]]
-            opts.ft = not opts.ft and "lua" or nil
-            p:find()
-          end,
         },
       },
       scroll = {
@@ -145,9 +173,53 @@ return {
       {
         "<leader><space>",
         function()
-          Snacks.picker.smart()
+          Snacks.picker.smart({ cwd = require("util.workspace").detect() })
         end,
-        desc = "Smart Open",
+        desc = "Smart Open (workspace)",
+      },
+      {
+        "<leader>fw",
+        function()
+          local ws = require("util.workspace")
+          local workspaces = ws.list()
+          if #workspaces == 0 then
+            Snacks.picker.files()
+            return
+          end
+          vim.ui.select(workspaces, {
+            prompt = "Find files in workspace:",
+            format_item = function(item)
+              return item.text
+            end,
+          }, function(choice)
+            if choice then
+              Snacks.picker.files({ cwd = choice.file, title = "Files (" .. choice.text .. ")" })
+            end
+          end)
+        end,
+        desc = "Find Files (pick workspace)",
+      },
+      {
+        "<leader>sw",
+        function()
+          local ws = require("util.workspace")
+          local workspaces = ws.list()
+          if #workspaces == 0 then
+            Snacks.picker.grep()
+            return
+          end
+          vim.ui.select(workspaces, {
+            prompt = "Grep in workspace:",
+            format_item = function(item)
+              return item.text
+            end,
+          }, function(choice)
+            if choice then
+              Snacks.picker.grep({ cwd = choice.file, title = "Grep (" .. choice.text .. ")" })
+            end
+          end)
+        end,
+        desc = "Grep (pick workspace)",
       },
       {
         "<leader>nt",
