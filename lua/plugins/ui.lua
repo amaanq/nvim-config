@@ -1,5 +1,3 @@
-local Util = require("lazyvim.util")
-
 return {
   -- bufferline
   {
@@ -68,7 +66,9 @@ return {
         {
           -- limit chars
           function()
-            if not package.loaded["gitblame"] then return "" end
+            if not package.loaded["gitblame"] then
+              return ""
+            end
             local blame_text = require("gitblame").get_current_blame_text()
             local blame_chars = vim.g.os == "Darwin" and 100 or 250
             if blame_text:len() > blame_chars then
@@ -76,7 +76,9 @@ return {
             end
             return blame_text
           end,
-          cond = function() return package.loaded["gitblame"] and require("gitblame").is_blame_text_available() end,
+          cond = function()
+            return package.loaded["gitblame"] and require("gitblame").is_blame_text_available()
+          end,
         },
       }
 
@@ -208,43 +210,48 @@ return {
   },
 
   {
-    "akinsho/toggleterm.nvim",
-    init = function()
-      vim.keymap.set("t", "<ESC>", "<C-\\><C-n>", { noremap = true, silent = true })
-      vim.keymap.set("t", "<C-]>", "\027", { noremap = true, silent = true }) -- send literal ESC
-    end,
-    ---@type ToggleTermConfig
+    "snacks.nvim",
+    ---@type snacks.Config
     opts = {
-      shading_factor = 0.3, -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
-      direction = "float",
-      persist_mode = false,
-      auto_scroll = false,
+      terminal = {
+        fixed_id = true,
+        exclusive = true,
+        win = {
+          style = "terminal",
+          position = "float",
+          border = "rounded",
+          wo = { winhighlight = "FloatBorder:Normal" },
+          backdrop = 60,
+          height = function()
+            return math.ceil(math.min(vim.o.lines, math.max(20, vim.o.lines - 10)))
+          end,
+          width = function()
+            return math.ceil(math.min(vim.o.columns, math.max(80, vim.o.columns - 20)))
+          end,
+          keys = {
+            term_normal = false, -- disable double-ESC, we use our own ESC mapping
+          },
+        },
+      },
     },
     keys = (function()
-      local keys = {
-        {
-          "<leader>Tn",
-          "<cmd>ToggleTermSetName<cr>",
-          desc = "Set Terminal Name",
-        },
-        {
-          "<leader>Ts",
-          "<cmd>TermSelect<cr>",
-          desc = "Select Terminal",
-        },
-      }
+      local keys = {}
       for i = 1, 10 do
         local key = i == 10 and "0" or tostring(i)
         table.insert(keys, {
           "<leader>" .. key,
           function()
-            require("toggleterm").toggle(i, 0, Util.root.get(), "float")
+            Snacks.terminal.toggle(nil, { count = i })
           end,
           desc = "Terminal " .. i,
         })
       end
       return keys
     end)(),
+    init = function()
+      vim.keymap.set("t", "<ESC>", "<C-\\><C-n>", { noremap = true, silent = true })
+      vim.keymap.set("t", "<C-]>", "\027", { noremap = true, silent = true }) -- send literal ESC
+    end,
   },
 
   -- git blame
