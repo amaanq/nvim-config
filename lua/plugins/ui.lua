@@ -176,12 +176,6 @@ return {
           local buf_client_names = {}
           local buf_formatters = {}
 
-          for _, client in pairs(buf_clients) do
-            if client.name ~= "copilot" then
-              table.insert(buf_client_names, client.name)
-            end
-          end
-
           for _, client in pairs(formatters) do
             table.insert(buf_formatters, client.name)
           end

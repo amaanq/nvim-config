@@ -1,6 +1,5 @@
 {
   "extras": [
-    "lazyvim.plugins.extras.ai.copilot-native",
     "lazyvim.plugins.extras.coding.blink",
     "lazyvim.plugins.extras.coding.yanky",
     "lazyvim.plugins.extras.editor.dial",
