@@ -178,6 +178,20 @@
           };
         };
 
+      patchedNeovim =
+        system:
+        let
+          base = inputs.neovim-nightly-overlay.packages.${system}.neovim;
+        in
+        base.overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [
+            # Save/restore b_did_filetype for nested FileType events so that
+            # doautoall FileType (e.g. from vim.lsp.enable() during lazy plugin
+            # loading) does not leak the flag and break subsequent setf calls.
+            ./patches/force-bufread-autocmds.patch
+          ];
+        });
+
       packageDefinitions =
 
         let
@@ -214,7 +228,7 @@
                   "nv"
                   "vi"
                 ];
-                neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
+                neovim-unwrapped = patchedNeovim pkgs.stdenv.hostPlatform.system;
               };
               categories = defaultCategories;
             };
@@ -231,7 +245,7 @@
                   "nv"
                   "vi"
                 ];
-                neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
+                neovim-unwrapped = patchedNeovim pkgs.stdenv.hostPlatform.system;
               };
               categories = {
                 general = true;
@@ -246,7 +260,7 @@
                 suffix-path = true;
                 suffix-LD = true;
                 wrapRc = false;
-                neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
+                neovim-unwrapped = patchedNeovim pkgs.stdenv.hostPlatform.system;
                 unwrappedCfgPath = utils.mkLuaInline "os.getenv('HOME') .. '/.config/nvim'";
               };
               categories = defaultCategories;

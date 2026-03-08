@@ -1,0 +1,46 @@
+diff --git a/src/nvim/autocmd.c b/src/nvim/autocmd.c
+index 3f7de39caf..68173c9145 100644
+--- a/src/nvim/autocmd.c
++++ b/src/nvim/autocmd.c
+@@ -1857,17 +1857,25 @@
+   // Don't use local function variables, if called from a function.
+   funccal_entry_T funccal_entry;
+   save_funccal(&funccal_entry);
+
+   // When starting to execute autocommands, save the search patterns.
++  bool save_did_filetype_nested = false;
+   if (!autocmd_busy) {
+     save_search_patterns();
+     if (!ins_compl_active()) {
+       saveRedobuff(&save_redo);
+       did_save_redobuff = true;
+     }
+     curbuf->b_did_filetype = curbuf->b_keep_filetype;
++  } else if (event == EVENT_FILETYPE) {
++    // Save b_did_filetype for nested FileType events.  Without this,
++    // a nested "doautoall FileType" (e.g. from vim.lsp.enable() during
++    // lazy plugin loading) permanently sets b_did_filetype on curbuf,
++    // which makes a later "setf" (filetypedetect) a no-op and prevents
++    // filetype detection from working.
++    save_did_filetype_nested = curbuf->b_did_filetype;
+   }
+
+   // Note that we are applying autocmds.  Some commands need to know.
+   autocmd_busy = true;
+   filechangeshell_busy = (event == EVENT_FILECHANGEDSHELL);
+@@ -1993,10 +2001,15 @@
+       win_T *w = au_pending_free_win->w_next;
+
+       xfree(au_pending_free_win);
+       au_pending_free_win = w;
+     }
++  } else if (event == EVENT_FILETYPE) {
++    // Restore b_did_filetype after nested FileType event so that it
++    // does not leak into the surrounding autocmd chain (e.g. a
++    // BufReadPost handler that still needs filetypedetect to run).
++    curbuf->b_did_filetype = save_did_filetype_nested;
+   }
+
+   // Some events don't set or reset the Changed flag.
+   // Check if still in the same buffer!
+   if (curbuf == old_curbuf
