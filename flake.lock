@@ -129,7 +129,25 @@
         "kotlin-lsp": "kotlin-lsp",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nixCats": "nixCats",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_2",
+        "taplo-src": "taplo-src"
+      }
+    },
+    "taplo-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1773018963,
+        "narHash": "sha256-wCzli4maT8w3e9kwRptjLihI1pMRoG/248XfESPmPpo=",
+        "owner": "amaanq",
+        "repo": "taplo",
+        "rev": "aca7d4cc49a54e9d1adfb5797ca6d33ecb23131c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "amaanq",
+        "ref": "toml-1.1-multiline-inline-tables",
+        "repo": "taplo",
+        "type": "github"
       }
     }
   },

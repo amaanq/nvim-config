@@ -13,6 +13,11 @@
       url = "github:amaanq/kotlin-lsp-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    taplo-src = {
+      url = "github:amaanq/taplo/toml-1.1-multiline-inline-tables";
+      flake = false;
+    };
   };
 
   outputs =
@@ -94,7 +99,16 @@
             ];
 
             rust = [
-              pkgs.taplo
+              (pkgs.taplo.overrideAttrs {
+                src = inputs.taplo-src;
+                version = "0.10.0";
+                patches = [ ];
+                cargoPatches = [ ];
+                cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+                  src = inputs.taplo-src;
+                  hash = "sha256-9BF+S3QrPtbuWKEbEtqNq1dBAy7l1LDK/aMWL54TcmY=";
+                };
+              })
             ];
 
             svelte = [
