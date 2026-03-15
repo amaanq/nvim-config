@@ -1,7 +1,9 @@
 return {
   { "yanky.nvim", keys = { { "<leader>p", false, mode = { "n", "x" } } } },
   {
-    "snacks.nvim",
+    "amaanq/snacks.nvim",
+    name = "snacks.nvim",
+    dev = false,
     ---@type snacks.Config
     opts = {
       profiler = {
