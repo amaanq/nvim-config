@@ -21,7 +21,14 @@
   };
 
   outputs =
-    { nixpkgs, nixCats, ... }@inputs:
+    {
+      nixpkgs,
+      nixCats,
+      neovim-nightly-overlay,
+      kotlin-lsp,
+      taplo-src,
+      ...
+    }@inputs:
     let
       inherit (nixCats) utils;
       luaPath = ./.;
@@ -67,7 +74,7 @@
             ];
 
             kotlin = [
-              inputs.kotlin-lsp.packages.${pkgs.stdenv.hostPlatform.system}.kotlin-lsp
+              kotlin-lsp.packages.${pkgs.stdenv.hostPlatform.system}.kotlin-lsp
               pkgs.ktlint
             ];
 
@@ -99,12 +106,12 @@
 
             rust = [
               (pkgs.taplo.overrideAttrs {
-                src = inputs.taplo-src;
+                src = taplo-src;
                 version = "0.10.0";
                 patches = [ ];
                 cargoPatches = [ ];
                 cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-                  src = inputs.taplo-src;
+                  src = taplo-src;
                   hash = "sha256-9BF+S3QrPtbuWKEbEtqNq1dBAy7l1LDK/aMWL54TcmY=";
                 };
               })
@@ -194,7 +201,7 @@
       patchedNeovim =
         system:
         let
-          base = inputs.neovim-nightly-overlay.packages.${system}.neovim;
+          base = neovim-nightly-overlay.packages.${system}.neovim;
         in
         base.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [
