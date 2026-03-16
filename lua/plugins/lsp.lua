@@ -19,6 +19,7 @@ return {
         ["javascriptreact"] = { "eslint_d" },
         ["typescript"] = { "eslint_d" },
         ["typescriptreact"] = { "eslint_d" },
+        ["nu"] = { "nufmt" },
         ["sh"] = { "shfmt" },
         ["c"] = { "uncrustify" },
         ["cpp"] = { "uncrustify" },
@@ -50,6 +51,19 @@ return {
         dprint = {
           condition = function(_, ctx)
             return vim.fs.find({ "dprint.json" }, { path = ctx.filename, upward = true })[1]
+          end,
+        },
+        nufmt = {
+          prepend_args = function(_, ctx)
+            local local_config = vim.fs.find({ "nufmt.nuon" }, { path = ctx.filename, upward = true })[1]
+            if local_config then
+              return { "--config", local_config }
+            end
+            local global_config = "/etc/nufmt/nufmt.nuon"
+            if vim.uv.fs_stat(global_config) then
+              return { "--config", global_config }
+            end
+            return {}
           end,
         },
         uncrustify = {

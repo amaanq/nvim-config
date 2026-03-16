@@ -124,12 +124,30 @@
         "type": "github"
       }
     },
+    "nufmt-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1773650258,
+        "narHash": "sha256-zolcLmiZRDDJf/Q2RYl+1DwPzd2CwadplxPJrW9ToWo=",
+        "owner": "amaanq",
+        "repo": "nufmt",
+        "rev": "b636af8841ae0fd7cd9f2a4b7c275de05e7d8458",
+        "type": "github"
+      },
+      "original": {
+        "owner": "amaanq",
+        "ref": "pipeline-wrapping",
+        "repo": "nufmt",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "kotlin-lsp": "kotlin-lsp",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nixCats": "nixCats",
         "nixpkgs": "nixpkgs_2",
+        "nufmt-src": "nufmt-src",
         "taplo-src": "taplo-src"
       }
     },

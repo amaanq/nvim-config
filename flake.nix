@@ -14,6 +14,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nufmt-src = {
+      url = "github:amaanq/nufmt/pipeline-wrapping";
+      flake = false;
+    };
+
     taplo-src = {
       url = "github:amaanq/taplo/toml-1.1-multiline-inline-tables";
       flake = false;
@@ -26,6 +31,7 @@
       nixCats,
       neovim-nightly-overlay,
       kotlin-lsp,
+      nufmt-src,
       taplo-src,
       ...
     }@inputs:
@@ -93,6 +99,19 @@
             nix = [
               pkgs.nixd
               pkgs.nixfmt
+            ];
+
+            nushell = [
+              (pkgs.nufmt.overrideAttrs {
+                src = nufmt-src;
+                version = "0-unstable-2026-03-16";
+                postPatch = "";
+                doCheck = false;
+                cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+                  src = nufmt-src;
+                  hash = "sha256-heHFiW1/2qV6BJH7Y0ObSV1sPfVaU0m2KLbASdzca8s=";
+                };
+              })
             ];
 
             python = [
@@ -226,6 +245,7 @@
             lua = true;
             markdown = true;
             nix = true;
+            nushell = true;
             python = true;
             # qml = true;
             rust = true;
