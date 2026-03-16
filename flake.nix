@@ -89,9 +89,8 @@
             ];
 
             python = [
-              pkgs.basedpyright
               pkgs.ruff
-              # pkgs.ty
+              pkgs.ty
             ];
 
             qml = [
