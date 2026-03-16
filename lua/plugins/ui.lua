@@ -171,25 +171,19 @@ return {
             return "LSP Inactive"
           end
 
-          local formatters = require("conform").list_formatters(0)
-
-          local buf_client_names = {}
-          local buf_formatters = {}
-
-          for _, client in pairs(formatters) do
-            table.insert(buf_formatters, client.name)
+          local names = {}
+          for _, client in ipairs(buf_clients) do
+            table.insert(names, client.name)
           end
 
-          vim.list_extend(buf_client_names, buf_formatters)
-
-          if #buf_client_names == 0 then
-            return "LSP Inactive"
+          local ok, conform = pcall(require, "conform")
+          if ok then
+            for _, fmt in ipairs(conform.list_formatters(0)) do
+              table.insert(names, fmt.name)
+            end
           end
 
-          local unique_client_names = table.concat(buf_client_names, ", ")
-          local language_servers = string.format("[%s]", unique_client_names)
-
-          return language_servers
+          return string.format("[%s]", table.concat(names, ", "))
         end,
         color = { gui = "bold" },
         -- cond = conditions.hide_in_width,
