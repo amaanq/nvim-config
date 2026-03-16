@@ -6,6 +6,14 @@ return {
     opts = {
       servers = {
         ty = {},
+        ruff = {
+          init_options = {
+            settings = {
+              configurationPreference = "filesystemFirst",
+              configuration = "/etc/ruff/ruff.toml",
+            },
+          },
+        },
       },
     },
   },
