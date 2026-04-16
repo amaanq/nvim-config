@@ -93,7 +93,6 @@
             markdown = [
               pkgs.github-markdown-toc-go
               pkgs.markdownlint-cli2
-              pkgs.marksman
             ];
 
             nix = [
