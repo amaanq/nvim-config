@@ -238,7 +238,7 @@
             c = true;
             dot = true;
             extra = true;
-            go = true;
+            go = false;
             java = true;
             kotlin = true;
             lua = true;
