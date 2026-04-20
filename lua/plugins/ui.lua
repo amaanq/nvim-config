@@ -251,13 +251,6 @@ return {
     end,
   },
 
-  -- git conflict
-  {
-    "akinsho/git-conflict.nvim",
-    event = "VeryLazy",
-    config = true,
-  },
-
   {
     "amaanq/gitlink.nvim",
     event = "VeryLazy",

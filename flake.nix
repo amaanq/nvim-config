@@ -170,7 +170,6 @@
               pkgs.vimPlugins.dropbar-nvim
               pkgs.vimPlugins.friendly-snippets
               pkgs.vimPlugins.git-blame-nvim
-              pkgs.vimPlugins.git-conflict-nvim
               pkgs.vimPlugins.gitsigns-nvim
               pkgs.vimPlugins.grug-far-nvim
               pkgs.vimPlugins.inc-rename-nvim
