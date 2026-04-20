@@ -288,7 +288,6 @@
               };
               categories = {
                 general = true;
-                nix = true;
               };
             };
 
