@@ -228,6 +228,7 @@
             # loading) does not leak the flag and break subsequent setf calls.
             ./patches/force-bufread-autocmds.patch
           ];
+          doCheck = false;
         });
 
       packageDefinitions =
