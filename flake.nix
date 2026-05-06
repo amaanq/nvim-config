@@ -41,6 +41,7 @@
       forEachSystem = utils.eachSystem nixpkgs.lib.platforms.all;
       extra_pkg_config = { };
       dependencyOverlays = [
+        neovim-nightly-overlay.overlays.default
         (utils.standardPluginOverlay inputs)
       ];
 
@@ -216,11 +217,8 @@
         };
 
       patchedNeovim =
-        system:
-        let
-          base = neovim-nightly-overlay.packages.${system}.neovim;
-        in
-        base.overrideAttrs (old: {
+        pkgs:
+        pkgs.neovim-unwrapped.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [
             # Save/restore b_did_filetype for nested FileType events so that
             # doautoall FileType (e.g. from vim.lsp.enable() during lazy plugin
@@ -266,7 +264,7 @@
                   "nv"
                   "vi"
                 ];
-                neovim-unwrapped = patchedNeovim pkgs.stdenv.hostPlatform.system;
+                neovim-unwrapped = patchedNeovim pkgs;
               };
               categories = defaultCategories;
             };
@@ -283,7 +281,7 @@
                   "nv"
                   "vi"
                 ];
-                neovim-unwrapped = patchedNeovim pkgs.stdenv.hostPlatform.system;
+                neovim-unwrapped = patchedNeovim pkgs;
               };
               categories = {
                 general = true;
@@ -297,7 +295,7 @@
                 suffix-path = true;
                 suffix-LD = true;
                 wrapRc = false;
-                neovim-unwrapped = patchedNeovim pkgs.stdenv.hostPlatform.system;
+                neovim-unwrapped = patchedNeovim pkgs;
                 unwrappedCfgPath = utils.mkLuaInline "os.getenv('HOME') .. '/.config/nvim'";
               };
               categories = defaultCategories;
