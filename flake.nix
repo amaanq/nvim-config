@@ -333,6 +333,18 @@
     )
     // (
       let
+        mkOverlay =
+          name: final: prev:
+          let
+            overlayPkgs = final.appendOverlays dependencyOverlays;
+          in
+          {
+            ${name} =
+              utils.baseBuilder luaPath {
+                pkgs = overlayPkgs;
+              } categoryDefinitions packageDefinitions name;
+          };
+
         nixosModule = utils.mkNixosModules {
           moduleNamespace = [ defaultPackageName ];
           inherit
@@ -360,9 +372,9 @@
         };
       in
       {
-        overlays = utils.makeOverlays luaPath {
-          inherit nixpkgs dependencyOverlays extra_pkg_config;
-        } categoryDefinitions packageDefinitions defaultPackageName;
+        overlays = (builtins.mapAttrs (name: _: mkOverlay name) packageDefinitions) // {
+          default = mkOverlay defaultPackageName;
+        };
 
         nixosModules.default = nixosModule;
         homeModules.default = homeModule;
