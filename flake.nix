@@ -40,9 +40,22 @@
       luaPath = ./.;
       forEachSystem = utils.eachSystem nixpkgs.lib.platforms.all;
       extra_pkg_config = { };
+      pluginFixesOverlay = final: prev: {
+        vimPlugins = prev.vimPlugins // {
+          dropbar-nvim = prev.vimPlugins.dropbar-nvim.overrideAttrs (old: {
+            patches = (old.patches or [ ]) ++ [
+              (final.fetchpatch {
+                url = "https://github.com/user-attachments/files/27269763/dropbar-fix-missing-event-BufModifiedSet-neovim-nightly.patch";
+                hash = "sha256-X/LIkGRIqSDTaHIuzS+c+Fwv2CAC47NfnWIE1Je5aac=";
+              })
+            ];
+          });
+        };
+      };
       dependencyOverlays = [
         neovim-nightly-overlay.overlays.default
         (utils.standardPluginOverlay inputs)
+        pluginFixesOverlay
       ];
 
       categoryDefinitions =
