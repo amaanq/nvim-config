@@ -50,6 +50,23 @@
               })
             ];
           });
+
+          lualine-nvim = prev.vimUtils.buildVimPlugin {
+            pname = "lualine.nvim";
+            version = prev.vimPlugins.lualine-nvim.version;
+            src = prev.vimPlugins.lualine-nvim.src;
+            meta = prev.vimPlugins.lualine-nvim.meta;
+          };
+
+          rustaceanvim = prev.vimUtils.buildVimPlugin {
+            pname = "rustaceanvim";
+            version = prev.vimPlugins.rustaceanvim.version;
+            src = prev.vimPlugins.rustaceanvim.src;
+            nvimSkipModules = [
+              "rustaceanvim.neotest.init"
+            ];
+            meta = prev.vimPlugins.rustaceanvim.meta;
+          };
         };
       };
       dependencyOverlays = [
