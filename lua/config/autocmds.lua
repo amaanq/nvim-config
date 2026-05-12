@@ -157,7 +157,8 @@ do
     )
   end
 
-  -- Get the actual Normal highlight bg/fg colors from the colorscheme
+  -- Read a single attribute (fg/bg) from a highlight group as a hex string,
+  -- skipping links so a transparent Normal isn't masked by whatever it links to.
   local function get_hl_hex(group, attr)
     local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
     local val = hl[attr]
@@ -165,6 +166,15 @@ do
       return string.format("#%06x", val)
     end
     return nil
+  end
+
+  -- Transparent colorschemes leave Normal.bg nil. We fall back so OSC 11 still replies.
+  local function get_normal_hex(attr)
+    return get_hl_hex("Normal", attr)
+      or get_hl_hex("NormalFloat", attr)
+      or get_hl_hex("Pmenu", attr)
+      or (attr == "fg" and (vim.o.background == "light" and "#1c1c1c" or "#c0caf5"))
+      or (vim.o.background == "light" and "#fafafa" or "#1a1b26")
   end
 
   vim.api.nvim_create_autocmd("TermRequest", {
@@ -196,12 +206,7 @@ do
       local fg_request = seq == "\027]10;?"
       local bg_request = seq == "\027]11;?"
       if fg_request or bg_request then
-        local hex
-        if fg_request then
-          hex = get_hl_hex("Normal", "fg")
-        else
-          hex = get_hl_hex("Normal", "bg")
-        end
+        local hex = get_normal_hex(fg_request and "fg" or "bg")
         local rgb = hex_to_osc_rgb(hex)
         if rgb then
           local cmd = fg_request and 10 or 11
