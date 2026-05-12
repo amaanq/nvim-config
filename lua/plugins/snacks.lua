@@ -64,6 +64,12 @@ return {
         },
         -- Threading + AOSP exclusions for GrapheneOS
         sources = {
+          explorer = {
+            win = {
+              list = { keys = { ["<Esc>"] = false } },
+              input = { keys = { ["<Esc>"] = false } },
+            },
+          },
           files = {
             cmd = "fd",
             args = {
