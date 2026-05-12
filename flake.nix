@@ -40,17 +40,8 @@
       luaPath = ./.;
       forEachSystem = utils.eachSystem nixpkgs.lib.platforms.all;
       extra_pkg_config = { };
-      pluginFixesOverlay = final: prev: {
+      pluginFixesOverlay = _: prev: {
         vimPlugins = prev.vimPlugins // {
-          dropbar-nvim = prev.vimPlugins.dropbar-nvim.overrideAttrs (old: {
-            patches = (old.patches or [ ]) ++ [
-              (final.fetchpatch {
-                url = "https://github.com/user-attachments/files/27269763/dropbar-fix-missing-event-BufModifiedSet-neovim-nightly.patch";
-                hash = "sha256-81+PyITP4piuxwwFo3XNBwta90EhLT0pkQ4xY7nY/2Y=";
-              })
-            ];
-          });
-
           lualine-nvim = prev.vimUtils.buildVimPlugin {
             pname = "lualine.nvim";
             version = prev.vimPlugins.lualine-nvim.version;
@@ -364,15 +355,14 @@
     // (
       let
         mkOverlay =
-          name: final: prev:
+          name: final: _:
           let
             overlayPkgs = final.appendOverlays dependencyOverlays;
           in
           {
-            ${name} =
-              utils.baseBuilder luaPath {
-                pkgs = overlayPkgs;
-              } categoryDefinitions packageDefinitions name;
+            ${name} = utils.baseBuilder luaPath {
+              pkgs = overlayPkgs;
+            } categoryDefinitions packageDefinitions name;
           };
 
         nixosModule = utils.mkNixosModules {
