@@ -259,3 +259,5 @@ vim.api.nvim_create_autocmd("User", {
     }
   end,
 })
+
+require("util.herdr").setup()
