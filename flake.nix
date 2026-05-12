@@ -42,15 +42,6 @@
       extra_pkg_config = { };
       pluginFixesOverlay = final: prev: {
         vimPlugins = prev.vimPlugins // {
-          dropbar-nvim = prev.vimPlugins.dropbar-nvim.overrideAttrs (old: {
-            patches = (old.patches or [ ]) ++ [
-              (final.fetchpatch {
-                url = "https://github.com/user-attachments/files/27269763/dropbar-fix-missing-event-BufModifiedSet-neovim-nightly.patch";
-                hash = "sha256-81+PyITP4piuxwwFo3XNBwta90EhLT0pkQ4xY7nY/2Y=";
-              })
-            ];
-          });
-
           lualine-nvim = prev.vimUtils.buildVimPlugin {
             pname = "lualine.nvim";
             version = prev.vimPlugins.lualine-nvim.version;
