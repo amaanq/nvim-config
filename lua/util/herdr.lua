@@ -17,6 +17,15 @@ local socket_path ---@type string?
 local request_prefix ---@type string?
 local subscribing = false
 local leaving = false
+local pending_tick ---@type uv.uv_timer_t?
+
+local function debug_log(msg)
+  if vim.g.herdr_debug then
+    vim.schedule(function()
+      vim.notify("herdr: " .. msg, vim.log.levels.INFO)
+    end)
+  end
+end
 
 local function enabled()
   return vim.env.HERDR_ENV == "1" and vim.env.HERDR_PANE_ID ~= nil and vim.env.HERDR_SOCKET_PATH ~= nil
@@ -113,6 +122,18 @@ local function focus_buf(buf)
   for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
     if vim.api.nvim_win_get_buf(win) == buf then
       vim.api.nvim_set_current_win(win)
+      debug_log("focused existing window for buf " .. buf)
+      return
+    end
+  end
+  -- swap into the window showing another tracked terminal: switching agents
+  -- in place is the point of clicking a different row
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    local shown = vim.api.nvim_win_get_buf(win)
+    if shown ~= buf and terminals[shown] then
+      vim.api.nvim_win_set_buf(win, buf)
+      vim.api.nvim_set_current_win(win)
+      debug_log("swapped buf " .. buf .. " into terminal window")
       return
     end
   end
@@ -126,20 +147,27 @@ local function focus_buf(buf)
     end
     error("not a snacks terminal")
   end)
-  if not ok then
-    vim.cmd("botright sbuffer " .. buf)
-    vim.api.nvim_win_set_height(0, math.max(12, math.floor(vim.o.lines * 0.3)))
+  if ok then
+    debug_log("showed snacks terminal for buf " .. buf)
+    return
   end
+  vim.cmd("botright sbuffer " .. buf)
+  vim.api.nvim_win_set_height(0, math.max(12, math.floor(vim.o.lines * 0.3)))
+  debug_log("opened split for buf " .. buf)
 end
+
+local request_tick
 
 -- session id == the job's pid: nvim spawns terminal jobs as session leaders
 local function focus_session(session)
   for buf, entry in pairs(terminals) do
     if entry.pid == session and vim.api.nvim_buf_is_valid(buf) then
       focus_buf(buf)
+      request_tick()
       return
     end
   end
+  debug_log("no tracked terminal for session " .. session)
 end
 
 local function handle_event_line(line)
@@ -147,11 +175,14 @@ local function handle_event_line(line)
   if not ok or type(msg) ~= "table" or type(msg.data) ~= "table" then
     return
   end
-  if msg.event ~= "pane.nested_terminal_focused" then
+  -- generic event subscriptions serialize EventKind as snake_case, unlike
+  -- the dotted names used in subscription requests
+  if msg.event ~= "pane_nested_terminal_focused" then
     return
   end
   local data = msg.data
   if data.pane_id == pane_id and type(data.session) == "number" then
+    debug_log("focus event for session " .. data.session)
     vim.schedule(function()
       focus_session(data.session)
     end)
@@ -190,6 +221,7 @@ subscribe = function()
       schedule_resubscribe()
       return
     end
+    debug_log("event subscription connected")
     local ok, request = pcall(vim.json.encode, {
       id = request_prefix .. ":events",
       method = "events.subscribe",
@@ -224,6 +256,25 @@ subscribe = function()
   end)
 end
 
+-- coalesce bursts of window events into one immediate report pass so
+-- herdr's visible-row highlight updates without waiting for the next tick
+request_tick = function()
+  if pending_tick or leaving then
+    return
+  end
+  pending_tick = uv.new_timer()
+  if not pending_tick then
+    return
+  end
+  pending_tick:start(30, 0, function()
+    if pending_tick then
+      pending_tick:close()
+      pending_tick = nil
+    end
+    vim.schedule(tick)
+  end)
+end
+
 function M.setup()
   if not enabled() then
     return
@@ -238,6 +289,15 @@ function M.setup()
     group = group,
     callback = function(args)
       track(args.buf)
+    end,
+  })
+
+  vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter", "WinClosed" }, {
+    group = group,
+    callback = function()
+      if next(terminals) ~= nil then
+        request_tick()
+      end
     end,
   })
 
