@@ -328,8 +328,19 @@ local function restore_nested_sessions()
       return
     end
     for _, session in ipairs(sessions) do
-      local ok = pcall(resurrect, session)
-      debug_log((ok and "restoring nested %s session" or "failed to restore nested %s session"):format(session.agent))
+      local ok, err = pcall(resurrect, session)
+      if not ok then
+        -- the take already consumed this session server-side; surface the
+        -- resume command so a failure here is recoverable instead of silent
+        vim.notify(
+          ("herdr: failed to resurrect %s session (%s) — run manually: %s"):format(
+            session.agent,
+            err,
+            table.concat(session.argv, " ")
+          ),
+          vim.log.levels.ERROR
+        )
+      end
     end
   end)
 end
