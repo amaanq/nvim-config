@@ -259,12 +259,52 @@ local function request_response(payload, cb)
   end)
 end
 
+-- Resurrect one taken session in a snacks terminal. The resume must run
+-- inside a shell rather than as the terminal job itself: a failed resume
+-- then shows its error at a prompt instead of exiting and auto-closing the
+-- window, and quitting the agent later leaves a shell. nushell's -e flag
+-- gives exactly that as pure spawn argv; other shells fall back to typing
+-- the command into a default-shell terminal, which can race with the user's
+-- keystrokes if the restored terminal has focus.
+local function resurrect(session, i)
+  local safe = true
+  for _, part in ipairs(session.argv) do
+    if part:find("[^%w%-%./=_:@,+]") then
+      safe = false
+      break
+    end
+  end
+  if not safe then
+    -- argv needs quoting no shell agrees on; run it directly but keep
+    -- the window open on exit so errors stay readable
+    Snacks.terminal.get(session.argv, { create = true, auto_close = false })
+    return
+  end
+  local command = table.concat(session.argv, " ")
+  if vim.fs.basename(vim.o.shell) == "nu" then
+    -- distinct commands, so snacks keys each session as its own instance
+    Snacks.terminal.get({ vim.o.shell, "-e", command }, { create = true })
+    return
+  end
+  -- distinct env marker: snacks keys instances by cmd+env, and all
+  -- restored terminals share cmd = default shell
+  local term = Snacks.terminal.get(nil, {
+    create = true,
+    env = { HERDR_NESTED_RESTORE = ("%s-%d"):format(session.agent, i) },
+  })
+  local buf = term and term.buf
+  local chan = buf and vim.b[buf].terminal_job_id
+  if not chan then
+    error("no terminal channel")
+  end
+  vim.defer_fn(function()
+    pcall(vim.api.nvim_chan_send, chan, command .. "\r")
+  end, 600)
+end
+
 -- Claim nested agent sessions herdr carried over from its own restore and
 -- resurrect each in a snacks terminal. Take-semantics server-side means a
--- second nvim start gets nothing, so sessions never resume twice. The resume
--- command is typed into a shell terminal rather than spawned as the terminal
--- job: a failed resume then shows its error at a prompt instead of exiting
--- and auto-closing the window, and quitting the agent later leaves a shell.
+-- second nvim start gets nothing, so sessions never resume twice.
 local function restore_nested_sessions()
   request_response({
     id = request_prefix .. ":take",
@@ -276,36 +316,7 @@ local function restore_nested_sessions()
       return
     end
     for i, session in ipairs(sessions) do
-      local safe = true
-      for _, part in ipairs(session.argv) do
-        if part:find("[^%w%-%./=_:@,+]") then
-          safe = false
-          break
-        end
-      end
-      local ok = pcall(function()
-        if safe then
-          -- distinct env marker: snacks keys instances by cmd+env, and all
-          -- restored terminals share cmd = default shell
-          local term = Snacks.terminal.get(nil, {
-            create = true,
-            env = { HERDR_NESTED_RESTORE = ("%s-%d"):format(session.agent, i) },
-          })
-          local buf = term and term.buf
-          local chan = buf and vim.b[buf].terminal_job_id
-          if not chan then
-            error("no terminal channel")
-          end
-          local command = table.concat(session.argv, " ") .. "\r"
-          vim.defer_fn(function()
-            pcall(vim.api.nvim_chan_send, chan, command)
-          end, 600)
-        else
-          -- argv needs quoting no shell agrees on; run it directly but keep
-          -- the window open on exit so errors stay readable
-          Snacks.terminal.get(session.argv, { create = true, auto_close = false })
-        end
-      end)
+      local ok = pcall(resurrect, session, i)
       debug_log((ok and "restoring nested %s session" or "failed to restore nested %s session"):format(session.agent))
     end
   end)
