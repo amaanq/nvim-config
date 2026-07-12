@@ -259,14 +259,27 @@ local function request_response(payload, cb)
   end)
 end
 
+-- First numbered terminal slot with no live instance. Resurrected sessions
+-- must occupy real slots: snacks derives the instance id from {cmd, count},
+-- so a terminal created with a session-specific cmd is unreachable by the
+-- user's numbered-terminal keybinds — one toggle then creates an empty
+-- shell whose float covers the agent, which reads as the agent being wiped.
+local function free_slot()
+  for slot = 1, 9 do
+    if not Snacks.terminal.get(nil, { count = slot, create = false }) then
+      return slot
+    end
+  end
+end
+
 -- Resurrect one taken session in a snacks terminal. The resume must run
 -- inside a shell rather than as the terminal job itself: a failed resume
 -- then shows its error at a prompt instead of exiting and auto-closing the
--- window, and quitting the agent later leaves a shell. nushell's -e flag
--- gives exactly that as pure spawn argv; other shells fall back to typing
--- the command into a default-shell terminal, which can race with the user's
--- keystrokes if the restored terminal has focus.
-local function resurrect(session, i)
+-- window, and quitting the agent later leaves a shell. Passing the resume
+-- through opts.shell (which snacks parses to argv but excludes from the
+-- instance id) keeps cmd = nil, so the terminal registers as plain numbered
+-- terminal <slot> and the user's keybinds toggle it like any other.
+local function resurrect(session)
   local safe = true
   for _, part in ipairs(session.argv) do
     if part:find("[^%w%-%./=_:@,+]") then
@@ -274,32 +287,31 @@ local function resurrect(session, i)
       break
     end
   end
-  if not safe then
-    -- argv needs quoting no shell agrees on; run it directly but keep
-    -- the window open on exit so errors stay readable
+  local slot = safe and free_slot()
+  if not slot then
+    -- argv needs quoting no shell agrees on (or no slot is free); run it
+    -- directly but keep the window open on exit so errors stay readable
     Snacks.terminal.get(session.argv, { create = true, auto_close = false })
     return
   end
   local command = table.concat(session.argv, " ")
   if vim.fs.basename(vim.o.shell) == "nu" then
-    -- distinct commands, so snacks keys each session as its own instance
-    Snacks.terminal.get({ vim.o.shell, "-e", command }, { create = true })
-    return
+    -- nu -e runs the command then stays interactive, as pure spawn argv
+    Snacks.terminal.get(nil, { count = slot, create = true, shell = ('%s -e "%s"'):format(vim.o.shell, command) })
+  else
+    -- no argv-level nu -e equivalent: type the command into the shell
+    -- (racy if the user types into the restored terminal first)
+    local term = Snacks.terminal.get(nil, { count = slot, create = true })
+    local buf = term and term.buf
+    local chan = buf and vim.b[buf].terminal_job_id
+    if not chan then
+      error("no terminal channel")
+    end
+    vim.defer_fn(function()
+      pcall(vim.api.nvim_chan_send, chan, command .. "\r")
+    end, 600)
   end
-  -- distinct env marker: snacks keys instances by cmd+env, and all
-  -- restored terminals share cmd = default shell
-  local term = Snacks.terminal.get(nil, {
-    create = true,
-    env = { HERDR_NESTED_RESTORE = ("%s-%d"):format(session.agent, i) },
-  })
-  local buf = term and term.buf
-  local chan = buf and vim.b[buf].terminal_job_id
-  if not chan then
-    error("no terminal channel")
-  end
-  vim.defer_fn(function()
-    pcall(vim.api.nvim_chan_send, chan, command .. "\r")
-  end, 600)
+  vim.notify(("herdr: resumed %s session in terminal %d"):format(session.agent, slot))
 end
 
 -- Claim nested agent sessions herdr carried over from its own restore and
@@ -315,8 +327,8 @@ local function restore_nested_sessions()
     if type(sessions) ~= "table" or #sessions == 0 then
       return
     end
-    for i, session in ipairs(sessions) do
-      local ok = pcall(resurrect, session, i)
+    for _, session in ipairs(sessions) do
+      local ok = pcall(resurrect, session)
       debug_log((ok and "restoring nested %s session" or "failed to restore nested %s session"):format(session.agent))
     end
   end)
