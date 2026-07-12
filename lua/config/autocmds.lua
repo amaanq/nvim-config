@@ -260,4 +260,27 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
+-- The snacks explorer is a picker, not a buffer, so :mksession can't capture
+-- it. Carry an "explorer was open" flag through the session's saved globals;
+-- mksession only persists vim.g names that start uppercase and contain a
+-- lowercase letter, hence the casing.
+vim.api.nvim_create_autocmd("User", {
+  pattern = "PersistenceSavePre",
+  callback = function()
+    vim.g.SnacksExplorerOpen = Snacks.picker.get({ source = "explorer" })[1] ~= nil and 1 or nil
+  end,
+})
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "PersistenceLoadPost",
+  callback = function()
+    if vim.g.SnacksExplorerOpen ~= 1 then
+      return
+    end
+    vim.schedule(function()
+      Snacks.explorer({ focus = false })
+    end)
+  end,
+})
+
 require("util.herdr").setup()
