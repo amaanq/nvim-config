@@ -261,7 +261,10 @@ end
 
 -- Claim nested agent sessions herdr carried over from its own restore and
 -- resurrect each in a snacks terminal. Take-semantics server-side means a
--- second nvim start gets nothing, so sessions never resume twice.
+-- second nvim start gets nothing, so sessions never resume twice. The resume
+-- command is typed into a shell terminal rather than spawned as the terminal
+-- job: a failed resume then shows its error at a prompt instead of exiting
+-- and auto-closing the window, and quitting the agent later leaves a shell.
 local function restore_nested_sessions()
   request_response({
     id = request_prefix .. ":take",
@@ -272,11 +275,38 @@ local function restore_nested_sessions()
     if type(sessions) ~= "table" or #sessions == 0 then
       return
     end
-    for _, session in ipairs(sessions) do
+    for i, session in ipairs(sessions) do
+      local safe = true
+      for _, part in ipairs(session.argv) do
+        if part:find("[^%w%-%./=_:@,+]") then
+          safe = false
+          break
+        end
+      end
       local ok = pcall(function()
-        Snacks.terminal.get(session.argv, { create = true })
+        if safe then
+          -- distinct env marker: snacks keys instances by cmd+env, and all
+          -- restored terminals share cmd = default shell
+          local term = Snacks.terminal.get(nil, {
+            create = true,
+            env = { HERDR_NESTED_RESTORE = ("%s-%d"):format(session.agent, i) },
+          })
+          local buf = term and term.buf
+          local chan = buf and vim.b[buf].terminal_job_id
+          if not chan then
+            error("no terminal channel")
+          end
+          local command = table.concat(session.argv, " ") .. "\r"
+          vim.defer_fn(function()
+            pcall(vim.api.nvim_chan_send, chan, command)
+          end, 600)
+        else
+          -- argv needs quoting no shell agrees on; run it directly but keep
+          -- the window open on exit so errors stay readable
+          Snacks.terminal.get(session.argv, { create = true, auto_close = false })
+        end
       end)
-      debug_log((ok and "restored nested %s session" or "failed to restore nested %s session"):format(session.agent))
+      debug_log((ok and "restoring nested %s session" or "failed to restore nested %s session"):format(session.agent))
     end
   end)
 end
