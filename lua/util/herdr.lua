@@ -118,6 +118,20 @@ local function track(buf)
   end
 end
 
+local function snacks_term_for(buf)
+  local ok, terms = pcall(function()
+    return Snacks.terminal.list()
+  end)
+  if not ok or type(terms) ~= "table" then
+    return nil
+  end
+  for _, term in ipairs(terms) do
+    if term.buf == buf then
+      return term
+    end
+  end
+end
+
 local function focus_buf(buf)
   for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
     if vim.api.nvim_win_get_buf(win) == buf then
@@ -126,30 +140,46 @@ local function focus_buf(buf)
       return
     end
   end
-  -- swap into the window showing another tracked terminal: switching agents
-  -- in place is the point of clicking a different row
-  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-    local shown = vim.api.nvim_win_get_buf(win)
-    if shown ~= buf and terminals[shown] then
-      vim.api.nvim_win_set_buf(win, buf)
-      vim.api.nvim_set_current_win(win)
-      debug_log("swapped buf " .. buf .. " into terminal window")
+  -- snacks terminals must switch through snacks: its fixbuf autocmd swaps
+  -- foreign buffers back out of its windows, so a raw win_set_buf reverts.
+  -- assumes float terminals: hiding a non-float that is the last window of
+  -- a tab would :tabclose before the target shows
+  local target = snacks_term_for(buf)
+  if target then
+    local ok = pcall(function()
+      for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        local shown = vim.api.nvim_win_get_buf(win)
+        if shown ~= buf and terminals[shown] and vim.b[shown].snacks_terminal then
+          local other = snacks_term_for(shown)
+          if other then
+            other:hide()
+          end
+        end
+      end
+      target:show()
+      target:focus()
+    end)
+    if ok then
+      debug_log("switched snacks terminal to buf " .. buf)
       return
     end
+    debug_log("snacks switch failed for buf " .. buf)
   end
-  local ok = pcall(function()
-    for _, term in ipairs(Snacks.terminal.list()) do
-      if term.buf == buf then
-        term:show()
-        term:focus()
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    local shown = vim.api.nvim_win_get_buf(win)
+    if shown ~= buf and terminals[shown] and not vim.b[shown].snacks_terminal then
+      local ok = pcall(function()
+        if vim.wo[win].winfixbuf then
+          vim.wo[win].winfixbuf = false
+        end
+        vim.api.nvim_win_set_buf(win, buf)
+      end)
+      if ok then
+        vim.api.nvim_set_current_win(win)
+        debug_log("swapped buf " .. buf .. " into terminal window")
         return
       end
     end
-    error("not a snacks terminal")
-  end)
-  if ok then
-    debug_log("showed snacks terminal for buf " .. buf)
-    return
   end
   vim.cmd("botright sbuffer " .. buf)
   vim.api.nvim_win_set_height(0, math.max(12, math.floor(vim.o.lines * 0.3)))
