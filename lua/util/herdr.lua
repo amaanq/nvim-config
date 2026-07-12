@@ -219,6 +219,68 @@ local function handle_event_line(line)
   end
 end
 
+local function request_response(payload, cb)
+  local ok, line = pcall(vim.json.encode, payload)
+  if not ok then
+    return
+  end
+  local pipe = uv.new_pipe(false)
+  if not pipe then
+    return
+  end
+  pipe:connect(socket_path, function(err)
+    if err then
+      pipe:close()
+      return
+    end
+    pipe:write(line .. "\n")
+    local buffer = ""
+    pipe:read_start(function(rerr, data)
+      if rerr or not data then
+        if not pipe:is_closing() then
+          pipe:close()
+        end
+        return
+      end
+      buffer = buffer .. data
+      local nl = buffer:find("\n", 1, true)
+      if nl then
+        local decoded_ok, msg = pcall(vim.json.decode, buffer:sub(1, nl - 1))
+        if not pipe:is_closing() then
+          pipe:close()
+        end
+        if decoded_ok and type(msg) == "table" then
+          vim.schedule(function()
+            cb(msg)
+          end)
+        end
+      end
+    end)
+  end)
+end
+
+-- Claim nested agent sessions herdr carried over from its own restore and
+-- resurrect each in a snacks terminal. Take-semantics server-side means a
+-- second nvim start gets nothing, so sessions never resume twice.
+local function restore_nested_sessions()
+  request_response({
+    id = request_prefix .. ":take",
+    method = "pane.take_nested_sessions",
+    params = { pane_id = pane_id },
+  }, function(msg)
+    local sessions = msg.result and msg.result.sessions
+    if type(sessions) ~= "table" or #sessions == 0 then
+      return
+    end
+    for _, session in ipairs(sessions) do
+      local ok = pcall(function()
+        Snacks.terminal.get(session.argv, { create = true })
+      end)
+      debug_log((ok and "restored nested %s session" or "failed to restore nested %s session"):format(session.agent))
+    end
+  end)
+end
+
 local subscribe
 
 local function schedule_resubscribe()
@@ -361,6 +423,7 @@ function M.setup()
   end
 
   subscribe()
+  vim.defer_fn(restore_nested_sessions, 1000)
 end
 
 return M
