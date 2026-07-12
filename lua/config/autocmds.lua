@@ -271,16 +271,23 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
+local function reopen_explorer()
+  if vim.g.SnacksExplorerOpen ~= 1 or Snacks.picker.get({ source = "explorer" })[1] then
+    return
+  end
+  vim.schedule(function()
+    Snacks.explorer({ focus = false })
+  end)
+end
+
 vim.api.nvim_create_autocmd("User", {
   pattern = "PersistenceLoadPost",
-  callback = function()
-    if vim.g.SnacksExplorerOpen ~= 1 then
-      return
-    end
-    vim.schedule(function()
-      Snacks.explorer({ focus = false })
-    end)
-  end,
+  callback = reopen_explorer,
 })
+
+-- herdr restores nvim via `nvim +lua require("persistence").load()`, which
+-- fires PersistenceLoadPost before VeryLazy sources this file; the session
+-- has already set the flag by now, so check it once at load too.
+reopen_explorer()
 
 require("util.herdr").setup()
