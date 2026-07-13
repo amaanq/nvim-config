@@ -287,31 +287,39 @@ local function resurrect(session)
       break
     end
   end
+  local term
   local slot = safe and free_slot()
   if not slot then
     -- argv needs quoting no shell agrees on (or no slot is free); run it
     -- directly but keep the window open on exit so errors stay readable
-    Snacks.terminal.get(session.argv, { create = true, auto_close = false })
-    return
-  end
-  local command = table.concat(session.argv, " ")
-  if vim.fs.basename(vim.o.shell) == "nu" then
-    -- nu -e runs the command then stays interactive, as pure spawn argv
-    Snacks.terminal.get(nil, { count = slot, create = true, shell = ('%s -e "%s"'):format(vim.o.shell, command) })
+    term = Snacks.terminal.get(session.argv, { create = true, auto_close = false })
   else
-    -- no argv-level nu -e equivalent: type the command into the shell
-    -- (racy if the user types into the restored terminal first)
-    local term = Snacks.terminal.get(nil, { count = slot, create = true })
-    local buf = term and term.buf
-    local chan = buf and vim.b[buf].terminal_job_id
-    if not chan then
-      error("no terminal channel")
+    local command = table.concat(session.argv, " ")
+    if vim.fs.basename(vim.o.shell) == "nu" then
+      -- nu -e runs the command then stays interactive, as pure spawn argv
+      term =
+        Snacks.terminal.get(nil, { count = slot, create = true, shell = ('%s -e "%s"'):format(vim.o.shell, command) })
+    else
+      -- no argv-level nu -e equivalent: type the command into the shell
+      -- (racy if the user types into the restored terminal first)
+      term = Snacks.terminal.get(nil, { count = slot, create = true })
+      local buf = term and term.buf
+      local chan = buf and vim.b[buf].terminal_job_id
+      if not chan then
+        error("no terminal channel")
+      end
+      vim.defer_fn(function()
+        pcall(vim.api.nvim_chan_send, chan, command .. "\r")
+      end, 600)
     end
-    vim.defer_fn(function()
-      pcall(vim.api.nvim_chan_send, chan, command .. "\r")
-    end, 600)
+    vim.notify(("herdr: resumed %s session in terminal %d"):format(session.agent, slot))
   end
-  vim.notify(("herdr: resumed %s session in terminal %d"):format(session.agent, slot))
+  -- get() shows without toggle's exclusive hide-others, so sequential
+  -- resurrections stack their floats: every buffer stays window-visible and
+  -- the panel highlights all of them until the first manual toggle
+  if term and Snacks.config.get("terminal", {}).exclusive then
+    pcall(Snacks.terminal._hide_other_floats, term)
+  end
 end
 
 -- Claim nested agent sessions herdr carried over from its own restore and
