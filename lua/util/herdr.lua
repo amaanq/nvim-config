@@ -487,7 +487,9 @@ function M.setup()
   end
 
   subscribe()
-  vim.defer_fn(restore_nested_sessions, 1000)
+  -- resurrect fast: the stash is ready before nvim even spawns, and every
+  -- ms of delay is a window for the user to race it with a manual resume
+  vim.defer_fn(restore_nested_sessions, 150)
 end
 
 return M
