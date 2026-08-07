@@ -1,53 +1,23 @@
 {
   description = "Amaan's Neovim Flake";
 
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nixCats.url = "github:BirdeeHub/nixCats-nvim";
-
-    neovim-nightly-overlay = {
-      url = "github:nix-community/neovim-nightly-overlay";
-    };
-
-    kotlin-lsp = {
-      url = "github:amaanq/kotlin-lsp-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nufmt-src = {
-      url = "github:amaanq/nufmt/pipeline-wrapping";
-      flake = false;
-    };
-
-    taplo-src = {
-      url = "github:amaanq/taplo/toml-1.1-multiline-inline-tables";
-      flake = false;
-    };
-
-    tree-sitter-aidl-src = {
-      url = "github:amaanq/tree-sitter-aidl";
-      flake = false;
-    };
-
-    tree-sitter-blueprint-src = {
-      url = "github:amaanq/tree-sitter-blueprint";
-      flake = false;
-    };
-  };
-
   outputs =
-    {
-      nixpkgs,
-      nixCats,
-      neovim-nightly-overlay,
-      kotlin-lsp,
-      nufmt-src,
-      taplo-src,
-      tree-sitter-aidl-src,
-      tree-sitter-blueprint-src,
-      ...
-    }@inputs:
+    { self, ... }@args:
     let
+      tackInputs = (import ./.tack) { overrides = args.tackOverrides or { }; };
+      inputs = tackInputs // {
+        inherit self;
+      };
+      inherit (inputs)
+        kotlin-lsp
+        neovim-nightly-overlay
+        nixCats
+        nixpkgs
+        nufmt-src
+        taplo-src
+        tree-sitter-aidl-src
+        tree-sitter-blueprint-src
+        ;
       inherit (nixCats) utils;
       luaPath = ./.;
       forEachSystem = utils.eachSystem nixpkgs.lib.platforms.all;
