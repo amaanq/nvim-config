@@ -112,6 +112,14 @@ vim.filetype.add({
   },
 })
 vim.treesitter.language.register("fasm", { "asm" })
+vim.treesitter.language.register("blueprint", "bp")
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "aidl", "bp" },
+  callback = function(ev)
+    pcall(vim.treesitter.start, ev.buf)
+  end,
+})
 
 -- Respond to OSC 4 (palette color queries) and OSC 10/11 (fg/bg queries)
 -- in :terminal so apps like OpenCode can detect the actual colorscheme.

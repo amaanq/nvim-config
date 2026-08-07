@@ -148,7 +148,9 @@
         "nixCats": "nixCats",
         "nixpkgs": "nixpkgs_2",
         "nufmt-src": "nufmt-src",
-        "taplo-src": "taplo-src"
+        "taplo-src": "taplo-src",
+        "tree-sitter-aidl-src": "tree-sitter-aidl-src",
+        "tree-sitter-blueprint-src": "tree-sitter-blueprint-src"
       }
     },
     "taplo-src": {
@@ -165,6 +167,38 @@
         "owner": "amaanq",
         "ref": "toml-1.1-multiline-inline-tables",
         "repo": "taplo",
+        "type": "github"
+      }
+    },
+    "tree-sitter-aidl-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786056021,
+        "narHash": "sha256-SlYdRRw9EkLT/Rj0BjIY2MRB2IT7vOYmJCH45XojRvc=",
+        "owner": "amaanq",
+        "repo": "tree-sitter-aidl",
+        "rev": "f941e514b6534977fdde0b1f99d7d8b289977b22",
+        "type": "github"
+      },
+      "original": {
+        "owner": "amaanq",
+        "repo": "tree-sitter-aidl",
+        "type": "github"
+      }
+    },
+    "tree-sitter-blueprint-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786056036,
+        "narHash": "sha256-yigYGM01rLN6od9Vpyrs8WKCtX4dZeXUbd6qud7B6jY=",
+        "owner": "amaanq",
+        "repo": "tree-sitter-blueprint",
+        "rev": "126455b16486ccb2fa6eff528b152c3548c80c18",
+        "type": "github"
+      },
+      "original": {
+        "owner": "amaanq",
+        "repo": "tree-sitter-blueprint",
         "type": "github"
       }
     }

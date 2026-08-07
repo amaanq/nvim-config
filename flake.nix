@@ -23,6 +23,16 @@
       url = "github:amaanq/taplo/toml-1.1-multiline-inline-tables";
       flake = false;
     };
+
+    tree-sitter-aidl-src = {
+      url = "github:amaanq/tree-sitter-aidl";
+      flake = false;
+    };
+
+    tree-sitter-blueprint-src = {
+      url = "github:amaanq/tree-sitter-blueprint";
+      flake = false;
+    };
   };
 
   outputs =
@@ -33,6 +43,8 @@
       kotlin-lsp,
       nufmt-src,
       taplo-src,
+      tree-sitter-aidl-src,
+      tree-sitter-blueprint-src,
       ...
     }@inputs:
     let
@@ -68,6 +80,20 @@
 
       categoryDefinitions =
         { pkgs, ... }:
+        let
+          treesitterGrammars = map pkgs.neovimUtils.grammarToPlugin [
+            (pkgs.tree-sitter.buildGrammar {
+              language = "aidl";
+              version = "0.1.0";
+              src = tree-sitter-aidl-src;
+            })
+            (pkgs.tree-sitter.buildGrammar {
+              language = "blueprint";
+              version = "0.1.0";
+              src = tree-sitter-blueprint-src;
+            })
+          ];
+        in
         {
           lspsAndRuntimeDeps = {
             general = [
@@ -180,7 +206,8 @@
           startupPlugins = {
             general = [
               pkgs.vimPlugins.lazy-nvim
-            ];
+            ]
+            ++ treesitterGrammars;
           };
 
           optionalPlugins = {
