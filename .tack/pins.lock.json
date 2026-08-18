@@ -11,9 +11,9 @@
     "type": "github",
     "owner": "nix-community",
     "repo": "neovim-nightly-overlay",
-    "rev": "87a9eece84189d0319b9139a2f82a5d4c484c67f",
-    "narHash": "sha256-vas4Af+7MaPDnCnrZ9fdE6km4KViVonZ/kBsm+wMFgI=",
-    "lastModified": 1786147427
+    "rev": "952cfd7a8ac0d15865fb2e6ce414b3239685d0be",
+    "narHash": "sha256-8+y5aFIRzLRhCblljlXVjbhleVSFJCTTXmmdjKwS4VQ=",
+    "lastModified": 1787011367
   },
   "nixCats": {
     "type": "github",
@@ -27,9 +27,9 @@
     "type": "github",
     "owner": "nixos",
     "repo": "nixpkgs",
-    "rev": "70ce234312134a463ba7728e94da2486a1d237ac",
-    "narHash": "sha256-X44cn5rzytELc3NNoQsh0aLkjWA/QzPfc6HPQmsG3sU=",
-    "lastModified": 1785975029
+    "rev": "b47ad65d73ab65ded9ab408fe558866d71defee8",
+    "narHash": "sha256-fZt7Au28AduGpt7vRfIOcpsHKJ+9cEnuQ2NdWuh0KVc=",
+    "lastModified": 1787052956
   },
   "nufmt-src": {
     "type": "github",
