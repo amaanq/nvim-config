@@ -77,6 +77,17 @@ local function buf_visible(buf)
   return false
 end
 
+-- Numbered slot this buffer occupies, so herdr can persist it and a later
+-- restore can put the agent back in the same terminal.
+local function slot_for(buf)
+  for slot = 1, 9 do
+    local term = Snacks.terminal.get(nil, { count = slot, create = false })
+    if term and term.buf == buf then
+      return slot
+    end
+  end
+end
+
 local function tick()
   for buf, entry in pairs(terminals) do
     if not vim.api.nvim_buf_is_valid(buf) then
@@ -86,7 +97,8 @@ local function tick()
       local lines = vim.api.nvim_buf_get_lines(buf, -(TAIL_LINES + 1), -1, false)
       local text = table.concat(lines, "\n")
       local title = vim.b[buf].term_title or ""
-      local params = { pane_id = pane_id, pid = entry.pid, visible = buf_visible(buf) }
+      local params =
+        { pane_id = pane_id, pid = entry.pid, visible = buf_visible(buf), slot = slot_for(buf) }
       if text == entry.last_text and title == entry.last_title then
         -- heartbeat
         params.changed = false
@@ -288,7 +300,11 @@ local function resurrect(session)
     end
   end
   local term
-  local slot = safe and free_slot()
+  local wanted = session.slot
+  if wanted and Snacks.terminal.get(nil, { count = wanted, create = false }) then
+    wanted = nil
+  end
+  local slot = safe and (wanted or free_slot())
   if not slot then
     -- argv needs quoting no shell agrees on (or no slot is free); run it
     -- directly but keep the window open on exit so errors stay readable
