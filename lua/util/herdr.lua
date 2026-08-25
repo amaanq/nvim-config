@@ -299,6 +299,16 @@ local function resurrect(session)
       break
     end
   end
+  if session.cwd and session.cwd:find("[^%w%-%./=_:@,+]") then
+    safe = false
+  end
+  local env = {}
+  for _, var in ipairs(session.env or {}) do
+    env[var.name] = var.value
+    if var.value:find("[^%w%-%./=_:@,+]") then
+      safe = false
+    end
+  end
   local term
   local wanted = session.slot
   if wanted and Snacks.terminal.get(nil, { count = wanted, create = false }) then
@@ -308,10 +318,28 @@ local function resurrect(session)
   if not slot then
     -- argv needs quoting no shell agrees on (or no slot is free); run it
     -- directly but keep the window open on exit so errors stay readable
-    term = Snacks.terminal.get(session.argv, { create = true, auto_close = false })
+    term = Snacks.terminal.get(
+      session.argv,
+      { create = true, auto_close = false, cwd = session.cwd, env = env }
+    )
   else
     local command = table.concat(session.argv, " ")
-    if vim.fs.basename(vim.o.shell) == "nu" then
+    local nu = vim.fs.basename(vim.o.shell) == "nu"
+    -- The account-selecting variable is exported into the agent process
+    -- alone, so nvim never inherits it and the resume has to re-export it or
+    -- it lands on the default signed-in account.
+    for _, var in ipairs(session.env or {}) do
+      command = nu and ("$env.%s = '%s'; %s"):format(var.name, var.value, command)
+        or ("%s='%s' %s"):format(var.name, var.value, command)
+    end
+    -- claude and codex look sessions up under the directory they ran in, so
+    -- resume from there. The cd rides in the command rather than opts.cwd
+    -- because snacks folds cwd into the instance id, which would cost the
+    -- numbered-slot parity above.
+    if session.cwd then
+      command = ("cd %s; %s"):format(session.cwd, command)
+    end
+    if nu then
       -- nu -e runs the command then stays interactive, as pure spawn argv
       term =
         Snacks.terminal.get(nil, { count = slot, create = true, shell = ('%s -e "%s"'):format(vim.o.shell, command) })
