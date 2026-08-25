@@ -8,6 +8,8 @@
 
 vim.g.mapleader = " "
 
+vim.treesitter.language.register("rust", "rhai")
+
 -- vim.opt.foldmethod = "expr"
 -- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
@@ -176,4 +178,3 @@ for _, method in ipairs({ "textDocument/diagnostic", "workspace/diagnostic" }) d
     return default_diagnostic_handler(err, result, context, config)
   end
 end
-
