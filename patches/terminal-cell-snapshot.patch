@@ -1,0 +1,226 @@
+diff --git a/src/nvim/terminal.c b/src/nvim/terminal.c
+index 20289322ce..16f7450e93 100644
+--- a/src/nvim/terminal.c
++++ b/src/nvim/terminal.c
+@@ -127,6 +127,12 @@
+   OptInt save_w_p_siso;
+ } TerminalState;
+ 
++typedef struct {
++  size_t cols;
++  size_t references;
++  VTermScreenCell cells[];
++} ScrollbackLine;
++
+ #include "terminal.c.generated.h"
+ 
+ // Delay for refreshing the terminal buffer after receiving updates from
+@@ -139,11 +145,6 @@
+ static TimeWatcher refresh_timer;
+ static bool refresh_pending = false;
+ 
+-typedef struct {
+-  size_t cols;
+-  VTermScreenCell cells[];
+-} ScrollbackLine;
+-
+ struct terminal {
+   TerminalOptions opts;  // options passed to terminal_alloc()
+   VTerm *vt;
+@@ -164,6 +165,12 @@
+   /// Lines in the terminal buffer belonging to the screen instead of the scrollback.
+   int old_height;
+ 
++  ScrollbackLine **snapshot_scrollback;
++  size_t snapshot_scrollback_size;
++  VTermScreenCell *snapshot_screen;
++  int snapshot_width;
++  int snapshot_height;
++
+   char *title;     // VTermStringFragment buffer
+   size_t title_len;
+   size_t title_size;
+@@ -592,6 +599,8 @@
+   CtxSwitch aco = { 0 };
+   ctx_switch(&aco, NULL, NULL, buf, 0);
+ 
++  int save_redrawing = RedrawingDisabled;
++  RedrawingDisabled = true;
+   if (term->sb_buffer != NULL) {
+     // If scrollback has been allocated by autocommands between terminal_alloc()
+     // and terminal_open(), it also needs to be refreshed.
+@@ -600,6 +609,7 @@
+     assert(term->invalid_start >= 0);
+   }
+   refresh_screen(term, buf);
++  RedrawingDisabled = save_redrawing;
+   buf->b_locked++;
+   set_option_value(kOptBuftype, STATIC_CSTR_AS_OBJ("terminal"), OPT_LOCAL);
+   buf->b_locked--;
+@@ -1234,9 +1244,14 @@
+       set_del(ptr_t, &invalidated_terminals, term);
+     }
+     for (size_t i = 0; i < term->sb_current; i++) {
+-      xfree(term->sb_buffer[i]);
++      release_scrollback_line(term->sb_buffer[i]);
+     }
+     xfree(term->sb_buffer);
++    for (size_t index = 0; index < term->snapshot_scrollback_size; index++) {
++      release_scrollback_line(term->snapshot_scrollback[index]);
++    }
++    xfree(term->snapshot_scrollback);
++    xfree(term->snapshot_screen);
+     xfree(term->title);
+     xfree(term->selection_buffer);
+     kv_destroy(term->selection);
+@@ -1450,21 +1465,28 @@
+ 
+ void terminal_get_line_attributes(Terminal *term, win_T *wp, int linenr, int *term_attrs)
+ {
+-  int height, width;
+-  vterm_get_size(term->vt, &height, &width);
+   VTermState *state = vterm_obtain_state(term->vt);
+   assert(linenr);
+-  int row = linenr_to_row(term, linenr);
+-  if (row >= height) {
++  const size_t line_index = (size_t)linenr - 1;
++  const ScrollbackLine *scrollback = line_index < term->snapshot_scrollback_size
++                                     ? term->snapshot_scrollback[term->snapshot_scrollback_size
++                                                                 - line_index - 1]
++                                     : NULL;
++  const size_t row = scrollback ? 0 : line_index - term->snapshot_scrollback_size;
++  if (!scrollback && row >= (size_t)term->snapshot_height) {
+     // Terminal height was decreased but the change wasn't reflected into the
+     // buffer yet
+     return;
+   }
+ 
+-  width = MIN(TERM_ATTRS_MAX, width);
++  const int width = MIN(TERM_ATTRS_MAX, term->snapshot_width);
+   for (int col = 0; col < width; col++) {
+-    VTermScreenCell cell;
+-    bool color_valid = fetch_cell(term, row, col, &cell);
++    VTermScreenCell cell = { 0 };
++    const bool color_valid = !scrollback || (size_t)col < scrollback->cols;
++    if (color_valid) {
++      cell = scrollback ? scrollback->cells[col]
++                        : term->snapshot_screen[row * (size_t)term->snapshot_width + (size_t)col];
++    }
+     bool fg_default = !color_valid || VTERM_COLOR_IS_DEFAULT_FG(&cell.fg);
+     bool bg_default = !color_valid || VTERM_COLOR_IS_DEFAULT_BG(&cell.bg);
+ 
+@@ -1699,6 +1721,14 @@
+   return 1;
+ }
+ 
++static void release_scrollback_line(ScrollbackLine *line)
++{
++  assert(line->references > 0);
++  if (--line->references == 0) {
++    xfree(line);
++  }
++}
++
+ /// Scrollback push handler: called just before a line goes offscreen (and libvterm will forget it),
+ /// giving us a chance to store it.
+ ///
+@@ -1716,11 +1746,12 @@
+   size_t c = (size_t)cols;
+   ScrollbackLine *sbrow = NULL;
+   if (term->sb_current == term->sb_size) {
+-    if (term->sb_buffer[term->sb_current - 1]->cols == c) {
++    if (term->sb_buffer[term->sb_current - 1]->cols == c
++        && term->sb_buffer[term->sb_current - 1]->references == 1) {
+       // Recycle old row if it's the right size
+       sbrow = term->sb_buffer[term->sb_current - 1];
+     } else {
+-      xfree(term->sb_buffer[term->sb_current - 1]);
++      release_scrollback_line(term->sb_buffer[term->sb_current - 1]);
+     }
+     term->sb_deleted++;
+ 
+@@ -1736,6 +1767,7 @@
+   if (!sbrow) {
+     sbrow = xmalloc(sizeof(ScrollbackLine) + c * sizeof(sbrow->cells[0]));
+     sbrow->cols = c;
++    sbrow->references = 1;
+   }
+ 
+   // New row is added at the start of the storage buffer.
+@@ -1790,7 +1822,7 @@
+     cells[col].width = 1;
+   }
+ 
+-  xfree(sbrow);
++  release_scrollback_line(sbrow);
+   if (!term->synchronized_output) {
+     set_put(ptr_t, &invalidated_terminals, term);
+   }
+@@ -1807,7 +1839,7 @@
+   }
+ 
+   for (size_t i = 0; i < term->sb_current; i++) {
+-    xfree(term->sb_buffer[i]);
++    release_scrollback_line(term->sb_buffer[i]);
+   }
+ 
+   term->sb_deleted += term->sb_current;
+@@ -2411,6 +2443,8 @@
+   }
+   linenr_T ml_before = buf->b_ml.ml_line_count;
+ 
++  int save_redrawing = RedrawingDisabled;
++  RedrawingDisabled = true;
+   bool resized = refresh_size(term, buf);
+   refresh_scrollback(term, buf);
+   refresh_screen(term, buf);
+@@ -2428,6 +2462,7 @@
+       }
+     }
+   }
++  RedrawingDisabled = save_redrawing;
+ 
+   // Copy pending events back to the main event queue
+   multiqueue_move_events(main_loop.events, term->pending.events);
+@@ -2550,7 +2585,7 @@
+     for (size_t i = 0; i < diff; i++) {
+       ml_delete_buf(buf, 1, false);
+       term->sb_current--;
+-      xfree(term->sb_buffer[term->sb_current]);
++      release_scrollback_line(term->sb_buffer[term->sb_current]);
+     }
+     mark_adjust_buf(buf, 1, (linenr_T)diff, MAXLNUM, -(linenr_T)diff, true,
+                     kMarkAdjustTerm, kExtmarkUndo);
+@@ -2625,6 +2660,32 @@
+   int height;
+   int width;
+   vterm_get_size(term->vt, &height, &width);
++
++  for (size_t index = 0; index < term->snapshot_scrollback_size; index++) {
++    release_scrollback_line(term->snapshot_scrollback[index]);
++  }
++  term->snapshot_scrollback = xrealloc(term->snapshot_scrollback,
++                                       term->sb_current * sizeof(*term->snapshot_scrollback));
++  term->snapshot_scrollback_size = term->sb_current;
++  for (size_t index = 0; index < term->sb_current; index++) {
++    term->snapshot_scrollback[index] = term->sb_buffer[index];
++    term->snapshot_scrollback[index]->references++;
++  }
++
++  if (term->snapshot_width != width || term->snapshot_height != height) {
++    term->snapshot_screen = xrealloc(term->snapshot_screen,
++                                     (size_t)width * (size_t)height *
++                                     sizeof(*term->snapshot_screen));
++    term->snapshot_width = width;
++    term->snapshot_height = height;
++  }
++  for (int row = 0; row < height; row++) {
++    for (int col = 0; col < width; col++) {
++      vterm_screen_get_cell(term->vts, (VTermPos){ .row = row, .col = col },
++                            &term->snapshot_screen[(size_t)row * (size_t)width + (size_t)col]);
++    }
++  }
++
+   // Terminal height may have decreased before `invalid_end` reflects it.
+   term->invalid_end = MIN(term->invalid_end, height);
+ 

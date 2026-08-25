@@ -241,6 +241,7 @@
             # doautoall FileType (e.g. from vim.lsp.enable() during lazy plugin
             # loading) does not leak the flag and break subsequent setf calls.
             ./patches/force-bufread-autocmds.patch
+            ./patches/terminal-cell-snapshot.patch
           ];
         });
 
