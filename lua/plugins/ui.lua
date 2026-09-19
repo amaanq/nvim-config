@@ -1,4 +1,12 @@
 return {
+  {
+    "folke/tokyonight.nvim",
+    opts = {
+      on_highlights = function(hl, c)
+        hl["@constructor.bend"] = { fg = c.orange }
+      end,
+    },
+  },
   -- bufferline
   {
     "akinsho/bufferline.nvim",
