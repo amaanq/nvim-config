@@ -4,6 +4,8 @@ return {
     opts = {
       on_highlights = function(hl, c)
         hl["@constructor.bend"] = { fg = c.orange }
+        hl["@lsp.mod.controlFlow.rust"] = { link = "@keyword.conditional.rust" }
+        hl["@lsp.typemod.keyword.controlFlow.rust"] = { link = "@keyword.conditional.rust" }
       end,
     },
   },
