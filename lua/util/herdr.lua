@@ -97,8 +97,7 @@ local function tick()
       local lines = vim.api.nvim_buf_get_lines(buf, -(TAIL_LINES + 1), -1, false)
       local text = table.concat(lines, "\n")
       local title = vim.b[buf].term_title or ""
-      local params =
-        { pane_id = pane_id, pid = entry.pid, visible = buf_visible(buf), slot = slot_for(buf) }
+      local params = { pane_id = pane_id, pid = entry.pid, visible = buf_visible(buf), slot = slot_for(buf) }
       if text == entry.last_text and title == entry.last_title then
         -- heartbeat
         params.changed = false
@@ -284,6 +283,18 @@ local function free_slot()
   end
 end
 
+local function account_wrapper(session)
+  for _, var in ipairs(session.env or {}) do
+    local dir = vim.fs.basename(var.value)
+    if var.name == "CLAUDE_CONFIG_DIR" and dir ~= "claude" and vim.startswith(dir, "claude") then
+      return "clod" .. dir:sub(#"claude" + 1)
+    end
+    if var.name == "CODEX_HOME" and dir ~= "codex" and vim.startswith(dir, "codex") then
+      return dir
+    end
+  end
+end
+
 -- Resurrect one taken session in a snacks terminal. The resume must run
 -- inside a shell rather than as the terminal job itself: a failed resume
 -- then shows its error at a prompt instead of exiting and auto-closing the
@@ -318,19 +329,23 @@ local function resurrect(session)
   if not slot then
     -- argv needs quoting no shell agrees on (or no slot is free); run it
     -- directly but keep the window open on exit so errors stay readable
-    term = Snacks.terminal.get(
-      session.argv,
-      { create = true, auto_close = false, cwd = session.cwd, env = env }
-    )
+    term = Snacks.terminal.get(session.argv, { create = true, auto_close = false, cwd = session.cwd, env = env })
   else
-    local command = table.concat(session.argv, " ")
     local nu = vim.fs.basename(vim.o.shell) == "nu"
+    local wrapper = nu and account_wrapper(session)
+    local argv = vim.list_slice(session.argv)
+    if wrapper then
+      argv[1] = wrapper
+    end
+    local command = table.concat(argv, " ")
     -- The account-selecting variable is exported into the agent process
     -- alone, so nvim never inherits it and the resume has to re-export it or
     -- it lands on the default signed-in account.
-    for _, var in ipairs(session.env or {}) do
-      command = nu and ("$env.%s = '%s'; %s"):format(var.name, var.value, command)
-        or ("%s='%s' %s"):format(var.name, var.value, command)
+    if not wrapper then
+      for _, var in ipairs(session.env or {}) do
+        command = nu and ("$env.%s = '%s'; %s"):format(var.name, var.value, command)
+          or ("%s='%s' %s"):format(var.name, var.value, command)
+      end
     end
     -- claude and codex look sessions up under the directory they ran in, so
     -- resume from there. The cd rides in the command rather than opts.cwd
