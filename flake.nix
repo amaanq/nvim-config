@@ -70,6 +70,7 @@
               pkgs.curl
               pkgs.fd
               pkgs.ripgrep
+              pkgs.tree-sitter
             ];
 
             c = [
