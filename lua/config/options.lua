@@ -55,6 +55,20 @@ if vim.g.neovide then
   vim.g.neovide_scale_factor = 0.3
 end
 
+if vim.env.SSH_CONNECTION then
+  -- OSC 52 paste blocks on a terminal confirmation prompt, so only copy goes to the host
+  local osc52 = require("vim.ui.clipboard.osc52")
+  local function paste()
+    return { vim.fn.split(vim.fn.getreg('"'), "\n"), vim.fn.getregtype('"') }
+  end
+  vim.g.clipboard = {
+    name = "osc52",
+    copy = { ["+"] = osc52.copy("+"), ["*"] = osc52.copy("*") },
+    paste = { ["+"] = paste, ["*"] = paste },
+  }
+  vim.opt.clipboard = "unnamedplus"
+end
+
 vim.o.title = true
 vim.o.titlestring = LazyVim.root.cwd():match("([^/]+)$")
 if vim.fn.executable("nu") == 1 then
