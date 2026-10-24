@@ -14,7 +14,6 @@
         nixCats
         nixpkgs
         nufmt-src
-        taplo-src
         tree-sitter-aidl-src
         tree-sitter-blueprint-src
         ;
@@ -142,16 +141,7 @@
             ];
 
             rust = [
-              (pkgs.taplo.overrideAttrs {
-                src = taplo-src;
-                version = "0.10.0";
-                patches = [ ];
-                cargoPatches = [ ];
-                cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-                  src = taplo-src;
-                  hash = "sha256-9BF+S3QrPtbuWKEbEtqNq1dBAy7l1LDK/aMWL54TcmY=";
-                };
-              })
+              pkgs.tombi
             ];
 
             svelte = [

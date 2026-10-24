@@ -47,10 +47,6 @@ url = "github:nixos/nixpkgs/nixpkgs-unstable"
 url = "github:amaanq/nufmt/pipeline-wrapping"
 type = "fetch"
 
-[inputs.taplo-src]
-url = "github:amaanq/taplo/toml-1.1-multiline-inline-tables"
-type = "fetch"
-
 [inputs.tree-sitter-aidl-src]
 url = "github:amaanq/tree-sitter-aidl"
 type = "fetch"

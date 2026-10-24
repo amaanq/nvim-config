@@ -5,6 +5,7 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
+        tombi = {},
         ty = {},
         ruff = {
           init_options = {

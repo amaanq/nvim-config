@@ -39,14 +39,6 @@
     "narHash": "sha256-zolcLmiZRDDJf/Q2RYl+1DwPzd2CwadplxPJrW9ToWo=",
     "lastModified": 1773650258
   },
-  "taplo-src": {
-    "type": "github",
-    "owner": "amaanq",
-    "repo": "taplo",
-    "rev": "aca7d4cc49a54e9d1adfb5797ca6d33ecb23131c",
-    "narHash": "sha256-wCzli4maT8w3e9kwRptjLihI1pMRoG/248XfESPmPpo=",
-    "lastModified": 1773018963
-  },
   "tree-sitter-aidl-src": {
     "type": "github",
     "owner": "amaanq",
