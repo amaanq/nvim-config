@@ -1,19 +1,28 @@
 {
+  "$declared": {
+    "kotlin-lsp": "github:amaanq/kotlin-lsp-nix",
+    "neovim-nightly-overlay": "github:nix-community/neovim-nightly-overlay",
+    "nixCats": "github:BirdeeHub/nixCats-nvim",
+    "nixpkgs": "github:nixos/nixpkgs/nixpkgs-unstable",
+    "nufmt-src": "github:amaanq/nufmt/pipeline-wrapping",
+    "tree-sitter-aidl-src": "github:amaanq/tree-sitter-aidl",
+    "tree-sitter-blueprint-src": "github:amaanq/tree-sitter-blueprint"
+  },
   "kotlin-lsp": {
     "type": "github",
     "owner": "amaanq",
     "repo": "kotlin-lsp-nix",
-    "rev": "1e612921431e58c62daffd076f9502523c68cee9",
-    "narHash": "sha256-y2Fs7FbFOFpAfRhgd1b6H9LojRoeGDDdIbsm5PM93vw=",
-    "lastModified": 1779340527
+    "rev": "81dca45390cabb1d3b46eacbc208ed5fa99873c8",
+    "narHash": "sha256-df2IdvaDpBH6zv/7zjdAi4tf/iHCR4jSktxk5NAf0L4=",
+    "lastModified": 1792918172
   },
   "neovim-nightly-overlay": {
     "type": "github",
     "owner": "nix-community",
     "repo": "neovim-nightly-overlay",
-    "rev": "8304fe139f11678f7bb2148ddc90816c5b6dcb7a",
-    "narHash": "sha256-SQSOaPUGRl8BiexjFDlkRC3h69fBpRfwdoBy2eQCaZc=",
-    "lastModified": 1790869320
+    "rev": "481d8876e1200c9f2c5001a9109a16cd3a5e1ac0",
+    "narHash": "sha256-n/Ahw4IKlm9TCeboxojdUDZtJmM9ciQ1QFgZZgTGKkI=",
+    "lastModified": 1792886487
   },
   "nixCats": {
     "type": "github",
@@ -27,9 +36,9 @@
     "type": "github",
     "owner": "nixos",
     "repo": "nixpkgs",
-    "rev": "b6c8664de9b6cc07fe5666a29f91884ba81197c4",
-    "narHash": "sha256-641r7xrlSOHYoktL9/aArPIYNgZJ9eM5URzSEOtPJDY=",
-    "lastModified": 1790652569
+    "rev": "674a2028661e550a97400c1cc992b9cca9a668a1",
+    "narHash": "sha256-T2+XBfNbf9pecLUWS4+RtuVNZ3W8K5taG5QdV71mWlk=",
+    "lastModified": 1792812153
   },
   "nufmt-src": {
     "type": "github",
