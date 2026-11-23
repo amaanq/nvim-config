@@ -11,6 +11,7 @@
       inherit (inputs)
         kotlin-lsp
         neovim-nightly-overlay
+        nib
         nixCats
         nixpkgs
         nufmt-src
@@ -114,7 +115,7 @@
             ];
 
             nix = [
-              pkgs.nixd
+              nib.packages.${pkgs.stdenv.hostPlatform.system}.default
               pkgs.nixfmt
             ];
 

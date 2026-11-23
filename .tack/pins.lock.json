@@ -2,6 +2,7 @@
   "$declared": {
     "kotlin-lsp": "github:amaanq/kotlin-lsp-nix",
     "neovim-nightly-overlay": "github:nix-community/neovim-nightly-overlay",
+    "nib": "github:manic-systems/nib",
     "nixCats": "github:BirdeeHub/nixCats-nvim",
     "nixpkgs": "github:nixos/nixpkgs/nixpkgs-unstable",
     "nufmt-src": "github:amaanq/nufmt/pipeline-wrapping",
@@ -23,6 +24,14 @@
     "rev": "481d8876e1200c9f2c5001a9109a16cd3a5e1ac0",
     "narHash": "sha256-n/Ahw4IKlm9TCeboxojdUDZtJmM9ciQ1QFgZZgTGKkI=",
     "lastModified": 1792886487
+  },
+  "nib": {
+    "type": "github",
+    "owner": "manic-systems",
+    "repo": "nib",
+    "rev": "1e54c1d2b72cbc822426899c1462b637f7ed1720",
+    "narHash": "sha256-HVbkChLXLio9PxwwZtjRI4OfaekWAiGdyY93gEbe0ws=",
+    "lastModified": 1795461958
   },
   "nixCats": {
     "type": "github",

@@ -5,6 +5,12 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
+        nib = {
+          cmd = { "nib", "lsp" },
+          filetypes = { "nix" },
+          root_markers = { "nib.toml", "flake.nix", ".git" },
+        },
+        nixd = { enabled = false },
         tombi = {},
         ty = {},
         ruff = {
@@ -101,6 +107,7 @@ return {
     opts = {
       linters_by_ft = {
         lua = { "selene", "luacheck" },
+        nix = {},
       },
       linters = {
         selene = {

@@ -54,3 +54,9 @@ type = "fetch"
 [inputs.tree-sitter-blueprint-src]
 url = "github:amaanq/tree-sitter-blueprint"
 type = "fetch"
+
+[inputs.nib]
+url = "github:manic-systems/nib"
+
+[inputs.nib.follows]
+nixpkgs = "nixpkgs"
