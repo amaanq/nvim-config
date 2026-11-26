@@ -299,3 +299,4 @@ vim.api.nvim_create_autocmd("User", {
 reopen_explorer()
 
 require("util.herdr").setup()
+require("util.resume").setup()
