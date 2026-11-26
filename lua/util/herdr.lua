@@ -371,7 +371,7 @@ local function resurrect(session)
         pcall(vim.api.nvim_chan_send, chan, command .. "\r")
       end, 600)
     end
-    vim.notify(("herdr: resumed %s session in terminal %d"):format(session.agent, slot))
+    vim.notify(("resumed %s session in terminal %d"):format(session.agent, slot))
   end
   -- get() shows without toggle's exclusive hide-others, so sequential
   -- resurrections stack their floats: every buffer stays window-visible and
@@ -558,5 +558,8 @@ function M.setup()
   -- ms of delay is a window for the user to race it with a manual resume
   vim.defer_fn(restore_nested_sessions, 150)
 end
+
+M.slot_for = slot_for
+M.resurrect = resurrect
 
 return M
